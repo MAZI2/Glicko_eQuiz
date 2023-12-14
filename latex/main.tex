@@ -1,0 +1,156 @@
+\documentclass{IEEEtran}
+
+% For english labels:
+\usepackage{EVjour}
+
+% For slovene labels:
+% \usepackage[slovene]{EVjour}
+
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{color}
+\usepackage{xspace}
+\usepackage[pdftex]{graphicx}
+
+\DeclareGraphicsExtensions{.pdf,.jpeg,.png}
+\usepackage[hyphens]{url}
+\usepackage[unicode]{hyperref}
+
+\newcommand{\B}[1]{\ensuremath{\boldsymbol{#1}}}
+\newcommand{\bi}[1]{\boldmath{\ensuremath{#1}}}
+\newcommand{\CC}{\ensuremath{\mathbb C}}
+\newcommand{\D}{\ensuremath{\mathbb D}}
+\newcommand{\F}{\ensuremath{\mathbb F}}
+\newcommand{\K}{\ensuremath{\mathbb K}}
+\newcommand{\N}{\ensuremath{\mathbb N}}
+\newcommand{\Q}{\ensuremath{\mathbb Q}}
+\newcommand{\R}{\ensuremath{\mathbb R}}
+\newcommand{\Z}{\ensuremath{\mathbb Z}}
+
+\makeatletter
+\let\old@subsection\subsection
+\renewcommand{\subsection}[1]{\bigskip\old@subsection{#1}\@afterindentfalse\@afterheading}
+\makeatother
+
+% English labels
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+
+% Slovene labels
+% \newtheorem{theorem}{Izrek}[section]
+% \newtheorem{corollary}[theorem]{Posledica}
+% \newtheorem{lemma}[theorem]{Lema}
+
+
+\pdfminorversion=4
+
+\title{Project template}
+\authors{Matjaž Pogačnik}
+\address{
+faculty of computer and information science \newline
+večna pot 113\newline
+1000 ljubljana}
+\date{november 2020}
+\abstract{
+    Kratek opis ideje
+}
+\keywords{equiz, rating}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+\label{sec:intro}
+
+Opis problema
+
+%\section{Attacks on Bitcoin}
+%\label{sec:attacks}
+\section{Glicko rating}
+\label{sec:glicko}
+Opis glicko ratinga, kot resitev zgornjega problema
+
+%primer enacbe
+\begin{align}
+n &= pq \nonumber \\
+\varphi(n) &= (p-1)(q-1) \label{eqn:phi}
+\end{align}
+
+
+\subsection{Izracuni iz equiz podatkov}
+
+Trenutni podaki (lahko) baza za nove,
+\\
+\\
+Po rating updatih lahko dolocimo cas (in verjetno kaj je ucenec reseval) -- match lahko uporabimo kar prvi rating in matchamo casovno naslednje preizkuse
+\\
+\\
+Ali imamo podatke nakljucnih resevanj? (Nejc Subic diplomska: Da?)
+Ce ne lahko tudi umetno prikazemo ucinek za sprotno delo -- nakljucno izberem nekaj nalog(lahko tudi randomly generiram podobne podatke kot trenutne naloge v equizu).
+\\
+\begin{itemize}
+    \item Prikaz ratingov po izpitu (tudi za naloge). kot poseben primer za prikaz da je se vedno accurate -- izstopanje nalog
+    \item Prikaz ratingov po rednih preverjanjih, kot prikaz kako se vzdrzuje rating in devianca(graf deviance za studenta) -- c samo pokaze koliko globoko bo dipnilo med preverjanji in s tem koliko pomembno je sprotno delo?
+\end{itemize}
+\hfill
+\\
+\\
+\\
+\\
+\\
+\\
+
+
+Zeljeni podatki:
+\begin{itemize}
+    \item izpit (sasa)
+    \item cas posodobitev ratingov + kaj je ucenec takrat reseval (za sestavljene naloge (izpite) + nakljucno resevanje)
+\end{itemize}
+\hfill
+\\
+\\
+\begin{lemma} \label{lem:eps}
+$\ell = \varepsilon + t(p-1)(q-1)$.
+\end{lemma}
+
+\begin{proof}
+\begin{align*}
+\ell &= \varepsilon + \B{r}(q-1) \\
+&= \varepsilon + t(p-1)(q-1)
+\end{align*}
+\end{proof}
+
+\begin{theorem} \label{thm:equiv}
+$\ell \equiv \varepsilon \pmod{\varphi(n)}$.
+\end{theorem}
+
+\begin{proof}
+By Lemma~\ref{lem:eps} and \eqref{eqn:phi} we have $\varepsilon \bmod{\varphi(n)} = \ell$.
+\end{proof}
+
+\begin{corollary} \label{cor:mult}
+$\exists k \in \Z: \ell - \varepsilon = k \varphi(n)$.
+\end{corollary}
+
+\begin{proof}
+Follows by Theorem~\ref{thm:equiv}.
+\end{proof}
+
+\section{Conclusion}
+\label{sec:cnc}
+Ut sed metus consectetur, vulputate lacus non, mollis libero~\ref{sec:glicko}.
+In ut sollicitudin dolor \bi{n = pq}.
+Sed condimentum nisl at tristique lacinia (Corollary~\ref{cor:mult}).
+Ut laoreet orci sit amet eleifend aliquet.
+Fusce purus massa, bibendum in felis eu, aliquam tincidunt est.
+Phasellus quis malesuada quam.
+Maecenas id felis est.
+Nullam vulputate finibus augue, id ultricies nisi elementum a.
+
+\bibliographystyle{babplain}
+\bibliography{cite}
+
+\end{document}
