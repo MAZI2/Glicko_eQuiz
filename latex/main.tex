@@ -64,23 +64,86 @@ večna pot 113\newline
 
 \section{Introduction}
 \label{sec:intro}
-
-Opis problema
-
-%\section{Attacks on Bitcoin}
-%\label{sec:attacks}
+Ena izmed funkcionalnosti aplikacije eQuiz %TODO link
+je rating študentov in nalog preko Elo rating sistema. Študent se sooči z nalogo in na ta način se iztočasno izračuna rating študenta in rating naloge, kot bi igrala študent in naloga šah. Študent lahko na nalogo odgovori prav ali napačno, kar je ekvivalentno temu, da štuent nalogo premaga ali proti njej izgubi. 
+Pojavijo pa se pomankljivosti takega rating sistema. 
+\hfill
+\\
+Če uporabljamo eQuiz za spremljanje ratinga študentov in nalog v sklopu določenega predmeta, bo proti številu študentov, ki bodo v tem letu aktivni, število nalog navadno mnogo večje. To pa pomeni, da bodo, dokler študentje ne rešujejo samih enakih nalog, ti prejeli posodobitev ratinga veliko večkrat kot kot posamezna naloga. Še več posodobitev pa študentje, ki so pri reševanju nalog bolj aktivni.
+Torej ratigini, pripisani določeni nalogi ali študentu lahko izvirajo iz več ali manj reševanj, kar naredi rating bolj ali manj verodostojen.
+Zaupanje v določen rating lahko tako iz posamezne številke raje razširimo na interval zaupanja.
 \section{Glicko rating}
 \label{sec:glicko}
-Opis glicko ratinga, kot resitev zgornjega problema
+Za tak pristop je primeren Glicko %TODO link
+rating, ki poleg ratinga za posameznega igralca (študent ali naloga) vpeljuje še deviacijo $RD$, ki nam omogoča predstavitev ratinga posameznega igralca kot $95\%$ interval zaupanja:
 
-%primer enacbe
-\begin{align}
-n &= pq \nonumber \\
-\varphi(n) &= (p-1)(q-1) \label{eqn:phi}
-\end{align}
+\begin{equation}
+    \left ( r -1.96RD, r +1.96RD \right )
+\end{equation}
+%lahko se primer izrazuna intervala
+pri čemer se $RD$ manjša ob vsakem updatu ratinga, kjer se igralec sooči z drugim igralcem (ali več njih)
+\begin{equation}
+    RD'=\sqrt{\left (  \frac{1}{RD^{2}} + \frac{1}{d^{2}}\right )^{-1}}
+\end{equation}
+kjer $RD$ predstavlja deviacijo pred posodobitvijo, $d^{2}$ pa je definiran kot
+\begin{equation}
+    d^{2}=\left ( q^{2} \sum_{j=1}^{m} \left (g\left( RD_{j} \right ) \right )^{2}E\left ( s|r, r_{j}, RD_{j} \right )\left (1-E\left ( s|r, r_{j}, RD_{j} \right ) \right )\right )^{-1} 
+\end{equation}
+\begin{equation}
+    q=\frac{ln10}{400}=0.0057565
+\end{equation}
+\begin{equation}
+    E\left ( s|r, r_{j}, RD_{j} \right )=\frac{1}{1+10^{-g\left ( RD_{j} \right )\left ( r-r_{j} \right )/400}}
+\end{equation}
+\begin{equation}
+g\left ( RD \right )=\frac{1}{\sqrt{1+3q^{2}\left ( RD^{2} \right )/\pi^{2} }}
+\end{equation}
+\hfill
+\\
+\\
+Nov rating $r'$ se izračuna po formuli
+\begin{equation}
+    r'=r+\frac{q}{1/RD^{2}+1/d^{2}}\sum_{j=1}^{m}g\left( RD_{j} \right )\left (s_{j}-E\left ( s|r, r_{j}, RD_{j} \right ) \right )
+\end{equation}
+Zgornje formule so posplošene za posodobitev ratinga $r$ in deviacije $RD$ igralca proti skupini $m$ nasprotnikov z deviacijami 
+$RD_{1}, RD_{2}, ..., RD_{m}$ in ratingi $r_{1}, r_{2}, ..., r_{m}$. $s_{1}, s_{2}, ..., s_{m}$ predstavljajo izide, ki so lahko $0$ ali $1$, za izgubo ali zmago.
+\hfill
+\\
+\\
+Igralčev $RD$ se ne posodablja samo, ko se ta sooča, temveč tudi ob preteku določene časovne periode, kar predstavlja zniževanje verodostojnosti trenutnega ratinga, če igralec določen čas ne igra. %TODO: poveži z equiz
+Tako se njegov $RD$ posodobi kot
+\begin{equation}
+    RD = min\left(\sqrt{RD_{old}^{2} + c^{2}}, 350\right)
+\end{equation}
+konstanta $c$ je, poleg maksimalne deviacije, ki je v tem primeru $350$, edini parameter, ki ga nastavlja administrator sistema. Več o tem v kontekstu equiza v poglavju $X$ %TODO link do poglavja
+\hfill
+\\
+Matematične izpeljave formul so na voljo na \href{http://www.glicko.net/research/glicko.pdf}{tukaj} %TODO organizacija formul v podnaslove?
+\newpage
+%TODO Podnaslov Intuitivno?
+Iz formul vidimo, da je $r'$ odvisen od $RD$ igralca in ni uravnotežen tako, kot je pri Elo sistemu, kjer se zmagovlacu zviša rating toliko, kot se poražencu zniža. Ker naj bi velikost $RD$ odražala koliko informacije imamo o igralcu, se v iteraciji ocenjevanja, kjer ima en igralec velik $RD$, drug pa majhen, prvemu zviša veliko več, kot se drugemu zniža, saj vemo, da je rating prvega nezanesljiv, rating drugega pa je. Enako se v tem primeru ne more upravičeno znižati rating drugega igralca toliko, kot bi se, če bi bil rating njegovega soigralca zanesljiv.
 
+\hfill
 
-\subsection{Izracuni iz equiz podatkov}
+\section{Izracuni iz equiz podatkov}
+\label{sec:equiz}
+
+Če študent reševal skozi semester izgleda rating po Elo tako: 
+
+(Če pa nimamo rednih podatkov):
+zgenerirana tabela resevanja po kolokvijih, sprothin kvizih in random resevanjih. Na random ratingih nalog zajetih iz equiz ali
+pa ce je kaj informacije o tem.
+
+iz zgornjih tabel se da ugotavljati kasnejse ugotovitve napisane spodaj
+
+(morda) imamo informacijo samo o izpitu.
+(primerjava ratinga Elo vs Glicko na izpitu, tudi za naloge)
+
+\hfill
+\\
+
+Če 
+
 
 Trenutni podaki (lahko) baza za nove,
 \\
@@ -98,17 +161,23 @@ Ce ne lahko tudi umetno prikazemo ucinek za sprotno delo -- nakljucno izberem ne
 \hfill
 \\
 \\
-\\
-\\
-\\
-\\
-
-
 Zeljeni podatki:
 \begin{itemize}
     \item izpit (sasa)
     \item cas posodobitev ratingov + kaj je ucenec takrat reseval (za sestavljene naloge (izpite) + nakljucno resevanje)
 \end{itemize}
+\hfill
+\\
+\\
+S tem pridobimo v primeru študentov informacijo o sprotnem delu, saj bo RD manjši za učence, ki so pogosteje ocenjeni (poleg opravljenih sprotnih preverjanj še naključna reševanja kvizov/nalog), kar kaže na več/manj sprotnega dela.
+(Glede na spreminjanje RD lahko spremljamo delo učenca kot nekakšen koeficient napredka/ak.vnos.)
+Za nasprotnika učencu – nalogo, pa deviacija predstavlja kdaj je bila naloga nazadnje ocenjena, torej koliko je njena ocena zanesljiva. V primeru učenca, ki izbira naloge iz zbirke na equizu, pa lahko naloge z veliko deviacijo iden.ficiramo kot nepriljubljene (malo učencev se lo. naloge).
+Reciklirane naloge bodo torej tudi večkrat nastopile na preverjanjih in bo natančnost njenih ra.ngov večja (dobro za parametrizirane naloge, ker se zaradi njihove narave lahko večkrat pojavijo v preverjanjih)
+Ra.ng nalog, ki se pojavijo na izpitu, pa bo še vedno zanesljiv, saj bo v is. iteraciji nalogo reševalo veliko učencev.
+Ra.ng učenca/naloge, ki je neak.ven čez določen časovni interval se ustrezno zmanjša, kar je poleg maksimalne deviacije edini parameter, ki ga je potrebno nastavi. kot administrator. Kako sistema.čno določamo ta parameter je opisano v dodatnem članku o glicko, vendar ga lahko verjetno vežemo na redna preverjanja kot npr. kolokvije. Ker se da predmet opravi. samo s kolokviji celotno snov sta.s.ke razdelijo na 5 delov. Torej bo študent, ki opravi samo eno preverjanje od pe.h ustrezno imel manjši ra.ng predvsem pa večjo deviacijo (če je opravljal samo prvega se bo njegov RD š.rikrat zviševal do konca semestra), saj imamo informacijo o njegovem znanju čedalje bolj nezanesljivo, ker vemo čedalje manj koliko študent dejansko ve o sta.s.ki odkar je reševal .s. kolokvij (pričakuje se, da študent tekom leta ve več in več o sta.s.ki).
+
+%TODO tudi expected outcome
+
 \hfill
 \\
 \\
@@ -141,14 +210,7 @@ Follows by Theorem~\ref{thm:equiv}.
 
 \section{Conclusion}
 \label{sec:cnc}
-Ut sed metus consectetur, vulputate lacus non, mollis libero~\ref{sec:glicko}.
-In ut sollicitudin dolor \bi{n = pq}.
-Sed condimentum nisl at tristique lacinia (Corollary~\ref{cor:mult}).
-Ut laoreet orci sit amet eleifend aliquet.
-Fusce purus massa, bibendum in felis eu, aliquam tincidunt est.
-Phasellus quis malesuada quam.
-Maecenas id felis est.
-Nullam vulputate finibus augue, id ultricies nisi elementum a.
+conclusion
 
 \bibliographystyle{babplain}
 \bibliography{cite}
