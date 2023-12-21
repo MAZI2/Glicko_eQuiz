@@ -1,0 +1,1336 @@
+Setup:
+LOAD DATA LOCAL INFILE '/Users/matjeez/Documents/Glicko/resources/exercise_ratings.csv' INTO TABLE exercise_ratings FIELDS
+TERMINATED BY ',' LINES TERMINATED BY '\n' IGNORE 1 LINES;
+
+Data:
+distinct users: 305;
+distinct exams: 6073;
+
+Vec nalog ratanih v istem examId
+Nekateri v sklopu enega examIdja je lahko veliko nalog ratanih (exam retrials under same examId?), ne pa toliko studentov (vecinoma samo en(enkrat)).
+razen exam id 6412 je prispeval v 28 ratingov ucencev. -> lahko izpit?
++------------+-----------+
+| exerciseId | COUNT(id) |
++------------+-----------+
+| 8206       |        28 |
+| 8208       |        28 |
+| 8211       |        28 |
+| 8223       |        28 |
+| 1879       |        28 |
+| 3084       |        28 |
+| 7154       |        28 |
+| 2159       |        28 |
++------------+-----------+
+vsak od teh exercisov je bil ratan 28krat(tocno toliko tudi razlicnih userjev->ni bil retry). 28ljudi na izpitu z 8 nalogami.
+vecino izpitov pa samo po en ucenec, vendar imajo lahko tudi po 25 nalog??! nikoli pa ne samo 1!?? tukaj pa morda retries? ampak potem bi moral biti rating samo enkrat.
+-> razvidno iz examAttemps?
+nekateri tudi dvakrat ratani v istem examu.
+
+also zgleda da se rating lahko updata na vsakem attemptu istega exama (rating.js). -> explains zakaj toliko nalog ratanih.
+
+--ce se ne bo nic ujemalo morda poglej kaksne so statistike zadnjega leta-- examAttempts
+Kdaj pa se generira nov exam?
+
+za zdaj vazno da kdaj je bil ratan student s katerimi nalogami.
+
+1.napisi program za pregledat kere naloge na kerem examu ki je bil kdaj resevan (kaksen so imele takrat rating).
+2.preglej ce se ujema z updatom ratingov
+3.napisi se enako z algoritmom za glicko
+
+nekako se da retryjat kviz, also zgleda da obstajajo kvizi z 26 nalogami lahko(morda sestavljene naloge), also obstaja kviz za vec studentov z istim exam id. Izpit?
+
+Resevanja studentov: PRIDNOST. -> se more odrazati enako z glicko ratingom
+
++--------------------------------------+-----------------------------+
+| userId                               | COUNT(DISTINCT classExamId) |
++--------------------------------------+-----------------------------+
+| 01c9eec7-0ec5-4fb9-af77-5cb2b9731d57 |                           7 |
+| 01d70e5b-9ede-46d4-a528-c93f4478a4e3 |                          19 |
+| 01ff363d-4a21-4121-af2d-686d5ca8460d |                           4 |
+| 02ee9236-69a9-40e1-bc58-8874bdbceea3 |                           1 |
+| 031bccfc-47dc-49fd-a8c2-38d679ea1c7e |                           2 |
+| 04607c39-c432-4550-8aa1-0cda3b45b35b |                          50 |
+| 04d4adc9-a7c5-4373-aa4f-37de985c757d |                           3 |
+| 058a3c3d-9f60-4d34-aaf6-ebf69de4330b |                          12 |
+| 0674e843-be41-4326-bdda-e48492a81097 |                           4 |
+| 095baf61-3edf-44a2-8d05-6f574566a8c0 |                           1 |
+| 096bd0c1-b40d-451c-a325-114675f77a74 |                           5 |
+| 09ecdd15-7d9f-4bb2-8196-47cb5a847489 |                           6 |
+| 0a1405b2-c3ce-452f-8116-c5a54e60ce28 |                           3 |
+| 0a73cd8d-dc55-41ce-9ed8-412c9fa1860f |                           2 |
+| 0a896209-22dd-4b55-9a9d-95a6c7bf87bc |                          16 |
+| 0b5bd15d-972c-4a7c-a180-435a12d84ba1 |                           1 |
+| 0c5a3ce9-af97-46d5-820a-4b96f510b501 |                          12 |
+| 0cf18231-4e3f-448d-a156-d9128c1eda41 |                           1 |
+| 0d619879-ca91-440a-9261-0519b9dd258a |                          21 |
+| 0e500017-b5bb-45d7-bd59-42ec41513594 |                          11 |
+| 0fc7a18a-0fc7-4124-81e6-ef30e8442786 |                           2 |
+| 10b64fec-bb8f-4827-a6d4-71220269c00e |                          11 |
+| 10dd78bc-b03e-46a6-a1df-48210bf2536a |                           6 |
+| 12ff4129-af7c-4931-807c-da527543cf37 |                           1 |
+| 13de74bb-5359-4ecd-b157-d695cdee6346 |                           2 |
+| 14a23724-d674-420e-a2d1-2d0a88a8fe76 |                           1 |
+| 14ca11b4-f8fe-4f75-9ebe-ccfd0ed2933b |                          37 |
+| 151dceed-c290-4c8e-9646-a5289e185d58 |                           6 |
+| 153406a5-4a84-46e2-a57b-54433ec4470c |                           1 |
+| 16e360a2-da1c-4b49-83c7-0cb06fd9d672 |                          19 |
+| 176a11d1-8acf-4e00-ac58-ba1d1033407c |                           1 |
+| 185e6c14-38ff-4db4-b314-2181b31a7d63 |                           6 |
+| 19af1390-a19e-4127-81fa-350db0b5a029 |                           7 |
+| 1a5ce6e8-35dc-4494-88fb-180e325899e4 |                           1 |
+| 1aad4da7-4c7d-4cb2-b8a9-14916d5df647 |                          14 |
+| 1b176a71-e92d-4460-8bf2-7f2d31a5d98e |                           2 |
+| 1b250ea0-034e-4c86-a532-fa92a9e336e1 |                          12 |
+| 1c5ca50f-94b1-4b99-a7f8-c978d6879419 |                          16 |
+| 1c69577b-6621-4a4e-8f60-77fa1f243ea2 |                         407 |
+| 1ca4683d-7381-417f-8cb9-0bea947bdbb1 |                           1 |
+| 1cdd8c76-7665-4dfc-917b-feab60df329c |                           3 |
+| 1eef8f61-90aa-4d85-bc3c-c234829b01ba |                          11 |
+| 1f43ac87-642a-47ca-ada8-b3a86dfbeb3c |                          10 |
+| 1f4caceb-e0f8-4f66-91f2-5648b51e1fee |                           1 |
+| 1f781a7e-2b9d-4b96-863c-eef478cde0b7 |                           1 |
+| 1faf24a0-ed74-4ca1-b25e-8b4ce8fdacb5 |                           2 |
+| 20e7d19a-0b05-4392-92be-9b5fe89733ab |                           9 |
+| 23a61a42-b6c1-45c9-9718-8e7759991804 |                           1 |
+| 23cb5641-11af-43a9-9ef1-ced126dc22b7 |                          11 |
+| 268ddce0-ed76-4ac1-a8be-b7e3bf042e0b |                           1 |
+| 28263bbf-db61-40ed-bc7c-5a2779f86c93 |                           8 |
+| 2839d45d-294b-4642-bd68-cf5b806a6b01 |                          30 |
+| 2950120b-cfdb-49d4-af18-19d7e51cd851 |                           2 |
+| 29b41989-d658-457a-abcd-c2b9be555f73 |                           1 |
+| 2a849c68-7ee3-484b-9cf9-bd096a103d3e |                           1 |
+| 2bbc480d-d46b-48d7-b9dc-9f028889c549 |                           1 |
+| 2c252528-4e04-49de-a657-ded69f959564 |                           1 |
+| 2f016724-8dce-4bce-acf7-9e94db012003 |                          10 |
+| 2f31ddbb-e28f-49a7-9096-08bf9a15c2fd |                           1 |
+| 30106e05-7a60-41a7-b63d-f43cd2df617d |                           2 |
+| 3106f8e4-84a3-4da3-847b-cdcf57982acd |                           4 |
+| 3168ca3f-3acf-4093-ba9d-d682157b3592 |                          21 |
+| 31d095d1-f060-4b78-beff-e928c4feb7e4 |                           1 |
+| 32f5bddf-d4f0-4f15-83e5-ffb2a0aa95d3 |                           2 |
+| 330ba068-bce9-4d81-8ca6-af512a9b63de |                           5 |
+| 3323d160-75fa-4768-8ea3-eb19ed6bf3ed |                          23 |
+| 35364bd8-4c23-4f24-8d58-87330d13beba |                           6 |
+| 368e486a-a9e0-4121-9261-42a8384332a0 |                          21 |
+| 38865607-4c43-47fd-9239-55367c06bef7 |                           9 |
+| 3abf63a3-14c1-4c3b-a7e6-ea3dd7b86b77 |                           2 |
+| 3b308e78-c02f-47c5-9620-a1cb0ed2f2ac |                           1 |
+| 3b318bd5-281b-4500-bbfc-d6801ed7b4e7 |                           1 |
+| 3bc52738-2809-455f-9507-2bf7316f28a4 |                           5 |
+| 3bc88332-baef-422e-af05-9c5faea52157 |                           4 |
+| 3c21a67b-f3a7-4f83-937d-6c28d2e4a700 |                           7 |
+| 3ced2213-4869-4cdb-81e0-bc2bf533a0c3 |                           1 |
+| 3efdbc9f-5a81-45da-8804-3945d2764747 |                          16 |
+| 407be379-85ef-4380-ada3-4e2d24b258dc |                          42 |
+| 40ab05c8-a6a4-4e2e-bd11-c06aca37fb6b |                          97 |
+| 42bc8a39-3d40-44f9-a66f-1b301a4eead9 |                           2 |
+| 433f1aba-2cfc-454f-9e31-c494a6f25450 |                         190 |
+| 43e7ee7e-a125-4d73-80c0-5e545ae164cd |                         129 |
+| 45ed1d39-c8d9-4b67-b0f2-2c5dd999360c |                           2 |
+| 4655fc6c-2d56-46d4-8675-cb7563baa311 |                           7 |
+| 466caf19-bceb-43d0-9eaa-9b92f5fbde8b |                           3 |
+| 48e10102-fdd8-4e8e-8ba4-2fe3cedaff1d |                          10 |
+| 4a6a28de-c424-49aa-9c46-a87356c68a64 |                           6 |
+| 4c7ffda0-d3e3-4b35-8f1a-a7bc389c98d4 |                           1 |
+| 4d8b6acc-3250-4da4-ab44-7373265ee8d9 |                           1 |
+| 4eeb489a-f7dc-4126-abcc-369f21d75e29 |                           1 |
+| 4f5d759f-e023-46c2-8f05-e879374c0e81 |                           1 |
+| 4ff9728d-86ca-4f17-9e64-f72c7c785571 |                           1 |
+| 505670f9-d9b1-4258-93e9-609141fc60d9 |                           9 |
+| 50f7688e-d6d5-4e8b-a713-f66cc6def95f |                         624 |
+| 51834d50-7b90-4c3e-9bfb-7e237a5de5a1 |                           2 |
+| 51a1c90b-1fbb-45ae-bd59-0dee9e573687 |                           2 |
+| 521aff00-3195-4e4d-b356-307edefd64f0 |                          22 |
+| 52d163fb-6f4c-49a7-a35d-6efd5db08aeb |                           6 |
+| 52eb13a0-32a1-4e86-8152-1683a4f9d5e6 |                          13 |
+| 540ecfe0-62de-4b14-814a-4acec9471274 |                           1 |
+| 5445df03-3ff5-4017-a361-24187bb3033f |                          19 |
+| 5470bcf2-2c7d-4f49-b7f0-77591fda120e |                           9 |
+| 54d04495-180f-48f5-94fc-2445b15570a9 |                           1 |
+| 565fabf8-35fa-49e5-b0d2-49857758e11d |                           3 |
+| 56cbec73-a171-4888-94bf-196e26f29e8d |                           3 |
+| 56ef69bf-9e41-40ce-a1ae-c3669f6720ac |                           4 |
+| 5862b495-4570-4ec6-a137-f7309c706e24 |                           1 |
+| 5922a9c0-ef86-48a9-9354-f91eb5d838d0 |                          22 |
+| 5b83d361-d8b1-455e-babd-b644fe654012 |                           6 |
+| 5c792fc5-6883-4dd3-b1f1-4e753f15781e |                           1 |
+| 5c8f089e-43ce-46ca-9b69-99f32b7e0542 |                           1 |
+| 5d3716f6-d4d6-4d75-9934-4d286d1dfc46 |                         168 |
+| 5d6d9447-00cd-44d1-b1ef-77c2d0413b2d |                           4 |
+| 5e8168fd-8e22-4db5-80f8-f767af5ddbab |                           1 |
+| 5eb6d3a7-9449-43db-9176-03259332a2c8 |                           8 |
+| 60b0013f-eb1e-4db9-a283-45fbc363bee2 |                           1 |
+| 61394f60-bc13-4c11-9030-2c65ad10f517 |                           3 |
+| 61a6a4ad-7f2a-48cb-893f-d368013bcf3d |                          28 |
+| 629638e0-398f-43e7-8161-75eea55365e3 |                           1 |
+| 64f42bf1-0c9a-4bef-b8d3-c0185625cc50 |                           1 |
+| 66ac8153-acb7-4b40-a2c9-d21794422a12 |                          89 |
+| 66e1f470-62a3-4c76-a0ee-d1781c734fb1 |                           2 |
+| 67d15eaa-f04d-419f-99f5-fdc18ec37dff |                         124 |
+| 6887cc05-1ebe-499c-ab4d-6fbd97689176 |                           3 |
+| 691796df-2aca-4d33-b5c4-5922caf9cdf2 |                           2 |
+| 69e7f01e-749a-4839-be99-0ace27c735d8 |                           2 |
+| 6c4fc59c-274c-46f5-b79a-686738d36e51 |                           6 |
+| 6cedcbbd-0213-4f31-aa75-3b89dec8889f |                           6 |
+| 6cf0322f-feea-4207-8668-18342464bef8 |                           6 |
+| 6e4842ff-f551-469e-9f62-6ea94224f50b |                           1 |
+| 6ef0bb02-f3b9-4951-8900-23906a5c6e31 |                          21 |
+| 6f201cdc-f653-4408-b7bd-3bf2710f9eee |                           3 |
+| 6fb1c2d5-5ba2-4f68-970d-80b1540cc0ce |                           4 |
+| 7006f84b-2bdb-4308-9b2d-acb8beef3f90 |                           2 |
+| 7278d1aa-1df7-462f-964e-3ae64fb9e6d8 |                           4 |
+| 734d59b4-2906-4aab-8a53-a626d028ebf7 |                           3 |
+| 73ee2cbf-4157-4384-a0b1-3f21dc87fb06 |                           1 |
+| 7487848d-57f3-482d-a4d2-79ac3afee419 |                          26 |
+| 74c82591-c4e4-42e9-9530-d3d7c53e6bcc |                           5 |
+| 79911711-7772-4feb-aac9-ef69b3b4ac77 |                           1 |
+| 7aa47dc4-a3e0-40b9-a601-8586ce0fa36f |                           2 |
+| 7b56337e-2d0d-4449-8e4e-ed7551800398 |                           5 |
+| 7ca6f197-e17e-4d96-bcf8-9ade2dfbe263 |                          38 |
+| 7da6d40f-1b2c-47dc-b276-7003200b92ec |                          20 |
+| 7de4f4d4-e44c-45eb-b3c0-5a3f8f3a566d |                          17 |
+| 81a899b3-7ea1-40c3-9445-59bf7d00f5d9 |                           3 |
+| 81f8da86-3ee0-45f9-9d46-a88a26a91ad7 |                           1 |
+| 827adca8-4d38-4f93-a768-0573372c14f1 |                          49 |
+| 83811c03-708b-4fdb-ae13-31159e506ee7 |                           1 |
+| 8389db64-fe01-439e-9a70-00dc030af665 |                           3 |
+| 838ddce3-c950-4bbc-b3d7-393e681a46fa |                           1 |
+| 847716d8-700d-47d2-93b0-60e605cace91 |                          18 |
+| 84a9b073-37be-457c-82e8-4c2820f84c7a |                         170 |
+| 84fa8b55-c4fb-4134-87cd-ee3f44d790cf |                         157 |
+| 860624c8-88ec-453e-9b6d-7a00e3671cfb |                           1 |
+| 86d15ffc-1119-4dd1-9984-611ca65527fc |                           1 |
+| 87162f63-0a07-47ef-bfd9-19da84dea188 |                           4 |
+| 872d7e6a-829c-464c-a5a1-3c4a50cdffe7 |                           1 |
+| 889b26a3-7a1e-409c-9373-1ba7a885ddc3 |                           1 |
+| 88aaa986-891b-4865-b14d-87006ef11aea |                           7 |
+| 8a2a3ec2-532a-4764-ab09-71118e3784cf |                           3 |
+| 8a3c8b6c-a0ff-4d6b-a26d-693de8f61668 |                          12 |
+| 8a45e76a-fe14-4240-a683-cd1e3ecbcb12 |                          25 |
+| 8b21ecd2-fe4d-478a-b645-75a3b0448743 |                           1 |
+| 8b91c946-fcec-44c8-a3cd-a95dbe55ffb9 |                           1 |
+| 8bd097d7-3b1c-4544-a97b-8c1b07608627 |                          11 |
+| 8ca00bb4-be87-4040-8059-8ef43cc8ee03 |                           1 |
+| 8dbeff34-0b2e-4c41-82e0-ceffcebefc02 |                           1 |
+| 8dee00b7-2c4e-4c7c-abf4-9c5f397d26a1 |                           3 |
+| 8e5a2ac3-9c7e-47bf-8f11-173ca5aaa51b |                           2 |
+| 8f11548b-3f90-4174-8ff2-989d3d51223c |                           5 |
+| 908cde8b-1ad7-4a57-ae3c-78df9f843e53 |                         867 |
+| 91aa25f6-e4f7-45a7-bd29-e336cc5d4dc4 |                           6 |
+| 91f7ee49-8749-4f3e-b1c6-a4c66ab63c30 |                          74 |
+| 91fab6a8-5ac6-4d75-b95f-4b1681cc1789 |                           2 |
+| 930080d5-3d72-4619-ba61-a5083c16fa6e |                           2 |
+| 97515bdc-b393-4f27-83dc-da74d88682b1 |                           2 |
+| 979d6b01-24cd-4b9e-993d-d65a14f1ade1 |                           1 |
+| 97e4dd45-63e3-4e65-aa33-369630a1608b |                          42 |
+| 9851a2d4-6824-47b3-9414-f9ac5106b8dc |                           1 |
+| 98a780d1-8807-41d2-b8dd-e02a6e7e16f2 |                           5 |
+| 9a12f691-9e6c-4c5c-badd-e9cd81a82035 |                           3 |
+| 9a61428c-a859-4e0a-a855-017c5ab0b4eb |                           1 |
+| 9c4af93d-d818-4184-a76c-787e5ce2a539 |                           2 |
+| 9c76b0ea-7fd2-4973-838a-d3accde8b0d8 |                           4 |
+| 9d4c991b-8b87-4d84-ac27-91f9bb56d9f8 |                          13 |
+| 9d8e4741-b0ab-4906-881f-446938ec52ad |                          28 |
+| 9dd2f615-c637-489c-94d7-83130a1db71b |                          54 |
+| 9e4202f7-5b58-46b1-a148-41662d945b95 |                           7 |
+| 9f2345c9-4712-4a23-9503-17687aacabc0 |                          12 |
+| 9fc76304-f0d1-4985-8cb0-ce2ed7392ce4 |                          10 |
+| a04ee336-a70b-4ad4-b29d-fdbe87564019 |                           6 |
+| a1f6f1c7-8464-43c3-bc4e-ada7f456585a |                          30 |
+| a21962ab-12fb-48ff-bf27-fde1a7d29550 |                          14 |
+| a2530de3-b85d-440c-88fa-b3117792dcd0 |                          74 |
+| a28a4464-d0a3-4814-be1a-0473a3ca9f16 |                           6 |
+| a3ecf314-8c5f-44c9-94ce-5c6dca2cfad5 |                          28 |
+| a3fb259c-545d-4b23-a34d-1f98a5636ba5 |                           6 |
+| a43e9084-4b8e-48e3-9b3b-8f3eec639ca4 |                          60 |
+| a56695db-b400-407c-94ef-b3c9c48c70ef |                           1 |
+| a5bfaa4d-2598-43dd-bbc4-1ec5af641109 |                           1 |
+| a96fd13e-b5cc-4f03-b76e-88ab334199ec |                         113 |
+| a9ae8ab4-5075-4eeb-a981-1a66ce3e36b6 |                           8 |
+| aa1ed0ef-3b5f-43ae-bcda-a786fd820213 |                         136 |
+| aa9b9355-4ece-4ca8-9749-703855a9eb82 |                           3 |
+| aad17b27-2a2a-4f1a-99a5-bc5dbb5c54a3 |                          13 |
+| ab7c03b3-600d-49d2-908f-32387844770c |                           6 |
+| ad5edbd0-05af-496b-be79-c41465dce195 |                           1 |
+| adfa53e0-d9fd-4ccc-9ace-9bcf64d17086 |                           3 |
+| ae2002b8-0f75-467f-b918-592fac5a0173 |                           1 |
+| ae6eef44-9a34-430d-94e1-2df4173d14f7 |                           4 |
+| af1aed57-3d9c-4c7c-8e67-fc8ddfd6bae5 |                          59 |
+| af392a6f-1c4a-41c4-affd-533cf471fb06 |                           8 |
+| b0a42c4c-b88b-462a-a301-a1464c27a141 |                           3 |
+| b0fec5b2-dfff-493f-bd90-be3a116660fb |                           2 |
+| b12e2279-8d74-4d7b-bf0b-f80ecb05ebdf |                           2 |
+| b2eae83c-b397-459c-b0aa-93c493faefb9 |                           2 |
+| b3392f6b-1c2f-4d8e-a953-60463e7b9cd6 |                           6 |
+| b3abb0ee-0cb5-4831-a34e-18db5a4cb67c |                          22 |
+| b3bc85da-7b0b-4e1a-b7ca-08f60f31e08c |                           1 |
+| b5c03c3a-b02b-442c-87cd-719fff64462e |                           3 |
+| b6bbc00d-09fc-489c-9d50-de06420c63db |                           1 |
+| b7662979-a3b0-4ec5-aaca-d8e6cccc0e2f |                           3 |
+| b822f287-9aee-4da3-9129-6882c5996b7d |                           5 |
+| b99e197f-8725-4327-884a-fd56a7321960 |                          75 |
+| b9a1d9ab-eb21-47cf-8922-30837656788d |                          14 |
+| b9c49ef8-ac2d-4777-b99f-2179a27b1d5f |                          16 |
+| b9d2f7ff-64dc-488f-a327-2e6d926013d9 |                           1 |
+| b9ffc6fb-28ab-45cf-b638-64c348536363 |                           1 |
+| bb1be1b3-d2e7-43de-974d-5002316eb8c1 |                           4 |
+| bb1c9875-2edc-4f7e-bdf0-c76707202bf7 |                           1 |
+| bb1d2d3c-e4ed-4de2-8c3a-8e2e2dccd7ea |                          61 |
+| bb3be807-a451-4e25-b606-54c281b51413 |                          16 |
+| bc2fe8f9-cfcd-4819-ab53-4efc0cc73290 |                           2 |
+| bfbc8fa7-79d5-4445-904c-b7744a075766 |                           1 |
+| bfcca594-bf64-43ab-9e82-91a9354bed7a |                           1 |
+| c3e7471f-c581-4d11-8f5f-e4799f6b480d |                          12 |
+| c3f469ed-0137-4abc-b0ea-bea717885604 |                           3 |
+| c4cf53f4-7099-41c4-bd34-f830afb8852e |                          10 |
+| c5521548-ccc5-4652-8dab-84f823d34266 |                           4 |
+| c63b3068-bb6e-4798-83cc-6c8ad1bdde2f |                           9 |
+| c64c8b9f-a5e8-4c00-ab7d-d58ebc5d3aae |                           3 |
+| c784c9ca-e308-4149-bd21-2844494c3210 |                          11 |
+| c874f46d-6df6-4230-83a7-49344cdcf5bf |                           3 |
+| c96d61a6-73ad-4a90-8fbd-840e06174f83 |                          20 |
+| c9959db5-e31b-4f11-b889-c570c15ade0a |                           1 |
+| c9d7e6a1-b702-4672-acab-d7c5bc18f788 |                           7 |
+| ca739902-552c-431b-99fc-efc308fff7b2 |                           3 |
+| cb6b751e-9195-44c5-96c5-16a8f36cafad |                           1 |
+| cb898d1c-f14f-4c1f-be41-2bacc5275690 |                           1 |
+| cbce1294-0964-41a1-82fb-dc8aea1718a3 |                           1 |
+| cbcfa382-cf0f-4813-b6f2-c5cbd5c93d78 |                           1 |
+| cce5feab-14e5-4fec-99c5-141fe27d01ea |                           7 |
+| ce8d7354-88f9-4f56-a805-85d094c11f8a |                           4 |
+| cea16fce-d3a6-4473-8500-1ccf9f57e896 |                          11 |
+| cf0c2764-1cb3-4232-9238-6089d4d5ab9e |                           1 |
+| cf228424-fd2d-49c0-b8f1-647bdd835a94 |                           3 |
+| cf445cfd-bc1b-420a-96dd-e27d96193a81 |                           2 |
+| cf5de61d-162c-48ea-9115-5dee79c4a7e9 |                           5 |
+| cfa4e507-9c83-4766-a5dd-12c9f2cab3fd |                           1 |
+| cfe1be1e-6e12-4b27-9f55-6ba8565c8ae4 |                          40 |
+| d097603d-6151-4c08-8aa8-4d50a8d1ac0d |                           1 |
+| d21868d6-3ca6-4146-8f05-6657df4bc35b |                           1 |
+| d22ba30b-12df-4671-805f-a32bef54b59d |                          10 |
+| d2bf5d5f-c2d6-4de9-bddd-eddd2caf7a8f |                           2 |
+| d3536cae-0177-4329-b0dd-86f2dd486fab |                           5 |
+| d3ffe382-0d89-4f18-90cb-1122633fd96d |                           1 |
+| d51e63eb-52ff-4229-9006-2108b61fd7ba |                          17 |
+| d77364d3-a1d4-4f04-a1f7-dae7f66fae5c |                           2 |
+| d7f6ebe8-a90b-4d32-b834-11a08560d01b |                          74 |
+| d9e180d3-edb8-4441-908b-c2e55c05d143 |                           2 |
+| da4818ae-06fa-4e89-8af3-abc40b972464 |                          12 |
+| db887bf0-faf6-4db3-9974-8317075b505d |                           1 |
+| dc4aac51-7a7a-4e51-b48a-56f835e9d6b5 |                           6 |
+| df8f759c-ec75-4e47-99fd-82a2454ea5ea |                           8 |
+| e2503105-a9bb-4339-aaad-04c16318976c |                           1 |
+| e30f8c7d-40b8-4171-80cb-86b195264746 |                           1 |
+| e63f1436-a939-431f-96a0-28b11a325b1d |                           1 |
+| e6736958-d4bb-41db-8119-a531fd716b49 |                          14 |
+| e7f22267-7574-48b9-b4f7-7427f6d5b020 |                           1 |
+| e976a489-fb6d-47ae-8d81-1c99b1fbec87 |                          31 |
+| e9a88ff0-6237-41e4-a9a8-05dc12cf6f7e |                           7 |
+| ea86eaa8-043c-4a4f-ad66-b0c0eb29df42 |                           1 |
+| eb45d19d-efba-4c12-b02c-1ddde1c85000 |                           4 |
+| ecd2419f-acb0-447c-a7e1-edf60c041585 |                          62 |
+| ee27b154-1e25-433a-b7a0-0933f38ef301 |                           4 |
+| ef38605b-2464-45de-ab6b-40b74e9e302d |                           1 |
+| ef929ad1-3d08-4a93-82cb-d82b943dc994 |                          31 |
+| efbdbead-dbdd-4f58-93b5-df3573fcc611 |                          20 |
+| f01fdfe7-46db-4f4f-a701-5a1c446fc973 |                          76 |
+| f0a7ef5e-ee57-4eaf-8acd-b270a60e35b0 |                           2 |
+| f29c9f89-144c-4039-8a0e-adc2d5b27ad1 |                         141 |
+| f2db6e03-457c-45c4-b5a3-c757c94829d9 |                           3 |
+| f3696d56-872b-4e30-80d8-bf1cc6f5cff3 |                          14 |
+| f5be7403-2fb1-4235-b88e-5558586dca92 |                          51 |
+| f5cf58ab-21e6-4bd4-a475-df90082dc640 |                          39 |
+| f6b6ac97-cef7-4ce5-924f-89255b59b3f5 |                          12 |
+| f6cf4f92-a589-45db-8920-62576943bb39 |                           1 |
+| f6e6ceb6-01c8-44b4-9502-a2a0d872341b |                           1 |
+| f83e705e-47ed-451c-8fba-a5fd65d3fb7e |                           5 |
+| f87a69cd-7257-438b-ab86-03d23ffd7744 |                           4 |
+| f9d6a7fa-b4df-46d5-9602-99666a952e55 |                          12 |
+| fbbb282b-332c-46ce-b5ac-3a72e1035c31 |                           2 |
+| fbd96f0a-74e1-4ec8-910a-03fa28e52b80 |                           1 |
+| ff808a83-ebd3-42e2-a7bd-dc7bcd7ff1c4 |                           2 |
++--------------------------------------+-----------------------------+
+
+
++------+--------------------------------------+---------+--------+-------------+
+| id   | userId                               | groupId | rating | classExamId |
++------+--------------------------------------+---------+--------+-------------+
+| 5074 | 8bd097d7-3b1c-4544-a97b-8c1b07608627 |      18 |     78 |        6412 |
+| 5075 | bc2fe8f9-cfcd-4819-ab53-4efc0cc73290 |      18 |    170 |        6412 |
+| 5076 | 01ff363d-4a21-4121-af2d-686d5ca8460d |      18 |    171 |        6412 |
+| 5077 | aa9b9355-4ece-4ca8-9749-703855a9eb82 |      18 |    172 |        6412 |
+| 5078 | 031bccfc-47dc-49fd-a8c2-38d679ea1c7e |      18 |    172 |        6412 |
+| 5082 | 0b5bd15d-972c-4a7c-a180-435a12d84ba1 |      18 |    174 |        6412 |
+| 5084 | ef38605b-2464-45de-ab6b-40b74e9e302d |      18 |    174 |        6412 |
+| 5086 | 565fabf8-35fa-49e5-b0d2-49857758e11d |      18 |    174 |        6412 |
+| 5088 | 42bc8a39-3d40-44f9-a66f-1b301a4eead9 |      18 |    175 |        6412 |
+| 5090 | db887bf0-faf6-4db3-9974-8317075b505d |      18 |    175 |        6412 |
+| 5091 | e7f22267-7574-48b9-b4f7-7427f6d5b020 |      18 |    175 |        6412 |
+| 5092 | 8e5a2ac3-9c7e-47bf-8f11-173ca5aaa51b |      18 |    146 |        6412 |
+| 5093 | 9d8e4741-b0ab-4906-881f-446938ec52ad |      18 |    160 |        6412 |
+| 5094 | f6e6ceb6-01c8-44b4-9502-a2a0d872341b |      18 |    176 |        6412 |
+| 5096 | 4ff9728d-86ca-4f17-9e64-f72c7c785571 |      18 |    176 |        6412 |
+| 5098 | 153406a5-4a84-46e2-a57b-54433ec4470c |      18 |    176 |        6412 |
+| 5099 | f6cf4f92-a589-45db-8920-62576943bb39 |      18 |    177 |        6412 |
+| 5100 | ae2002b8-0f75-467f-b918-592fac5a0173 |      18 |    177 |        6412 |
+| 5101 | e2503105-a9bb-4339-aaad-04c16318976c |      18 |    177 |        6412 |
+| 5102 | 6e4842ff-f551-469e-9f62-6ea94224f50b |      18 |    178 |        6412 |
+| 5103 | d3ffe382-0d89-4f18-90cb-1122633fd96d |      18 |    179 |        6412 |
+| 5104 | 4c7ffda0-d3e3-4b35-8f1a-a7bc389c98d4 |      18 |    179 |        6412 |
+| 5105 | e30f8c7d-40b8-4171-80cb-86b195264746 |      18 |    179 |        6412 |
+| 5106 | ff808a83-ebd3-42e2-a7bd-dc7bcd7ff1c4 |      18 |    182 |        6412 |
+| 5107 | 838ddce3-c950-4bbc-b3d7-393e681a46fa |      18 |    179 |        6412 |
+| 5810 | 8dbeff34-0b2e-4c41-82e0-ceffcebefc02 |      18 |    173 |        6412 |
+| 5908 | 979d6b01-24cd-4b9e-993d-d65a14f1ade1 |      18 |    173 |        6412 |
+| 5913 | 889b26a3-7a1e-409c-9373-1ba7a885ddc3 |      18 |    174 |        6412 |
++------+--------------------------------------+---------+--------+-------------+
+
+Ali se nov examId pise v bazo vsakic ko resuje? Kaj se zgodi ko resujes nalogo?
+
+latest updates:
+WITH Ranked AS (SELECT id, userId, rating, ROW_NUMBER() OVER (PARTITION BY userId ORDER BY id ASC) AS rnk FROM user_ratings
+) SELECT id, userId, rating FROM Ranked WHERE rnk=1;
+
++------+--------------------------------------+--------+
+| id   | userId                               | rating |
++------+--------------------------------------+--------+
+| 4685 | 01c9eec7-0ec5-4fb9-af77-5cb2b9731d57 |    171 |
+| 2610 | 01d70e5b-9ede-46d4-a528-c93f4478a4e3 |    166 |
+| 5087 | 01ff363d-4a21-4121-af2d-686d5ca8460d |    110 |
+| 2641 | 02ee9236-69a9-40e1-bc58-8874bdbceea3 |    186 |
+| 5081 | 031bccfc-47dc-49fd-a8c2-38d679ea1c7e |    188 |
+| 5905 | 04607c39-c432-4550-8aa1-0cda3b45b35b |    161 |
+| 1194 | 04d4adc9-a7c5-4373-aa4f-37de985c757d |    160 |
+| 4953 | 058a3c3d-9f60-4d34-aaf6-ebf69de4330b |    141 |
+| 3804 | 0674e843-be41-4326-bdda-e48492a81097 |    127 |
+| 4827 | 095baf61-3edf-44a2-8d05-6f574566a8c0 |    202 |
+| 2702 | 096bd0c1-b40d-451c-a325-114675f77a74 |    113 |
+| 5130 | 09ecdd15-7d9f-4bb2-8196-47cb5a847489 |    185 |
+| 4990 | 0a1405b2-c3ce-452f-8116-c5a54e60ce28 |    149 |
+| 6125 | 0a73cd8d-dc55-41ce-9ed8-412c9fa1860f |    179 |
+| 4901 | 0a896209-22dd-4b55-9a9d-95a6c7bf87bc |     84 |
+| 5082 | 0b5bd15d-972c-4a7c-a180-435a12d84ba1 |    174 |
+| 5745 | 0c5a3ce9-af97-46d5-820a-4b96f510b501 |    131 |
+| 5118 | 0cf18231-4e3f-448d-a156-d9128c1eda41 |    151 |
+|  204 | 0d619879-ca91-440a-9261-0519b9dd258a |    228 |
+| 5989 | 0e500017-b5bb-45d7-bd59-42ec41513594 |    149 |
+| 4883 | 0fc7a18a-0fc7-4124-81e6-ef30e8442786 |    213 |
+| 6007 | 10b64fec-bb8f-4827-a6d4-71220269c00e |    146 |
+| 4976 | 10dd78bc-b03e-46a6-a1df-48210bf2536a |    141 |
+| 5015 | 12ff4129-af7c-4931-807c-da527543cf37 |    199 |
+| 2605 | 13de74bb-5359-4ecd-b157-d695cdee6346 |    180 |
+| 4959 | 14a23724-d674-420e-a2d1-2d0a88a8fe76 |    168 |
+| 5065 | 14ca11b4-f8fe-4f75-9ebe-ccfd0ed2933b |     60 |
+| 5290 | 151dceed-c290-4c8e-9646-a5289e185d58 |    185 |
+| 5098 | 153406a5-4a84-46e2-a57b-54433ec4470c |    176 |
+| 2073 | 16e360a2-da1c-4b49-83c7-0cb06fd9d672 |    186 |
+| 5911 | 176a11d1-8acf-4e00-ac58-ba1d1033407c |    188 |
+| 5014 | 185e6c14-38ff-4db4-b314-2181b31a7d63 |    165 |
+| 5990 | 19af1390-a19e-4127-81fa-350db0b5a029 |    122 |
+| 6056 | 1a5ce6e8-35dc-4494-88fb-180e325899e4 |    154 |
+| 5742 | 1aad4da7-4c7d-4cb2-b8a9-14916d5df647 |    127 |
+| 5822 | 1b176a71-e92d-4460-8bf2-7f2d31a5d98e |    113 |
+| 2663 | 1b250ea0-034e-4c86-a532-fa92a9e336e1 |    132 |
+| 4951 | 1c5ca50f-94b1-4b99-a7f8-c978d6879419 |    120 |
+| 1953 | 1c69577b-6621-4a4e-8f60-77fa1f243ea2 |    138 |
+| 2691 | 1ca4683d-7381-417f-8cb9-0bea947bdbb1 |    180 |
+| 5756 | 1cdd8c76-7665-4dfc-917b-feab60df329c |    165 |
+| 5780 | 1eef8f61-90aa-4d85-bc3c-c234829b01ba |    105 |
+| 5204 | 1f43ac87-642a-47ca-ada8-b3a86dfbeb3c |    119 |
+| 5018 | 1f4caceb-e0f8-4f66-91f2-5648b51e1fee |    202 |
+| 5910 | 1f781a7e-2b9d-4b96-863c-eef478cde0b7 |    191 |
+| 5272 | 1faf24a0-ed74-4ca1-b25e-8b4ce8fdacb5 |    181 |
+| 5732 | 20e7d19a-0b05-4392-92be-9b5fe89733ab |    150 |
+| 2746 | 23a61a42-b6c1-45c9-9718-8e7759991804 |    187 |
+|  861 | 23cb5641-11af-43a9-9ef1-ced126dc22b7 |    205 |
+| 4971 | 268ddce0-ed76-4ac1-a8be-b7e3bf042e0b |    181 |
+| 4989 | 28263bbf-db61-40ed-bc7c-5a2779f86c93 |    108 |
+| 4717 | 2839d45d-294b-4642-bd68-cf5b806a6b01 |    170 |
+| 5625 | 2950120b-cfdb-49d4-af18-19d7e51cd851 |    150 |
+| 2174 | 29b41989-d658-457a-abcd-c2b9be555f73 |    198 |
+| 4825 | 2a849c68-7ee3-484b-9cf9-bd096a103d3e |    175 |
+| 2106 | 2bbc480d-d46b-48d7-b9dc-9f028889c549 |    186 |
+| 5769 | 2c252528-4e04-49de-a657-ded69f959564 |    181 |
+| 5731 | 2f016724-8dce-4bce-acf7-9e94db012003 |    129 |
+| 1231 | 2f31ddbb-e28f-49a7-9096-08bf9a15c2fd |    180 |
+| 2758 | 30106e05-7a60-41a7-b63d-f43cd2df617d |    127 |
+| 2009 | 3106f8e4-84a3-4da3-847b-cdcf57982acd |    126 |
+| 5452 | 3168ca3f-3acf-4093-ba9d-d682157b3592 |    144 |
+|   20 | 31d095d1-f060-4b78-beff-e928c4feb7e4 |    179 |
+|  191 | 32f5bddf-d4f0-4f15-83e5-ffb2a0aa95d3 |    186 |
+| 2662 | 330ba068-bce9-4d81-8ca6-af512a9b63de |    139 |
+| 4900 | 3323d160-75fa-4768-8ea3-eb19ed6bf3ed |    142 |
+| 4991 | 35364bd8-4c23-4f24-8d58-87330d13beba |    225 |
+| 1212 | 368e486a-a9e0-4121-9261-42a8384332a0 |    184 |
+| 4888 | 38865607-4c43-47fd-9239-55367c06bef7 |    222 |
+| 5270 | 3abf63a3-14c1-4c3b-a7e6-ea3dd7b86b77 |    152 |
+| 2760 | 3b308e78-c02f-47c5-9620-a1cb0ed2f2ac |    177 |
+| 5193 | 3b318bd5-281b-4500-bbfc-d6801ed7b4e7 |    153 |
+| 4809 | 3bc52738-2809-455f-9507-2bf7316f28a4 |    127 |
+| 5073 | 3bc88332-baef-422e-af05-9c5faea52157 |     98 |
+| 3379 | 3c21a67b-f3a7-4f83-937d-6c28d2e4a700 |    166 |
+| 6009 | 3ced2213-4869-4cdb-81e0-bc2bf533a0c3 |    186 |
+|  896 | 3efdbc9f-5a81-45da-8804-3945d2764747 |    177 |
+| 1216 | 407be379-85ef-4380-ada3-4e2d24b258dc |    191 |
+| 6132 | 40ab05c8-a6a4-4e2e-bd11-c06aca37fb6b |    184 |
+| 5097 | 42bc8a39-3d40-44f9-a66f-1b301a4eead9 |    188 |
+| 4968 | 433f1aba-2cfc-454f-9e31-c494a6f25450 |     87 |
+| 5714 | 43e7ee7e-a125-4d73-80c0-5e545ae164cd |    118 |
+| 4405 | 45ed1d39-c8d9-4b67-b0f2-2c5dd999360c |    166 |
+| 2684 | 4655fc6c-2d56-46d4-8675-cb7563baa311 |    105 |
+| 5544 | 466caf19-bceb-43d0-9eaa-9b92f5fbde8b |    157 |
+| 4981 | 48e10102-fdd8-4e8e-8ba4-2fe3cedaff1d |    182 |
+|  203 | 4a6a28de-c424-49aa-9c46-a87356c68a64 |    209 |
+| 5104 | 4c7ffda0-d3e3-4b35-8f1a-a7bc389c98d4 |    179 |
+| 5835 | 4d8b6acc-3250-4da4-ab44-7373265ee8d9 |    176 |
+| 5354 | 4eeb489a-f7dc-4126-abcc-369f21d75e29 |    171 |
+| 5285 | 4f5d759f-e023-46c2-8f05-e879374c0e81 |    196 |
+| 5096 | 4ff9728d-86ca-4f17-9e64-f72c7c785571 |    176 |
+| 3847 | 505670f9-d9b1-4258-93e9-609141fc60d9 |    119 |
+| 4954 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      2 |
+| 6136 | 51834d50-7b90-4c3e-9bfb-7e237a5de5a1 |    146 |
+| 4821 | 51a1c90b-1fbb-45ae-bd59-0dee9e573687 |    153 |
+| 2020 | 521aff00-3195-4e4d-b356-307edefd64f0 |    138 |
+| 5708 | 52d163fb-6f4c-49a7-a35d-6efd5db08aeb |    153 |
+| 6013 | 52eb13a0-32a1-4e86-8152-1683a4f9d5e6 |     69 |
+| 5965 | 540ecfe0-62de-4b14-814a-4acec9471274 |    176 |
+| 1203 | 5445df03-3ff5-4017-a361-24187bb3033f |    204 |
+| 5700 | 5470bcf2-2c7d-4f49-b7f0-77591fda120e |    128 |
+| 5645 | 54d04495-180f-48f5-94fc-2445b15570a9 |    178 |
+| 5086 | 565fabf8-35fa-49e5-b0d2-49857758e11d |    174 |
+| 4877 | 56cbec73-a171-4888-94bf-196e26f29e8d |    200 |
+| 5068 | 56ef69bf-9e41-40ce-a1ae-c3669f6720ac |    194 |
+| 6054 | 5862b495-4570-4ec6-a137-f7309c706e24 |    187 |
+| 1219 | 5922a9c0-ef86-48a9-9354-f91eb5d838d0 |    205 |
+| 2649 | 5b83d361-d8b1-455e-babd-b644fe654012 |    156 |
+| 2627 | 5c792fc5-6883-4dd3-b1f1-4e753f15781e |    168 |
+| 6137 | 5c8f089e-43ce-46ca-9b69-99f32b7e0542 |    199 |
+| 1977 | 5d3716f6-d4d6-4d75-9934-4d286d1dfc46 |    155 |
+| 5825 | 5d6d9447-00cd-44d1-b1ef-77c2d0413b2d |    129 |
+| 2478 | 5e8168fd-8e22-4db5-80f8-f767af5ddbab |    168 |
+| 5643 | 5eb6d3a7-9449-43db-9176-03259332a2c8 |    126 |
+| 2198 | 60b0013f-eb1e-4db9-a283-45fbc363bee2 |    179 |
+| 4842 | 61394f60-bc13-4c11-9030-2c65ad10f517 |    181 |
+| 5901 | 61a6a4ad-7f2a-48cb-893f-d368013bcf3d |    126 |
+| 2624 | 629638e0-398f-43e7-8161-75eea55365e3 |    185 |
+|   10 | 64f42bf1-0c9a-4bef-b8d3-c0185625cc50 |    189 |
+| 2683 | 66ac8153-acb7-4b40-a2c9-d21794422a12 |     35 |
+|   18 | 66e1f470-62a3-4c76-a0ee-d1781c734fb1 |    160 |
+| 1131 | 67d15eaa-f04d-419f-99f5-fdc18ec37dff |    184 |
+|  889 | 6887cc05-1ebe-499c-ab4d-6fbd97689176 |    155 |
+| 5679 | 691796df-2aca-4d33-b5c4-5922caf9cdf2 |    186 |
+|  141 | 69e7f01e-749a-4839-be99-0ace27c735d8 |    193 |
+|   87 | 6c4fc59c-274c-46f5-b79a-686738d36e51 |    211 |
+| 5763 | 6cedcbbd-0213-4f31-aa75-3b89dec8889f |    142 |
+|  923 | 6cf0322f-feea-4207-8668-18342464bef8 |    197 |
+| 5102 | 6e4842ff-f551-469e-9f62-6ea94224f50b |    178 |
+| 5585 | 6ef0bb02-f3b9-4951-8900-23906a5c6e31 |    165 |
+| 5809 | 6f201cdc-f653-4408-b7bd-3bf2710f9eee |    177 |
+| 5831 | 6fb1c2d5-5ba2-4f68-970d-80b1540cc0ce |    127 |
+| 2192 | 7006f84b-2bdb-4308-9b2d-acb8beef3f90 |    147 |
+| 4701 | 7278d1aa-1df7-462f-964e-3ae64fb9e6d8 |    135 |
+|  179 | 734d59b4-2906-4aab-8a53-a626d028ebf7 |    157 |
+| 5735 | 73ee2cbf-4157-4384-a0b1-3f21dc87fb06 |    191 |
+| 5713 | 7487848d-57f3-482d-a4d2-79ac3afee419 |    129 |
+| 5611 | 74c82591-c4e4-42e9-9530-d3d7c53e6bcc |    117 |
+| 3169 | 79911711-7772-4feb-aac9-ef69b3b4ac77 |    192 |
+| 5973 | 7aa47dc4-a3e0-40b9-a601-8586ce0fa36f |    165 |
+| 5992 | 7b56337e-2d0d-4449-8e4e-ed7551800398 |    162 |
+| 1169 | 7ca6f197-e17e-4d96-bcf8-9ade2dfbe263 |    209 |
+| 2223 | 7da6d40f-1b2c-47dc-b276-7003200b92ec |    170 |
+| 1214 | 7de4f4d4-e44c-45eb-b3c0-5a3f8f3a566d |    159 |
+|   77 | 81a899b3-7ea1-40c3-9445-59bf7d00f5d9 |    211 |
+| 5243 | 81f8da86-3ee0-45f9-9d46-a88a26a91ad7 |    184 |
+| 1928 | 827adca8-4d38-4f93-a768-0573372c14f1 |    158 |
+| 5275 | 83811c03-708b-4fdb-ae13-31159e506ee7 |    205 |
+| 5027 | 8389db64-fe01-439e-9a70-00dc030af665 |    181 |
+| 5107 | 838ddce3-c950-4bbc-b3d7-393e681a46fa |    179 |
+| 2608 | 847716d8-700d-47d2-93b0-60e605cace91 |    169 |
+| 1959 | 84a9b073-37be-457c-82e8-4c2820f84c7a |    163 |
+| 4915 | 84fa8b55-c4fb-4134-87cd-ee3f44d790cf |    112 |
+| 2187 | 860624c8-88ec-453e-9b6d-7a00e3671cfb |    171 |
+| 4822 | 86d15ffc-1119-4dd1-9984-611ca65527fc |    195 |
+| 2776 | 87162f63-0a07-47ef-bfd9-19da84dea188 |    176 |
+| 6097 | 872d7e6a-829c-464c-a5a1-3c4a50cdffe7 |    164 |
+| 5913 | 889b26a3-7a1e-409c-9373-1ba7a885ddc3 |    174 |
+| 4817 | 88aaa986-891b-4865-b14d-87006ef11aea |    126 |
+| 5296 | 8a2a3ec2-532a-4764-ab09-71118e3784cf |    138 |
+| 5766 | 8a3c8b6c-a0ff-4d6b-a26d-693de8f61668 |    112 |
+| 5596 | 8a45e76a-fe14-4240-a683-cd1e3ecbcb12 |    201 |
+| 6062 | 8b21ecd2-fe4d-478a-b645-75a3b0448743 |    158 |
+| 5173 | 8b91c946-fcec-44c8-a3cd-a95dbe55ffb9 |    149 |
+| 5788 | 8bd097d7-3b1c-4544-a97b-8c1b07608627 |     87 |
+| 5912 | 8ca00bb4-be87-4040-8059-8ef43cc8ee03 |    176 |
+| 5810 | 8dbeff34-0b2e-4c41-82e0-ceffcebefc02 |    173 |
+| 2834 | 8dee00b7-2c4e-4c7c-abf4-9c5f397d26a1 |    164 |
+| 5092 | 8e5a2ac3-9c7e-47bf-8f11-173ca5aaa51b |    146 |
+|  109 | 8f11548b-3f90-4174-8ff2-989d3d51223c |    208 |
+| 4974 | 908cde8b-1ad7-4a57-ae3c-78df9f843e53 |     13 |
+| 5433 | 91aa25f6-e4f7-45a7-bd29-e336cc5d4dc4 |    131 |
+|  186 | 91f7ee49-8749-4f3e-b1c6-a4c66ab63c30 |    231 |
+| 5754 | 91fab6a8-5ac6-4d75-b95f-4b1681cc1789 |    184 |
+| 5020 | 930080d5-3d72-4619-ba61-a5083c16fa6e |    193 |
+| 5949 | 97515bdc-b393-4f27-83dc-da74d88682b1 |    156 |
+| 5908 | 979d6b01-24cd-4b9e-993d-d65a14f1ade1 |    173 |
+| 4950 | 97e4dd45-63e3-4e65-aa33-369630a1608b |    106 |
+|    6 | 9851a2d4-6824-47b3-9414-f9ac5106b8dc |    190 |
+| 2892 | 98a780d1-8807-41d2-b8dd-e02a6e7e16f2 |    202 |
+| 4958 | 9a12f691-9e6c-4c5c-badd-e9cd81a82035 |    139 |
+| 5246 | 9a61428c-a859-4e0a-a855-017c5ab0b4eb |    204 |
+| 5314 | 9c4af93d-d818-4184-a76c-787e5ce2a539 |    146 |
+|  911 | 9c76b0ea-7fd2-4973-838a-d3accde8b0d8 |    180 |
+| 2689 | 9d4c991b-8b87-4d84-ac27-91f9bb56d9f8 |    128 |
+| 5095 | 9d8e4741-b0ab-4906-881f-446938ec52ad |    128 |
+| 4956 | 9dd2f615-c637-489c-94d7-83130a1db71b |     72 |
+| 5025 | 9e4202f7-5b58-46b1-a148-41662d945b95 |    122 |
+| 2678 | 9f2345c9-4712-4a23-9503-17687aacabc0 |    130 |
+| 5693 | 9fc76304-f0d1-4985-8cb0-ce2ed7392ce4 |    131 |
+| 5747 | a04ee336-a70b-4ad4-b29d-fdbe87564019 |    136 |
+| 1146 | a1f6f1c7-8464-43c3-bc4e-ada7f456585a |    198 |
+| 3349 | a21962ab-12fb-48ff-bf27-fde1a7d29550 |    140 |
+|  868 | a2530de3-b85d-440c-88fa-b3117792dcd0 |    202 |
+| 4983 | a28a4464-d0a3-4814-be1a-0473a3ca9f16 |     83 |
+| 2648 | a3ecf314-8c5f-44c9-94ce-5c6dca2cfad5 |    118 |
+| 2239 | a3fb259c-545d-4b23-a34d-1f98a5636ba5 |    179 |
+| 1165 | a43e9084-4b8e-48e3-9b3b-8f3eec639ca4 |    178 |
+| 5795 | a56695db-b400-407c-94ef-b3c9c48c70ef |    201 |
+| 6135 | a5bfaa4d-2598-43dd-bbc4-1ec5af641109 |    200 |
+| 1967 | a96fd13e-b5cc-4f03-b76e-88ab334199ec |    192 |
+| 2521 | a9ae8ab4-5075-4eeb-a981-1a66ce3e36b6 |    157 |
+| 5142 | aa1ed0ef-3b5f-43ae-bcda-a786fd820213 |    124 |
+| 5089 | aa9b9355-4ece-4ca8-9749-703855a9eb82 |    158 |
+| 6052 | aad17b27-2a2a-4f1a-99a5-bc5dbb5c54a3 |    197 |
+| 5936 | ab7c03b3-600d-49d2-908f-32387844770c |    105 |
+| 4824 | ad5edbd0-05af-496b-be79-c41465dce195 |    188 |
+| 5017 | adfa53e0-d9fd-4ccc-9ace-9bcf64d17086 |    202 |
+| 5100 | ae2002b8-0f75-467f-b918-592fac5a0173 |    177 |
+| 5145 | ae6eef44-9a34-430d-94e1-2df4173d14f7 |    156 |
+| 5563 | af1aed57-3d9c-4c7c-8e67-fc8ddfd6bae5 |    122 |
+| 5931 | af392a6f-1c4a-41c4-affd-533cf471fb06 |    202 |
+| 2666 | b0a42c4c-b88b-462a-a301-a1464c27a141 |    122 |
+| 6055 | b0fec5b2-dfff-493f-bd90-be3a116660fb |    171 |
+| 5262 | b12e2279-8d74-4d7b-bf0b-f80ecb05ebdf |    212 |
+|  184 | b2eae83c-b397-459c-b0aa-93c493faefb9 |    141 |
+| 6003 | b3392f6b-1c2f-4d8e-a953-60463e7b9cd6 |    131 |
+| 2677 | b3abb0ee-0cb5-4831-a34e-18db5a4cb67c |     95 |
+| 2713 | b3bc85da-7b0b-4e1a-b7ca-08f60f31e08c |    196 |
+| 3015 | b5c03c3a-b02b-442c-87cd-719fff64462e |    177 |
+| 5638 | b6bbc00d-09fc-489c-9d50-de06420c63db |    144 |
+| 5939 | b7662979-a3b0-4ec5-aaca-d8e6cccc0e2f |    180 |
+| 1976 | b822f287-9aee-4da3-9129-6882c5996b7d |    122 |
+| 5694 | b99e197f-8725-4327-884a-fd56a7321960 |    158 |
+| 5718 | b9a1d9ab-eb21-47cf-8922-30837656788d |     46 |
+| 2536 | b9c49ef8-ac2d-4777-b99f-2179a27b1d5f |    179 |
+| 6134 | b9d2f7ff-64dc-488f-a327-2e6d926013d9 |    185 |
+| 2701 | b9ffc6fb-28ab-45cf-b638-64c348536363 |    172 |
+| 2024 | bb1be1b3-d2e7-43de-974d-5002316eb8c1 |    146 |
+| 4823 | bb1c9875-2edc-4f7e-bdf0-c76707202bf7 |    195 |
+| 2692 | bb1d2d3c-e4ed-4de2-8c3a-8e2e2dccd7ea |     73 |
+| 5565 | bb3be807-a451-4e25-b606-54c281b51413 |    146 |
+| 5079 | bc2fe8f9-cfcd-4819-ab53-4efc0cc73290 |    192 |
+|    7 | bfbc8fa7-79d5-4445-904c-b7744a075766 |    185 |
+| 2241 | bfcca594-bf64-43ab-9e82-91a9354bed7a |    185 |
+| 4945 | c3e7471f-c581-4d11-8f5f-e4799f6b480d |    139 |
+| 2225 | c3f469ed-0137-4abc-b0ea-bea717885604 |    198 |
+| 1188 | c4cf53f4-7099-41c4-bd34-f830afb8852e |    168 |
+| 5926 | c5521548-ccc5-4652-8dab-84f823d34266 |    140 |
+| 5814 | c63b3068-bb6e-4798-83cc-6c8ad1bdde2f |    112 |
+| 4863 | c64c8b9f-a5e8-4c00-ab7d-d58ebc5d3aae |    137 |
+| 1999 | c784c9ca-e308-4149-bd21-2844494c3210 |    141 |
+| 5641 | c874f46d-6df6-4230-83a7-49344cdcf5bf |    174 |
+| 5749 | c96d61a6-73ad-4a90-8fbd-840e06174f83 |     87 |
+| 5944 | c9959db5-e31b-4f11-b889-c570c15ade0a |    202 |
+| 1950 | c9d7e6a1-b702-4672-acab-d7c5bc18f788 |    165 |
+| 5820 | ca739902-552c-431b-99fc-efc308fff7b2 |    165 |
+| 5804 | cb6b751e-9195-44c5-96c5-16a8f36cafad |    209 |
+| 2804 | cb898d1c-f14f-4c1f-be41-2bacc5275690 |    187 |
+| 1233 | cbce1294-0964-41a1-82fb-dc8aea1718a3 |    196 |
+| 5006 | cbcfa382-cf0f-4813-b6f2-c5cbd5c93d78 |    173 |
+| 1937 | cce5feab-14e5-4fec-99c5-141fe27d01ea |    111 |
+| 5987 | ce8d7354-88f9-4f56-a805-85d094c11f8a |    117 |
+| 5143 | cea16fce-d3a6-4473-8500-1ccf9f57e896 |    142 |
+| 5719 | cf0c2764-1cb3-4232-9238-6089d4d5ab9e |    175 |
+| 6000 | cf228424-fd2d-49c0-b8f1-647bdd835a94 |    172 |
+| 5603 | cf445cfd-bc1b-420a-96dd-e27d96193a81 |    171 |
+| 5947 | cf5de61d-162c-48ea-9115-5dee79c4a7e9 |    101 |
+| 6053 | cfa4e507-9c83-4766-a5dd-12c9f2cab3fd |    168 |
+| 2417 | cfe1be1e-6e12-4b27-9f55-6ba8565c8ae4 |    175 |
+| 2159 | d097603d-6151-4c08-8aa8-4d50a8d1ac0d |    188 |
+| 3434 | d21868d6-3ca6-4146-8f05-6657df4bc35b |    167 |
+| 4700 | d22ba30b-12df-4671-805f-a32bef54b59d |    119 |
+| 2848 | d2bf5d5f-c2d6-4de9-bddd-eddd2caf7a8f |    172 |
+| 5782 | d3536cae-0177-4329-b0dd-86f2dd486fab |    150 |
+| 5103 | d3ffe382-0d89-4f18-90cb-1122633fd96d |    179 |
+| 2871 | d51e63eb-52ff-4229-9006-2108b61fd7ba |    136 |
+| 3214 | d77364d3-a1d4-4f04-a1f7-dae7f66fae5c |    170 |
+| 5722 | d7f6ebe8-a90b-4d32-b834-11a08560d01b |    180 |
+| 2690 | d9e180d3-edb8-4441-908b-c2e55c05d143 |    156 |
+| 2656 | da4818ae-06fa-4e89-8af3-abc40b972464 |    106 |
+| 5090 | db887bf0-faf6-4db3-9974-8317075b505d |    175 |
+| 1207 | dc4aac51-7a7a-4e51-b48a-56f835e9d6b5 |    157 |
+| 1157 | df8f759c-ec75-4e47-99fd-82a2454ea5ea |    195 |
+| 5101 | e2503105-a9bb-4339-aaad-04c16318976c |    177 |
+| 5105 | e30f8c7d-40b8-4171-80cb-86b195264746 |    179 |
+| 5111 | e63f1436-a939-431f-96a0-28b11a325b1d |    203 |
+| 5781 | e6736958-d4bb-41db-8119-a531fd716b49 |    137 |
+| 5091 | e7f22267-7574-48b9-b4f7-7427f6d5b020 |    175 |
+| 2681 | e976a489-fb6d-47ae-8d81-1c99b1fbec87 |    135 |
+| 2671 | e9a88ff0-6237-41e4-a9a8-05dc12cf6f7e |     90 |
+| 6014 | ea86eaa8-043c-4a4f-ad66-b0c0eb29df42 |    200 |
+| 5932 | eb45d19d-efba-4c12-b02c-1ddde1c85000 |    174 |
+| 3924 | ecd2419f-acb0-447c-a7e1-edf60c041585 |    144 |
+|  215 | ee27b154-1e25-433a-b7a0-0933f38ef301 |    186 |
+| 5084 | ef38605b-2464-45de-ab6b-40b74e9e302d |    174 |
+| 1195 | ef929ad1-3d08-4a93-82cb-d82b943dc994 |    206 |
+| 5751 | efbdbead-dbdd-4f58-93b5-df3573fcc611 |     91 |
+| 6012 | f01fdfe7-46db-4f4f-a701-5a1c446fc973 |      0 |
+| 5295 | f0a7ef5e-ee57-4eaf-8acd-b270a60e35b0 |    179 |
+| 1225 | f29c9f89-144c-4039-8a0e-adc2d5b27ad1 |    208 |
+|  551 | f2db6e03-457c-45c4-b5a3-c757c94829d9 |    165 |
+| 5819 | f3696d56-872b-4e30-80d8-bf1cc6f5cff3 |    139 |
+| 5108 | f5be7403-2fb1-4235-b88e-5558586dca92 |     90 |
+| 5591 | f5cf58ab-21e6-4bd4-a475-df90082dc640 |    143 |
+| 5599 | f6b6ac97-cef7-4ce5-924f-89255b59b3f5 |    162 |
+| 5099 | f6cf4f92-a589-45db-8920-62576943bb39 |    177 |
+| 5094 | f6e6ceb6-01c8-44b4-9502-a2a0d872341b |    176 |
+| 2664 | f83e705e-47ed-451c-8fba-a5fd65d3fb7e |    163 |
+| 6008 | f87a69cd-7257-438b-ab86-03d23ffd7744 |    132 |
+|  991 | f9d6a7fa-b4df-46d5-9602-99666a952e55 |    165 |
+| 5941 | fbbb282b-332c-46ce-b5ac-3a72e1035c31 |    168 |
+| 5239 | fbd96f0a-74e1-4ec8-910a-03fa28e52b80 |    189 |
+| 5106 | ff808a83-ebd3-42e2-a7bd-dc7bcd7ff1c4 |    182 |
++------+--------------------------------------+--------+
+
+Primer studenta 
+SELECT * FROM user_ratings WHERE userId='50f7688e-d6d5-4e8b-a713-f66cc6def95f';
+
++------+--------------------------------------+---------+--------+-------------+
+| id   | userId                               | groupId | rating | classExamId |
++------+--------------------------------------+---------+--------+-------------+
+| 1526 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |       7 |    200 |        2678 |
+| 1527 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |       7 |    182 |        2681 |
+| 1528 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |       7 |    177 |        2682 |
+| 1530 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |       7 |    165 |        2684 |
+| 1531 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |       7 |    165 |        2685 |
+| 1532 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |       7 |    166 |        2687 |
+| 1533 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |       7 |    168 |        2688 |
+| 1534 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |       7 |    169 |        2689 |
+| 1535 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |       7 |    172 |        2690 |
+| 1536 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |       7 |    176 |        2691 |
+| 1537 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |       7 |    176 |        2692 |
+| 1538 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |       7 |    178 |        2693 |
+| 1539 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |       7 |    182 |        2694 |
+| 1540 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |       7 |    170 |        2679 |
+| 1541 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |       7 |    175 |        2695 |
+| 1542 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |       7 |    178 |        2696 |
+| 1543 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |       7 |    181 |        2697 |
+| 1544 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |       7 |    169 |        2698 |
+| 1545 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |       7 |    153 |        2683 |
+| 1546 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |       7 |    151 |        2699 |
+| 1547 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |       7 |    157 |        2700 |
+| 1549 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |       7 |    159 |        2701 |
+| 1550 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |       7 |    161 |        2703 |
+| 1551 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |       7 |    166 |        2704 |
+| 1552 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |       7 |    172 |        2705 |
+| 1553 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |       7 |    177 |        2706 |
+| 1554 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |       7 |    176 |        2707 |
+| 1556 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |       7 |    171 |        2708 |
+| 1557 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |       7 |    171 |        2710 |
+| 1558 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |       7 |    168 |        2711 |
+| 1560 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |       7 |    158 |        2712 |
+| 1561 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |       7 |    158 |        2714 |
+| 1675 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |       7 |    160 |        2832 |
+| 1678 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |       7 |    154 |        2833 |
+| 1679 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |       7 |    158 |        2836 |
+| 1682 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |       7 |    150 |        2839 |
+| 1684 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |       7 |    155 |        2841 |
+| 1685 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |       7 |    156 |        2843 |
+| 1687 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |       7 |    153 |        2844 |
+| 1689 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |       7 |    157 |        2845 |
+| 1690 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |       7 |    162 |        2846 |
+| 1691 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |       7 |    158 |        2850 |
+| 1694 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |       7 |    155 |        2851 |
+| 1695 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |       7 |    149 |        2854 |
+| 1698 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |       7 |    147 |        2855 |
+| 1702 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |       7 |    157 |        2857 |
+| 1704 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |       7 |    167 |        2862 |
+| 1707 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |       7 |    165 |        2865 |
+| 1709 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |       7 |    170 |        2867 |
+| 1716 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |       7 |    161 |        2872 |
+| 1717 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |       7 |    147 |        2873 |
+| 1718 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |       7 |    162 |        2874 |
+| 1719 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |       7 |    165 |        2875 |
+| 1720 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |       7 |    174 |        2876 |
+| 1721 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |       7 |    165 |        2877 |
+| 1750 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |       7 |    156 |        2906 |
+| 1751 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |       7 |    156 |        2908 |
+| 1752 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |       7 |    150 |        2909 |
+| 1754 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |       7 |    152 |        2910 |
+| 1761 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |       7 |    158 |        2917 |
+| 1763 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |       7 |    159 |        2919 |
+| 1766 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |       7 |    157 |        2922 |
+| 1767 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |       7 |    149 |        2923 |
+| 1768 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |       7 |    152 |        2924 |
+| 1775 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |       7 |    146 |        2933 |
+| 1777 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |       7 |    152 |        2936 |
+| 1780 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |       7 |    146 |        2939 |
+| 1782 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |       7 |    147 |        2940 |
+| 1789 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |       7 |    150 |        2946 |
+| 1792 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |       7 |    148 |        2949 |
+| 1798 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |       7 |    162 |        2955 |
+| 1800 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |       7 |    164 |        2957 |
+| 1802 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |       7 |    165 |        2958 |
+| 1847 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |       7 |    165 |        3004 |
+| 1848 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |       7 |    168 |        3007 |
+| 1851 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |       7 |    166 |        3009 |
+| 1852 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |       7 |    159 |        3011 |
+| 1855 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |       7 |    151 |        3014 |
+| 1858 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |       7 |    165 |        3016 |
+| 1861 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |       7 |    162 |        3019 |
+| 1862 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |       7 |    154 |        3021 |
+| 1864 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |       7 |    151 |        3022 |
+| 1866 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |       7 |    156 |        3025 |
+| 1868 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |       7 |    157 |        3027 |
+| 1870 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |       7 |    163 |        3029 |
+| 1874 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |       7 |    162 |        3032 |
+| 1883 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |       7 |    158 |        3042 |
+| 1885 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |       7 |    163 |        3044 |
+| 1888 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |       7 |    152 |        3048 |
+| 1972 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |       7 |    150 |        3134 |
+| 1978 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |       7 |    132 |        3140 |
+| 1979 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |       7 |    122 |        3141 |
+| 1980 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |       7 |    107 |        3142 |
+| 1981 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |       7 |    101 |        3144 |
+| 1982 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |       7 |     92 |        3143 |
+| 2639 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    195 |        3927 |
+| 2640 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    195 |        3928 |
+| 2714 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    187 |        3949 |
+| 2715 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    186 |        3950 |
+| 2716 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    181 |        3951 |
+| 2717 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    184 |        3952 |
+| 2718 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    181 |        3953 |
+| 2719 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    171 |        3954 |
+| 2720 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    170 |        3955 |
+| 2721 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    161 |        3956 |
+| 2722 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    165 |        3957 |
+| 2723 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    171 |        3958 |
+| 2724 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    172 |        3959 |
+| 2725 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    166 |        3960 |
+| 2726 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    168 |        3961 |
+| 2727 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    169 |        3962 |
+| 2728 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    168 |        3963 |
+| 2729 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    165 |        3964 |
+| 2730 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    163 |        3965 |
+| 2731 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    169 |        3966 |
+| 2735 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    167 |        3970 |
+| 2736 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    168 |        3971 |
+| 2737 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    163 |        3972 |
+| 2738 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    161 |        3973 |
+| 2739 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    163 |        3974 |
+| 2740 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    157 |        3975 |
+| 2741 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    158 |        3976 |
+| 2742 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    157 |        3977 |
+| 2743 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    156 |        3978 |
+| 2744 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    155 |        3979 |
+| 2762 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    147 |        3997 |
+| 2893 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    144 |        4143 |
+| 2894 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    145 |        4144 |
+| 2895 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    147 |        4145 |
+| 2896 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    151 |        4146 |
+| 2897 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    148 |        4147 |
+| 2898 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    143 |        4148 |
+| 2899 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    140 |        4149 |
+| 2900 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    135 |        4150 |
+| 2901 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    132 |        4151 |
+| 2902 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    135 |        4152 |
+| 2903 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    144 |        4153 |
+| 2904 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    148 |        4154 |
+| 2905 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    153 |        4155 |
+| 2906 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    156 |        4156 |
+| 2907 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    158 |        4157 |
+| 2908 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    164 |        4158 |
+| 2909 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    159 |        4159 |
+| 2910 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    157 |        4160 |
+| 2911 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    154 |        4161 |
+| 2912 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    158 |        4162 |
+| 2913 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    162 |        4163 |
+| 2914 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    168 |        4164 |
+| 2915 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    171 |        4165 |
+| 2916 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    170 |        4166 |
+| 2917 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    171 |        4167 |
+| 2918 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    174 |        4168 |
+| 2919 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    165 |        4169 |
+| 2920 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    160 |        4170 |
+| 2921 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    162 |        4171 |
+| 2922 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    158 |        4172 |
+| 2923 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    157 |        4173 |
+| 2924 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    156 |        4174 |
+| 2925 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    157 |        4175 |
+| 2926 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    155 |        4176 |
+| 2927 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    151 |        4177 |
+| 2928 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    154 |        4178 |
+| 2929 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    157 |        4179 |
+| 2930 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    154 |        4180 |
+| 2931 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    156 |        4181 |
+| 2932 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    163 |        4182 |
+| 2933 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    171 |        4183 |
+| 2934 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    172 |        4184 |
+| 2935 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    170 |        4185 |
+| 2936 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    178 |        4186 |
+| 2937 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    180 |        4187 |
+| 2938 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    178 |        4188 |
+| 2939 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    174 |        4189 |
+| 2940 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    179 |        4190 |
+| 2941 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    181 |        4191 |
+| 2942 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    165 |        4192 |
+| 2943 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    161 |        4193 |
+| 2944 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    165 |        4194 |
+| 2945 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    163 |        4195 |
+| 2946 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    159 |        4196 |
+| 2947 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    159 |        4197 |
+| 2948 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    164 |        4198 |
+| 2949 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    164 |        4199 |
+| 2950 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    176 |        4200 |
+| 2951 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    165 |        4201 |
+| 2952 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    168 |        4202 |
+| 2953 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    170 |        4203 |
+| 2954 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    164 |        4204 |
+| 2955 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    164 |        4205 |
+| 2956 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    167 |        4206 |
+| 2957 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    165 |        4207 |
+| 2958 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    159 |        4208 |
+| 2959 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    164 |        4209 |
+| 2964 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    167 |        4214 |
+| 2965 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    164 |        4215 |
+| 2966 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    161 |        4216 |
+| 2967 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    157 |        4217 |
+| 2968 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    164 |        4218 |
+| 2969 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    165 |        4219 |
+| 2970 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    176 |        4220 |
+| 2971 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    178 |        4221 |
+| 2972 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    176 |        4222 |
+| 2973 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    175 |        4223 |
+| 2974 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    175 |        4224 |
+| 2975 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    174 |        4225 |
+| 2976 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    173 |        4226 |
+| 2977 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    177 |        4227 |
+| 2978 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    178 |        4228 |
+| 2979 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    181 |        4229 |
+| 2980 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    184 |        4230 |
+| 2981 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    181 |        4231 |
+| 2982 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    177 |        4232 |
+| 2983 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    181 |        4233 |
+| 2984 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    182 |        4234 |
+| 2985 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    185 |        4235 |
+| 2986 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    179 |        4236 |
+| 2987 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    178 |        4237 |
+| 2988 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    177 |        4238 |
+| 2992 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    178 |        4242 |
+| 2993 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    180 |        4243 |
+| 2994 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    183 |        4244 |
+| 2995 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    168 |        4245 |
+| 2996 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    162 |        4246 |
+| 2997 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    158 |        4247 |
+| 2998 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    159 |        4248 |
+| 2999 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    160 |        4249 |
+| 3000 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    165 |        4250 |
+| 3001 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    167 |        4251 |
+| 3002 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    154 |        4252 |
+| 3003 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    155 |        4253 |
+| 3004 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    159 |        4254 |
+| 3026 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    164 |        4276 |
+| 3027 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    171 |        4277 |
+| 3028 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    179 |        4278 |
+| 3029 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    180 |        4279 |
+| 3030 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    176 |        4280 |
+| 3031 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    179 |        4281 |
+| 3032 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    178 |        4282 |
+| 3033 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    179 |        4283 |
+| 3034 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    179 |        4284 |
+| 3035 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    184 |        4285 |
+| 3036 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    189 |        4286 |
+| 3037 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    190 |        4287 |
+| 3038 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    186 |        4288 |
+| 3039 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    192 |        4289 |
+| 3040 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    185 |        4290 |
+| 3041 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    170 |        4291 |
+| 3042 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    168 |        4292 |
+| 3043 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    166 |        4293 |
+| 3044 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    162 |        4294 |
+| 3045 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    167 |        4295 |
+| 3046 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    175 |        4296 |
+| 3047 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    172 |        4297 |
+| 3048 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    171 |        4298 |
+| 3049 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    162 |        4299 |
+| 3050 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    170 |        4300 |
+| 3051 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    169 |        4301 |
+| 3052 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    160 |        4302 |
+| 3053 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    167 |        4303 |
+| 3054 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    165 |        4304 |
+| 3055 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    170 |        4305 |
+| 3056 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    173 |        4306 |
+| 3057 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    163 |        4307 |
+| 3058 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    159 |        4308 |
+| 3059 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    154 |        4309 |
+| 3060 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    155 |        4310 |
+| 3061 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    149 |        4311 |
+| 3062 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    148 |        4312 |
+| 3063 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    150 |        4313 |
+| 3064 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    147 |        4314 |
+| 3065 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    150 |        4315 |
+| 3066 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    154 |        4316 |
+| 3067 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    152 |        4317 |
+| 3068 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    157 |        4318 |
+| 3069 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    161 |        4319 |
+| 3070 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    159 |        4320 |
+| 3071 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    166 |        4321 |
+| 3072 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    163 |        4322 |
+| 3073 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    167 |        4323 |
+| 3074 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    159 |        4324 |
+| 3075 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    164 |        4325 |
+| 3076 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    155 |        4326 |
+| 3077 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    167 |        4327 |
+| 3078 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    162 |        4328 |
+| 3079 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    162 |        4329 |
+| 3080 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    155 |        4330 |
+| 3081 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    160 |        4331 |
+| 3082 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    167 |        4332 |
+| 3083 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    179 |        4333 |
+| 3084 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    178 |        4334 |
+| 3085 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    171 |        4335 |
+| 3086 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    167 |        4336 |
+| 3087 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    168 |        4337 |
+| 3088 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    173 |        4338 |
+| 3089 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    169 |        4339 |
+| 3090 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    171 |        4340 |
+| 3091 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    167 |        4341 |
+| 3092 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    170 |        4342 |
+| 3093 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    165 |        4343 |
+| 3113 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    163 |        4363 |
+| 3114 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    174 |        4364 |
+| 3115 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    170 |        4365 |
+| 3116 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    173 |        4366 |
+| 3117 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    166 |        4367 |
+| 3118 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    172 |        4368 |
+| 3119 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    183 |        4369 |
+| 3120 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    183 |        4370 |
+| 3121 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    178 |        4371 |
+| 3122 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    183 |        4372 |
+| 3123 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    179 |        4373 |
+| 3124 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    180 |        4374 |
+| 3125 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    184 |        4375 |
+| 3126 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    188 |        4376 |
+| 3127 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    191 |        4377 |
+| 3128 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    192 |        4378 |
+| 3129 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    194 |        4379 |
+| 3130 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    190 |        4380 |
+| 3131 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    175 |        4381 |
+| 3149 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    179 |        4400 |
+| 3154 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    185 |        4406 |
+| 3155 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    185 |        4407 |
+| 3156 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    184 |        4408 |
+| 3157 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    183 |        4409 |
+| 3158 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    175 |        4410 |
+| 3159 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    166 |        4411 |
+| 3160 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    167 |        4412 |
+| 3161 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    176 |        4413 |
+| 3162 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    172 |        4414 |
+| 3163 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    177 |        4415 |
+| 3164 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    178 |        4416 |
+| 3165 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    167 |        4417 |
+| 3184 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    167 |        4436 |
+| 3185 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    174 |        4437 |
+| 3186 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    176 |        4438 |
+| 3187 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    179 |        4439 |
+| 3188 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    184 |        4440 |
+| 3189 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    186 |        4441 |
+| 3190 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    183 |        4442 |
+| 3191 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    182 |        4443 |
+| 3192 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    180 |        4444 |
+| 3193 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    175 |        4445 |
+| 3194 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    172 |        4446 |
+| 3195 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    164 |        4447 |
+| 3196 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    165 |        4448 |
+| 3197 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    163 |        4449 |
+| 3198 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    162 |        4450 |
+| 3199 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    162 |        4451 |
+| 3200 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    164 |        4452 |
+| 3201 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    164 |        4453 |
+| 3202 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    172 |        4454 |
+| 3203 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    173 |        4455 |
+| 3204 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    162 |        4456 |
+| 3215 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    168 |        4468 |
+| 3216 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    168 |        4469 |
+| 3217 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    165 |        4470 |
+| 3218 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    164 |        4471 |
+| 3219 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    169 |        4472 |
+| 3220 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    171 |        4473 |
+| 3221 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    164 |        4474 |
+| 3222 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    167 |        4475 |
+| 3223 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    167 |        4476 |
+| 3224 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    173 |        4477 |
+| 3225 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    165 |        4478 |
+| 3226 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    169 |        4479 |
+| 3227 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    169 |        4480 |
+| 3228 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    175 |        4481 |
+| 3265 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    170 |        4519 |
+| 3267 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    174 |        4520 |
+| 3268 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    169 |        4522 |
+| 3270 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    163 |        4523 |
+| 3271 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    158 |        4524 |
+| 3272 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    162 |        4526 |
+| 3292 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    156 |        4546 |
+| 3293 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    163 |        4547 |
+| 3294 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    171 |        4548 |
+| 3296 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    171 |        4549 |
+| 3309 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    171 |        4563 |
+| 3310 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    168 |        4564 |
+| 3311 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    171 |        4565 |
+| 3312 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    165 |        4566 |
+| 3313 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    171 |        4567 |
+| 3314 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    168 |        4568 |
+| 3315 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    162 |        4569 |
+| 3316 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    163 |        4570 |
+| 3317 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    154 |        4571 |
+| 3318 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    156 |        4572 |
+| 3344 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    159 |        4598 |
+| 3346 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    162 |        4599 |
+| 3353 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    170 |        4611 |
+| 3354 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    171 |        4612 |
+| 3355 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    171 |        4613 |
+| 3356 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    174 |        4614 |
+| 3357 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    175 |        4615 |
+| 3358 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    173 |        4616 |
+| 3359 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    174 |        4618 |
+| 3360 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    168 |        4619 |
+| 3361 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    167 |        4620 |
+| 3362 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    167 |        4621 |
+| 3363 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    173 |        4622 |
+| 3364 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    174 |        4623 |
+| 3365 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    180 |        4624 |
+| 3368 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    178 |        4625 |
+| 3369 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    166 |        4626 |
+| 3370 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    168 |        4627 |
+| 3371 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    172 |        4628 |
+| 3372 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    173 |        4629 |
+| 3373 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    178 |        4630 |
+| 3374 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    178 |        4631 |
+| 3375 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    173 |        4632 |
+| 3376 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    168 |        4634 |
+| 3377 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    172 |        4635 |
+| 3380 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    168 |        4637 |
+| 3381 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    157 |        4647 |
+| 3382 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    155 |        4648 |
+| 3383 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    148 |        4651 |
+| 3384 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    136 |        4652 |
+| 3408 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    144 |        4705 |
+| 3409 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    150 |        4706 |
+| 3410 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    150 |        4707 |
+| 3411 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    158 |        4708 |
+| 3412 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    153 |        4709 |
+| 3413 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    152 |        4710 |
+| 3414 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    154 |        4711 |
+| 3415 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    156 |        4712 |
+| 3416 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    157 |        4713 |
+| 3417 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    163 |        4714 |
+| 3418 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    163 |        4715 |
+| 3419 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    155 |        4716 |
+| 3435 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    164 |        4733 |
+| 3436 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    159 |        4734 |
+| 3437 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    166 |        4735 |
+| 3438 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    160 |        4736 |
+| 3439 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    165 |        4737 |
+| 3442 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    170 |        4740 |
+| 3443 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    163 |        4741 |
+| 3444 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    171 |        4742 |
+| 3454 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    176 |        4753 |
+| 3455 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    182 |        4754 |
+| 3456 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    176 |        4755 |
+| 3457 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    173 |        4756 |
+| 3469 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    175 |        4769 |
+| 3470 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    181 |        4770 |
+| 3472 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    190 |        4771 |
+| 3473 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    186 |        4772 |
+| 3474 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    160 |        4773 |
+| 3475 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    152 |        4775 |
+| 3483 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    167 |        4782 |
+| 3484 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    173 |        4783 |
+| 3485 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    174 |        4784 |
+| 3486 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    164 |        4785 |
+| 3487 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    164 |        4786 |
+| 3488 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    159 |        4788 |
+| 3489 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    154 |        4789 |
+| 3534 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    163 |        4835 |
+| 3535 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    164 |        4836 |
+| 3542 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    164 |        4843 |
+| 3544 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    162 |        4844 |
+| 3550 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    159 |        4852 |
+| 3551 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    160 |        4853 |
+| 3552 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    165 |        4854 |
+| 3591 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    170 |        4892 |
+| 3592 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    166 |        4894 |
+| 3593 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    174 |        4896 |
+| 3595 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    183 |        4898 |
+| 3597 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    187 |        4900 |
+| 3598 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    190 |        4901 |
+| 3599 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    175 |        4902 |
+| 3600 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    179 |        4905 |
+| 3602 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    183 |        4906 |
+| 3604 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    176 |        4909 |
+| 3606 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    182 |        4910 |
+| 3609 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    176 |        4913 |
+| 3611 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    175 |        4916 |
+| 3648 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    180 |        4951 |
+| 3649 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    185 |        4952 |
+| 3650 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    186 |        4954 |
+| 3653 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    180 |        4957 |
+| 3654 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    177 |        4958 |
+| 3656 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    181 |        4960 |
+| 3658 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    179 |        4961 |
+| 3670 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    165 |        4973 |
+| 3673 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    169 |        4977 |
+| 3679 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    167 |        4982 |
+| 3681 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    172 |        4985 |
+| 3682 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    167 |        4986 |
+| 3684 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    167 |        4988 |
+| 3685 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    170 |        4990 |
+| 3690 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    147 |        4997 |
+| 3692 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    133 |        5000 |
+| 3695 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    145 |        5002 |
+| 3697 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    149 |        5003 |
+| 3701 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    155 |        5007 |
+| 3723 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    159 |        5010 |
+| 3725 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    161 |        5030 |
+| 3726 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    165 |        5031 |
+| 3731 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    163 |        5035 |
+| 3732 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    164 |        5036 |
+| 3736 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    169 |        5037 |
+| 3752 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    177 |        5044 |
+| 3774 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    170 |        5082 |
+| 3777 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    170 |        5085 |
+| 3779 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    166 |        5087 |
+| 3813 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    169 |        5121 |
+| 3814 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    172 |        5122 |
+| 3815 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    175 |        5123 |
+| 3827 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    165 |        5138 |
+| 3828 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    167 |        5139 |
+| 3830 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    164 |        5140 |
+| 3832 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    169 |        5142 |
+| 3833 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    161 |        5143 |
+| 3842 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    158 |        5152 |
+| 3843 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    165 |        5154 |
+| 3923 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    170 |        5233 |
+| 3926 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    166 |        5238 |
+| 3928 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    166 |        5239 |
+| 3930 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    167 |        5241 |
+| 3933 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    169 |        5243 |
+| 3935 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    169 |        5246 |
+| 3938 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    177 |        5248 |
+| 3939 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    180 |        5249 |
+| 3940 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    182 |        5250 |
+| 3941 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    184 |        5251 |
+| 3942 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    182 |        5252 |
+| 3943 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    184 |        5253 |
+| 3944 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    174 |        5254 |
+| 3945 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    174 |        5255 |
+| 3947 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    169 |        5258 |
+| 3948 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    172 |        5259 |
+| 3950 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    175 |        5261 |
+| 3951 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    177 |        5263 |
+| 3953 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    181 |        5264 |
+| 3954 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    181 |        5266 |
+| 3956 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    181 |        5267 |
+| 3959 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    173 |        5269 |
+| 3960 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    170 |        5270 |
+| 3964 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    168 |        5274 |
+| 3967 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    173 |        5279 |
+| 3968 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    178 |        5281 |
+| 3969 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    180 |        5282 |
+| 3971 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    178 |        5284 |
+| 3973 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    187 |        5287 |
+| 3975 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    197 |        5289 |
+| 3977 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    203 |        5291 |
+| 3978 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    193 |        5292 |
+| 3981 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    193 |        5294 |
+| 3982 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    182 |        5295 |
+| 3983 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    175 |        5296 |
+| 3984 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    181 |        5297 |
+| 3985 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    184 |        5298 |
+| 3986 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    179 |        5299 |
+| 3987 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    176 |        5300 |
+| 3988 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    176 |        5301 |
+| 3989 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    176 |        5303 |
+| 3990 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    181 |        5304 |
+| 3991 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    180 |        5305 |
+| 3993 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    183 |        5307 |
+| 3994 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    182 |        5309 |
+| 3996 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    189 |        5311 |
+| 3999 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    195 |        5313 |
+| 4002 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    198 |        5315 |
+| 4005 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    196 |        5318 |
+| 4007 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    197 |        5320 |
+| 4008 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    198 |        5321 |
+| 4009 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    194 |        5323 |
+| 4011 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    196 |        5325 |
+| 4012 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    198 |        5326 |
+| 4013 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    197 |        5328 |
+| 4016 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    192 |        5329 |
+| 4017 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    193 |        5333 |
+| 4023 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    180 |        5334 |
+| 4024 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    178 |        5337 |
+| 4025 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    176 |        5338 |
+| 4026 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    179 |        5339 |
+| 4027 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    177 |        5341 |
+| 4029 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    179 |        5343 |
+| 4043 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    181 |        5358 |
+| 4045 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    169 |        5360 |
+| 4046 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    167 |        5362 |
+| 4048 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    164 |        5363 |
+| 4049 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    173 |        5365 |
+| 4051 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    173 |        5366 |
+| 4052 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    166 |        5368 |
+| 4054 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    170 |        5369 |
+| 4055 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    164 |        5370 |
+| 4904 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    140 |        4638 |
+| 4905 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    120 |        4639 |
+| 4906 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |    100 |        4640 |
+| 4907 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |     83 |        4641 |
+| 4908 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |     68 |        4642 |
+| 4909 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |     60 |        4643 |
+| 4911 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |     50 |        4645 |
+| 4912 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |     42 |        4646 |
+| 4913 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |     34 |        4649 |
+| 4914 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |     25 |        4650 |
+| 4916 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |     18 |        4654 |
+| 4917 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |      9 |        4655 |
+| 4918 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |      0 |        4656 |
+| 4919 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |      0 |        4657 |
+| 4920 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |      0 |        4658 |
+| 4921 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |      0 |        4659 |
+| 4922 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |      0 |        4660 |
+| 4923 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |      0 |        4661 |
+| 4924 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |      0 |        4662 |
+| 4925 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |      0 |        4663 |
+| 4926 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |      0 |        4664 |
+| 4927 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |      0 |        4665 |
+| 4928 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |      0 |        4666 |
+| 4929 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |      0 |        4667 |
+| 4930 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |      0 |        4668 |
+| 4931 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |      0 |        4669 |
+| 4932 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |      0 |        4670 |
+| 4933 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |      0 |        4671 |
+| 4934 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |      0 |        4672 |
+| 4935 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |      0 |        4673 |
+| 4936 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |      0 |        4674 |
+| 4937 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |      0 |        4675 |
+| 4938 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |      0 |        4676 |
+| 4939 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |      0 |        4677 |
+| 4940 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |      0 |        4678 |
+| 4941 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |      0 |        4679 |
+| 4942 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |      0 |        4680 |
+| 4943 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |      0 |        4681 |
+| 4949 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |      0 |        4995 |
+| 4954 | 50f7688e-d6d5-4e8b-a713-f66cc6def95f |      18 |      2 |        5272 |
++------+--------------------------------------+---------+--------+-------------+
+
+
