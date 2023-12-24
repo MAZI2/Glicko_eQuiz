@@ -19,32 +19,8 @@ var con = mysql.createConnection({
 
 var maxExamId = 7657;
 
+
 /*
-// for(exerciseId with ClassExamId ==  &&  exercise[0] se ne ponovi)
-    select largest id until examId == (extract rating) -> this is previous rating of exercise
-    SELECT * FROM exercise_ratings WHERE exerciseId=1906;
-    */
-
-
-function query(q) {
-    return new Promise((resolve, reject) => {
-      con.query(q, function (err, result) {
-        if (err) reject(err);
-        resolve(result);
-      });
-    });
-}
-
-function print(result) {
-    for(var i=0;i<result.length;i++) {
-        r=result[i];
-        console.log(r.id + " " + r.exerciseId  + " " + r.rating + " " + r.ratingELO + " " + r.classExamId )
-//        console.log(r.classExamId  + " " + r.count);
-
-    }
-
-}
-
 async function findPreviousRatings(examId, userRating, user) {
     const q='SELECT * FROM exercise_ratings_dev WHERE classExamId='+examId;
     const res = await query(q);
@@ -86,7 +62,7 @@ async function findPreviousRatings(examId, userRating, user) {
     });
 
 }
-
+*/
 //PRESLIKAJ V ENOLICNE EXAMIDJE
 /*
 async function enolicniId() {
@@ -124,6 +100,23 @@ async function enolicniId() {
 }
 //enolicniId();
 */
+
+function query(q) {
+    return new Promise((resolve, reject) => {
+      con.query(q, function (err, result) {
+        if (err) reject(err);
+        resolve(result);
+      });
+    });
+}
+
+function print(result) {
+    for(var i=0;i<result.length;i++) {
+        r=result[i];
+        console.log(r.id + " " + r.exerciseId  + " " + r.rating + " " + r.ratingELO + " " + r.classExamId )
+    }
+}
+
 var c=0;
 async function testRating(arr, corr, tempUser, user, examId) {
     var tempUserRating=tempUser;
@@ -168,38 +161,6 @@ async function testRating(arr, corr, tempUser, user, examId) {
 
 }
 
-async function updateRatings() {
-    console.log("id,user,rating");
-    
-//    const q='SELECT * FROM joined_ratings_dev ORDER BY finishedAt ASC';
-      const q='SELECT * FROM computed_user_ratings';
-
-    const res = await query(q);
-    for(var i=0;i<res.length;i++) {
-        /*
-    
-        i=0;
-        var res=[];
-        res[0]=res2[8];
-        */
-        //find prev rating from database
-//        const q6='SELECT a.rating FROM (SELECT * FROM joined_ratings_dev ORDER BY finishedAt ASC) AS a WHERE a.id<' + 
-        const q6='SELECT a.rating FROM computed_user_ratings a WHERE a.id<' + 
-            res[i].id + " AND a.userId='" + res[i].userId + "'";
-        const rating = await query(q6);
-        if(rating.length==0 || rating[rating.length-1].rating==-1)
-//            await findPreviousRatings(res[i].classExamId, 200, res[i].userId);
-              await findELO(res[i].classExamId, 200, res[i].userId);
- 
-        else {
-//            await findPreviousRatings(res[i].classExamId, rating[rating.length-1].rating, res[i].userId);
-              await findELO(res[i].classExamId, rating[rating.length-1].rating, res[i].userId);
-
-        }
-        c++;
-    }
-    process.exit();
-}
 
 async function findELO(examId, userRatingPrev, user) {
     const q='SELECT * FROM computed_exercise_ratings WHERE classExamId='+examId;
@@ -231,6 +192,39 @@ async function findELO(examId, userRatingPrev, user) {
         resolve(1);
     });
 
+}
+
+async function updateRatings() {
+    console.log("id,user,rating");
+    
+//    const q='SELECT * FROM joined_ratings_dev ORDER BY finishedAt ASC';
+      const q='SELECT * FROM computed_user_ratings';
+
+    const res = await query(q);
+    for(var i=0;i<res.length;i++) {
+        /*
+    
+        i=0;
+        var res=[];
+        res[0]=res2[8];
+        */
+        //find prev rating from database
+//        const q6='SELECT a.rating FROM (SELECT * FROM joined_ratings_dev ORDER BY finishedAt ASC) AS a WHERE a.id<' + 
+        const q6='SELECT a.rating FROM computed_user_ratings a WHERE a.id<' + 
+            res[i].id + " AND a.userId='" + res[i].userId + "'";
+        const rating = await query(q6);
+        if(rating.length==0 || rating[rating.length-1].rating==-1)
+//            await findPreviousRatings(res[i].classExamId, 200, res[i].userId);
+              await findELO(res[i].classExamId, 200, res[i].userId);
+ 
+        else {
+//            await findPreviousRatings(res[i].classExamId, rating[rating.length-1].rating, res[i].userId);
+              await findELO(res[i].classExamId, rating[rating.length-1].rating, res[i].userId);
+
+        }
+        c++;
+    }
+    process.exit();
 }
 
 updateRatings();

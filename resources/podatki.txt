@@ -79,7 +79,7 @@ Join again
 Preslikava v enolicno (zaradi napak dvojnega logginga)
 Poleg tega nekateri attempti niso imeli svojega ratinga ali pa niso imeli svojega attempta (razlicni extra tipi)
 
-Poglej rating po prvem exam ratingu potem pa primerjaj p
+Poglej ujemanje izcracunanih user in exercise ratingov z normalno.
 ---
 
 +--------------------------------------+-----------------------------+
