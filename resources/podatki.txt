@@ -6,6 +6,37 @@ Data:
 distinct users: 305;
 distinct exams: 6073;
 
+1326 -> 7658
+1326 -> 7659
+1348 -> 7660
+1348 -> 7661
+1349 -> 7662
+1349 -> 7663
+1482 -> 7664
+1482 -> 7665
+1485 -> 7666
+1485 -> 7667
+1568 -> 7668
+1568 -> 7669
+1615 -> 7670
+1615 -> 7671
+1957 -> 7672
+1957 -> 7673
+2394 -> 7674
+2394 -> 7675
+6399 -> 7676
+6399 -> 7677
+6399 -> 7678
+3028 -> 7679
+3028 -> 7680
+3157 -> 7681
+3157 -> 7682
+3157 -> 7683
+6362 -> 7684
+6362 -> 7685
+7030 -> 7686
+7030 -> 7687
+
 Vec nalog ratanih v istem examId
 Nekateri v sklopu enega examIdja je lahko veliko nalog ratanih (exam retrials under same examId?), ne pa toliko studentov (vecinoma samo en(enkrat)).
 razen exam id 6412 je prispeval v 28 ratingov ucencev. -> lahko izpit?
@@ -40,6 +71,16 @@ za zdaj vazno da kdaj je bil ratan student s katerimi nalogami.
 nekako se da retryjat kviz, also zgleda da obstajajo kvizi z 26 nalogami lahko(morda sestavljene naloge), also obstaja kviz za vec studentov z istim exam id. Izpit?
 
 Resevanja studentov: PRIDNOST. -> se more odrazati enako z glicko ratingom
+
+---
+Clean up 0E-9
+Join again
+
+Preslikava v enolicno (zaradi napak dvojnega logginga)
+Poleg tega nekateri attempti niso imeli svojega ratinga ali pa niso imeli svojega attempta (razlicni extra tipi)
+
+Poglej rating po prvem exam ratingu potem pa primerjaj p
+---
 
 +--------------------------------------+-----------------------------+
 | userId                               | COUNT(DISTINCT classExamId) |

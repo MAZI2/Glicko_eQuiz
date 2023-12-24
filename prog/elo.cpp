@@ -30,6 +30,8 @@ int main() {
 | 16549 | 2146       |      0 |       183 |        2681 |
 +-------+------------+--------+-----------+-------------+
 
+//SELECT * FROM exercise_ratings_dev WHERE exerciseId=1142;
+
 200->182
     for(exerciseId with ClassExamId ==  &&  exercise[0] se ne ponovi)
     select largest id until examId == (extract rating) -> this is previous rating of exercise
