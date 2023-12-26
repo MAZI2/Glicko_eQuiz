@@ -79,7 +79,24 @@ Join again
 Preslikava v enolicno (zaradi napak dvojnega logginga)
 Poleg tega nekateri attempti niso imeli svojega ratinga ali pa niso imeli svojega attempta (razlicni extra tipi)
 
-Poglej ujemanje izcracunanih user in exercise ratingov z normalno.
+Poglej ujemanje izcracunanish user in exercise ratingov z normalno. -user lepo, exercise malce manj
+
+1. naredi tabele za glicko rating kot kopija computed_user_ratings in computed_exercise_ratings
+nastavi rating na -1
+
+2. najprej naredi porazdelitev latest ratingov po času. -> da ves kaj pricakovat.
+-> kot se rating zadnjic updata se potem ne bo do naslednjega updata tkoda je uredu.
+
+v izracunu poglej poleg prejsnjega user ratinga se prejsnji datum in odstej. naredi rating drop 3. za vsak dan -- izracunaj c iz dni da update.
+pozeni
+SUPER!, poskusi se z base rating 300 ker je veliko na 0
+
+5. poglej se rating enega primerka in primerjaj z elo ratingom.
+-en primerek z veliko ocenjevanji in en z malo ampak > 1
+
+-za porocilo:
+kaj je bilo potrebno pridobiti od podatkov za analizo ratinga in kako je slo racunanje za primerjavo elo in glicko ratinga.
+glede na to kaj rabimo, kako so bili filtrirani podatki.
 ---
 
 +--------------------------------------+-----------------------------+
