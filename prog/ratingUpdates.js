@@ -255,7 +255,7 @@ async function findGlicko(examId, userRatingPrev, userRDPrev, user, examTime, pr
 
         var res1 = resArr[resArr.length-1];
         if(resArr.length==0 || res1.ratingELO == -1) {
-            res1 = {ratingELO: 200, exerciseId:-1, rd:350, examId:-1, finishedAt:-1};
+            res1 = {ratingELO: 1000, exerciseId:-1, rd:350, examId:-1, finishedAt:-1};
         }
         res1.exerciseId=res[i].exerciseId;
         res1.classExamId=examId;
@@ -308,8 +308,8 @@ async function exerciseRating(p, match) {
         m.r=newRSingle(m, mpair);
         m.r=Math.max(m.r, 0);
         m.rd=rdNewSingle(m, mpair);
-        m.rd=Math.max(m.r, 0);
-        m.rd=Math.min(m.r, 350);
+        m.rd=Math.max(m.rd, 0);
+        m.rd=Math.min(m.rd, 350);
 
         const q2='UPDATE computed_exercise_ratings_glicko SET ratingELO=' + parseInt(m.r) + ', rd=' + m.rd + ' WHERE classExamId=' + m.classExamId + ' AND exerciseId=' + m.exerciseId;
          //console.log(q2)
@@ -333,7 +333,7 @@ async function updateRatings() {
             res[i].id + " AND a.userId='" + res[i].userId + "'";
         const rating = await query(q6);
         if(rating.length==0 || rating[rating.length-1].rating==-1)
-              await findGlicko(res[i].classExamId, 200, 350, res[i].userId, res[i].finishedAt, -1);
+              await findGlicko(res[i].classExamId, 1000, 350, res[i].userId, res[i].finishedAt, -1);
  
         else {
               await findGlicko(res[i].classExamId, rating[rating.length-1].rating, rating[rating.length-1].rd, res[i].userId, res[i].finishedAt, rating[rating.length-1].finishedAt);
