@@ -97,27 +97,34 @@ preveri se exercise ratinge za foro ce vse stima, vzami primer ene zelo ratane
 -en primerek z veliko ocenjevanji in en z malo ampak > 1
 
 -za porocilo:
-kaj je bilo potrebno pridobiti od podatkov za analizo ratinga in kako je slo racunanje za primerjavo elo in glicko ratinga.
+Podatki iz quiz
+-kateri so
+-kaj je bilo potrebno pridobiti od podatkov za analizo ratinga in kako je slo racunanje za primerjavo elo in glicko ratinga.
 -kako so bili pridobljeni
 -glede na to kaj rabimo, kako so bili filtrirani podatki.
+Trenutni rating algoritem (ELO)
 -prejsnji algoritem za racunanje ELO skupaj s parametri
--tako izracunani podatki za ELO (graf)
+-tako izracunani podatki za ELO (graf) (preveri ce je pravilno queryjan latest user rating)
+Glicko rating na podatkih iz equiza
 -predstavitev izbire c ... glede na to kako bos potem pokazal delovanje tega lahko reces
 na primeru, koliko se je zmanjsal v recimo 2 mesecih.-> vzami iz načta
 -izracun potek izracuna glicko po timestampih(podobno kot elo)
--prikaz Glicko (graf)
+-prikaz Glicko (graf) -> latest ... poves da si vzel samo zadnje ocenjevanje
 -prikaz Rd (graf)
 -prikaz ratinga za ucenca pri Elo in potem pri Glicko
 -prikaz rd za ucenca pri Glicko. Interpretacija in primerjava za recimo kolokvije.
 
 -prikaz Glicko še za naloge. Pri RD lahko vidimo da je povprečno večji kot pri ucencih, ker je nalog več in pridejo težje in rotation.
 -potem lahko pokažeš koliko so sploh reševali (za referenco) število rešenih examov.
-
+Nove funkcionalnosti v equizu
 -Nove funkcionalnosti v equizu:
 -povej kako se tako vidi iz izpita katere naloge so nepriljubljene etc.
--mogoče lahko obratno sorazmerno povezuješ z ravnimi črtami RD in dobiš kako se je pridnost večala (koeficient) -> preslikava v razrede oz. ce prevec zakomplicirano samo vidis ca je nezanesljiv rating, da je ucenec malo reseval zadnje čase.
+(-mogoče lahko obratno sorazmerno povezuješ z ravnimi črtami RD in dobiš kako se je pridnost večala (koeficient)) -> preslikava v razrede oz. ce prevec zakomplicirano samo vidis ca je nezanesljiv rating, da je ucenec malo reseval zadnje čase.
 -preslikava ratinga v razrede
+SUBImplementacija
+-vse do sedaj izracunano na obstojeci podatkovni. nov algoritem outputa enak format podatkov
 
+Zaključek
 -zaključek iz načrta
 ---
 

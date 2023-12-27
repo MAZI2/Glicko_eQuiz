@@ -125,12 +125,19 @@ Iz formul vidimo, da je $r'$ odvisen od $RD$ igralca in ni uravnotežen tako, ko
 
 \hfill
 
-\section{Izracuni iz equiz podatkov}
+\section{Izračuni iz eQuiz podatkov}
 \label{sec:equiz}
 %se to vkljuci
 A useful way to summarize a player’s strength is through a confidence interval (or more particularly, given the quasi-Bayesian derivation of the Glicko system, a “credible” interval) rather than just reporting a rating. The confidence interval has the interpretation of re- porting the interval of plausible values for the player’s actual strength, acknowledging that a rating is merely an estimate of a player’s unknown true strength. A common choice is to report a $95\%$ confidence interval which provides $95\%$ confidence that the player’s true ability is within the interval. The formula for a $95\%$ confidence interval for a player with rating r and ratings deviation RD is given by
 %
+\subsection{Pridobljeni podatki}
 
+\subsection{Trenutni rating sistem - ELO}
+
+\subsection{Glicko rating na pridobljenih podatkih}
+%label?
+
+\iffalse
 Če študent reševal skozi semester izgleda rating po Elo tako: 
 
 (Če pa nimamo rednih podatkov):
@@ -142,36 +149,25 @@ iz zgornjih tabel se da ugotavljati kasnejse ugotovitve napisane spodaj
 (morda) imamo informacijo samo o izpitu.
 (primerjava ratinga Elo vs Glicko na izpitu, tudi za naloge)
 
-\hfill
-\\
-
 Če 
-
-
 Trenutni podaki (lahko) baza za nove,
-\\
-\\
+
 Po rating updatih lahko dolocimo cas (in verjetno kaj je ucenec reseval) -- match lahko uporabimo kar prvi rating in matchamo casovno naslednje preizkuse
-\\
-\\
+
 Ali imamo podatke nakljucnih resevanj? (Nejc Subic diplomska: Da?)
 Ce ne lahko tudi umetno prikazemo ucinek za sprotno delo -- nakljucno izberem nekaj nalog(lahko tudi randomly generiram podobne podatke kot trenutne naloge v equizu).
-\\
+
 \begin{itemize}
     \item Prikaz ratingov po izpitu (tudi za naloge). kot poseben primer za prikaz da je se vedno accurate -- izstopanje nalog
     \item Prikaz ratingov po rednih preverjanjih, kot prikaz kako se vzdrzuje rating in devianca(graf deviance za studenta) -- c samo pokaze koliko globoko bo dipnilo med preverjanji in s tem koliko pomembno je sprotno delo?
 \end{itemize}
-\hfill
-\\
-\\
+
 Zeljeni podatki:
 \begin{itemize}
     \item izpit (sasa)
     \item cas posodobitev ratingov + kaj je ucenec takrat reseval (za sestavljene naloge (izpite) + nakljucno resevanje)
 \end{itemize}
-\hfill
-\\
-\\
+\fi
 S tem pridobimo v primeru študentov informacijo o sprotnem delu, saj bo RD manjši za učence, ki so pogosteje ocenjeni (poleg opravljenih sprotnih preverjanj še naključna reševanja kvizov/nalog), kar kaže na več/manj sprotnega dela.
 (Glede na spreminjanje RD lahko spremljamo delo učenca kot nekakšen koeficient napredka/ak.vnos.)
 Za nasprotnika učencu – nalogo, pa deviacija predstavlja kdaj je bila naloga nazadnje ocenjena, torej koliko je njena ocena zanesljiva. V primeru učenca, ki izbira naloge iz zbirke na equizu, pa lahko naloge z veliko deviacijo iden.ficiramo kot nepriljubljene (malo učencev se lo. naloge).
@@ -210,6 +206,10 @@ $\exists k \in \Z: \ell - \varepsilon = k \varphi(n)$.
 \begin{proof}
 Follows by Theorem~\ref{thm:equiv}.
 \end{proof}
+
+\section{Nove funkcionalnosti v eQuizu}
+
+\subsection{Implementacija}
 
 \section{Conclusion}
 \label{sec:cnc}
