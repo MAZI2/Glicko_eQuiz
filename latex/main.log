@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.12.14)  27 DEC 2023 18:51
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.12.14)  30 DEC 2023 23:34
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -346,24 +346,24 @@ File: l3backend-pdftex.def 2023-01-16 L3 backend support: PDF output (pdfTeX)
 ) (./main.aux)
 \openout1 = `main.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 61.
-LaTeX Font Info:    ... okay on input line 61.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 61.
-LaTeX Font Info:    ... okay on input line 61.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 61.
-LaTeX Font Info:    ... okay on input line 61.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 61.
-LaTeX Font Info:    ... okay on input line 61.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 61.
-LaTeX Font Info:    ... okay on input line 61.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 61.
-LaTeX Font Info:    ... okay on input line 61.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 61.
-LaTeX Font Info:    ... okay on input line 61.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 61.
-LaTeX Font Info:    ... okay on input line 61.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 61.
-LaTeX Font Info:    ... okay on input line 61.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 62.
+LaTeX Font Info:    ... okay on input line 62.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 62.
+LaTeX Font Info:    ... okay on input line 62.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 62.
+LaTeX Font Info:    ... okay on input line 62.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 62.
+LaTeX Font Info:    ... okay on input line 62.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 62.
+LaTeX Font Info:    ... okay on input line 62.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 62.
+LaTeX Font Info:    ... okay on input line 62.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 62.
+LaTeX Font Info:    ... okay on input line 62.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 62.
+LaTeX Font Info:    ... okay on input line 62.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 62.
+LaTeX Font Info:    ... okay on input line 62.
 
 babelbib: Use citation-dependent languages in bibliography
 babelbib: Set bibliography fall-back language to english
@@ -392,7 +392,7 @@ Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 48
  (/usr/local/texlive/2023/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
 ))
-Package hyperref Info: Link coloring OFF on input line 61.
+Package hyperref Info: Link coloring OFF on input line 62.
  (./main.out) (./main.out
 pdfTeX warning (Object streams): \pdfobjcompresslevel > 0 requires PDF-1.5 or greater. Object streams disabled now.
 )
@@ -400,49 +400,49 @@ pdfTeX warning (Object streams): \pdfobjcompresslevel > 0 requires PDF-1.5 or gr
 \openout3 = `main.out'.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 64--64
+Underfull \hbox (badness 10000) in paragraph at lines 65--65
 
  []
 
-LaTeX Font Info:    Trying to load font information for U+msa on input line 64.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 65.
 (/usr/local/texlive/2023/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 64.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 65.
  (/usr/local/texlive/2023/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-Overfull \hbox (59.81537pt too wide) detected at line 91
+Overfull \hbox (59.81537pt too wide) detected at line 92
 [][][]\OML/cmm/m/it/10 d[] \OT1/cmr/m/n/10 = [][]
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 100--105
+Underfull \hbox (badness 10000) in paragraph at lines 101--106
 
  []
 
 
-Overfull \hbox (20.85948pt too wide) detected at line 107
+Overfull \hbox (20.85948pt too wide) detected at line 108
 [][][]\OML/cmm/m/it/10 r[] \OT1/cmr/m/n/10 = \OML/cmm/m/it/10 r \OT1/cmr/m/n/10 + [] [] \OML/cmm/m/it/10 g [] []
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 107--115
+Underfull \hbox (badness 10000) in paragraph at lines 108--116
 \OT1/ptm/m/n/10 Zgornje for-mule so pos-plo[]sene za posodobitev
  []
 
 
-Underfull \hbox (badness 2245) in paragraph at lines 107--115
+Underfull \hbox (badness 2245) in paragraph at lines 108--116
 \OT1/ptm/m/n/10 nasprot-nikov z de-viaci-jami $\OML/cmm/m/it/10 RD[]; RD[]; :::; RD[]$ \OT1/ptm/m/n/10 in
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 107--115
+Underfull \hbox (badness 10000) in paragraph at lines 108--116
 
  []
 
 
-Underfull \hbox (badness 1394) in paragraph at lines 107--115
+Underfull \hbox (badness 1394) in paragraph at lines 108--116
 \OT1/ptm/m/n/10 temve[]c tudi ob preteku dolo[]cene []casovne pe-ri-ode,
  []
 
@@ -450,36 +450,69 @@ Underfull \hbox (badness 1394) in paragraph at lines 107--115
 
 
 ]
-Underfull \hbox (badness 10000) in paragraph at lines 180--183
+Underfull \hbox (badness 2556) in paragraph at lines 138--142
+\OT1/ptm/m/n/10 quizov, ses-tavl-jenih iz ra-zli[]cnih na-log. Po-datek o
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 149--150
+\OT1/ptm/m/n/10 Pri odd-aji kviza so pri-dobljeni prej[]snji rat-ing
+ []
+
+<./images//ComputedELO.png, id=64, 605.26125pt x 602.25pt>
+File: ./images//ComputedELO.png Graphic file (type png)
+<use ./images//ComputedELO.png>
+Package pdftex.def Info: ./images//ComputedELO.png  used on input line 172.
+(pdftex.def)             Requested size: 227.62204pt x 226.48647pt.
+<./images//ComputedELOe.png, id=66, 596.2275pt x 594.22pt>
+File: ./images//ComputedELOe.png Graphic file (type png)
+<use ./images//ComputedELOe.png>
+Package pdftex.def Info: ./images//ComputedELOe.png  used on input line 175.
+(pdftex.def)             Requested size: 227.62204pt x 226.85773pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 159--177
 
  []
 
-** ATTENTION: \proof is deprecated (line 187). Use \IEEEproof instead.
-** ATTENTION: \proof is deprecated (line 198). Use \IEEEproof instead.
 
-LaTeX Warning: Reference `eqn:phi' on page 2 undefined on input line 199.
+Underfull \hbox (badness 10000) in paragraph at lines 159--177
 
-** ATTENTION: \proof is deprecated (line 206). Use \IEEEproof instead.
+ []
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[2 <./images//ComputedELO.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 221--224
+
+ []
+
+** ATTENTION: \proof is deprecated (line 228). Use \IEEEproof instead.
+** ATTENTION: \proof is deprecated (line 239). Use \IEEEproof instead.
+
+LaTeX Warning: Reference `eqn:phi' on page 3 undefined on input line 240.
+
+** ATTENTION: \proof is deprecated (line 247). Use \IEEEproof instead.
 No file main.bbl.
-[2] (./main.aux)
+[3 <./images//ComputedELOe.png>] (./main.aux)
 
 LaTeX Warning: There were undefined references.
 
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 4D0D504F9077BB5FC7DEB6DD9E7390F6;1439.
+(rerunfilecheck)             Checksum: 0A373966409C1B3571E3106A9380307C;1452.
  ) 
 Here is how much of TeX's memory you used:
- 11680 strings out of 476025
- 187534 string characters out of 5790016
+ 11714 strings out of 476025
+ 188283 string characters out of 5790016
  1875388 words of memory out of 5000000
- 31928 multiletter control sequences out of 15000+600000
+ 31954 multiletter control sequences out of 15000+600000
  565121 words of font info for 132 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  75i,12n,76p,876b,453s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmmib10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on main.pdf (2 pages, 163234 bytes).
+Output written on main.pdf (3 pages, 335550 bytes).
 PDF statistics:
- 136 PDF objects out of 1000 (max. 8388607)
- 23 named destinations out of 1000 (max. 500000)
- 73 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 149 PDF objects out of 1000 (max. 8388607)
+ 27 named destinations out of 1000 (max. 500000)
+ 83 words of extra memory for PDF output out of 10000 (max. 10000000)
 

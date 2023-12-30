@@ -14,6 +14,7 @@
 \usepackage[pdftex]{graphicx}
 
 \DeclareGraphicsExtensions{.pdf,.jpeg,.png}
+\graphicspath{ {./images/} }
 \usepackage[hyphens]{url}
 \usepackage[unicode]{hyperref}
 
@@ -124,16 +125,57 @@ Matematične izpeljave formul so na voljo na \href{http://www.glicko.net/researc
 Iz formul vidimo, da je $r'$ odvisen od $RD$ igralca in ni uravnotežen tako, kot je pri Elo sistemu, kjer se zmagovlacu zviša rating toliko, kot se poražencu zniža. Ker naj bi velikost $RD$ odražala koliko informacije imamo o igralcu, se v iteraciji ocenjevanja, kjer ima en igralec velik $RD$, drug pa majhen, prvemu zviša veliko več, kot se drugemu zniža, saj vemo, da je rating prvega nezanesljiv, rating drugega pa je. Enako se v tem primeru ne more upravičeno znižati rating drugega igralca toliko, kot bi se, če bi bil rating njegovega soigralca zanesljiv.
 
 \hfill
+\\
+%se to vkljuci
+A useful way to summarize a player’s strength is through a confidence interval (or more particularly, given the quasi-Bayesian derivation of the Glicko system, a “credible” interval) rather than just reporting a rating. The confidence interval has the interpretation of re- porting the interval of plausible values for the player’s actual strength, acknowledging that a rating is merely an estimate of a player’s unknown true strength. A common choice is to report a $95\%$ confidence interval which provides $95\%$ confidence that the player’s true ability is within the interval. The formula for a $95\%$ confidence interval for a player with rating r and ratings deviation RD is given by
+
+\hfill
 
 \section{Izračuni iz eQuiz podatkov}
 \label{sec:equiz}
-%se to vkljuci
-A useful way to summarize a player’s strength is through a confidence interval (or more particularly, given the quasi-Bayesian derivation of the Glicko system, a “credible” interval) rather than just reporting a rating. The confidence interval has the interpretation of re- porting the interval of plausible values for the player’s actual strength, acknowledging that a rating is merely an estimate of a player’s unknown true strength. A common choice is to report a $95\%$ confidence interval which provides $95\%$ confidence that the player’s true ability is within the interval. The formula for a $95\%$ confidence interval for a player with rating r and ratings deviation RD is given by
-%
+
 \subsection{Pridobljeni podatki}
+Iz podatkovne baze eQuiza so bili pridobljeni trenutni ratingi študentov in nalog ter kronološki zapis reševanj quizov, sestavljenih iz različnih nalog. Podatek o reševanju posamezne naloge v quizu je bil izračunan na podlagi sprememb ratingov nalog po končanem quizu. V tabelo podatkov je bil tako dodan stolpec correct z vrednostjo 0 ali 1 za vsako nalogo, kjer so naloge s podvprašanji razdeljene v posamezne naloge. Ta podatek je bil uporabljen tudi v kasnejšnjih izračunih ELO in Glicko ratingov.
+\hfill
+\\
+Za izračun Glicko ratinga je, za razliko od ELO ratinga, potreben še čas reševanja. Zato so bile posodobitve ratingov združene s tabelo reševanj, ki vsebuje potrebne čase. Pri tem so se pojavila neskladja, kjer nekatere posodobitve ratingov, ki se nanašajo na nek identifikator kviza, niso bile nikdar zabeležene, nekatera zabeležena reševanja pa se ne nanašajo na noben rating, kar pomeni, da so k izračunu ratinga nekoč lahko prispevali različni tipi ocenjevanj, trenutno pa se v rating štejejo samo Rating Quizi. Tako so bili pridobljeni podatki za 305 različnih uporabnikov in 1348 nalog, za nadaljnje izračune pa so bili uporabni podatki za 261 uporabnikov in 1299 nalog.
+
+Za izračune ratingov so bile od najstarejšega ratinga uporabnika po času reševanj zaporedoma pregledane naloge iz ustreznega kviza, ki so bile glede na prejšnji najstarejši ali (osnovni rating) uporabnika in naloge ponovno ratane po izbranem algoritmu. Tako je bil po zaporednih nalogah glede na reševanje (stolpec correct) izračunan nov rating uporabnika in novi ratingi nalog, ki so bili sproti zapisani v tabele na mesta z ustreznimi časi in identifikatorji izpitov, za uporabo v naslednjih korakih algoritma. Ko smo dosegli konec zabeleženih ratingov smo imeli izračunane ratinge za vse naloge in userje.
+
+%TODO:povej da je bil potem vzet zadnji rating
+%
 
 \subsection{Trenutni rating sistem - ELO}
-
+Pri oddaji kviza so pridobljeni prejšnji rating posameznih nalog v kvizu in prejšnji rating uporabnika. Za naloge in uporabnika so potem zaporedoma po nalogah izračunani novi ratingi po naslednjih enačbah:
+\begin{equation}
+    R'_{A}=R_{A}+K\cdot \left ( S_{A}-E_{A} \right )
+\end{equation}
+\begin{equation}
+    E_{A}=\frac{Q_{A}}{Q_{A}+Q_{B}}
+\end{equation}
+Kjer so
+\begin{equation}
+    Q_{A}=10^{R_{A}/66}\;\;\;Q_{B}=10^{R_{B}/66}
+\end{equation}
+$S_{A}$ predstavlja dejanski izid, v primeru eQuiza 0 ali 1, $E_{A}$ pa pričakovan izid.
+\hfill
+\\
+\\
+$K$ je po navadi izračunan glede na število iger na katerih temelji trenuten rating (plus število iger v turnamentu pri šahu),
+v trenutni implementaciji ratinga pa je privzet kot konstanten z vrednostjo 4,5
+\hfill
+\\
+\\
+Po takem postopku je bil po zgoraj opisanih algoritmih izračunan ELO rating na filtriranih podatkih z osnovnim ratingom 200.
+%TODO normalne?
+\begin{figure}[h]
+\includegraphics[width=8cm]{ComputedELO}
+\end{figure}
+\begin{figure}[h]
+\includegraphics[width=8cm]{ComputedELOe}
+\end{figure}
+Zaradi velikega števila nalog iz katerih naključno izbira kviz, so posamezne naloge povprečno manjkrat ocenjene kot uprabniki, poleg tega pa so po številu rešenih kvizov uporabniki precej neenakomerni.
+%TODO: figure reševanja nalog
 \subsection{Glicko rating na pridobljenih podatkih}
 %label?
 
@@ -207,7 +249,8 @@ $\exists k \in \Z: \ell - \varepsilon = k \varphi(n)$.
 Follows by Theorem~\ref{thm:equiv}.
 \end{proof}
 
-\section{Nove funkcionalnosti v eQuizu}
+\section{Glicko za spremljanje študentov}
+
 
 \subsection{Implementacija}
 
