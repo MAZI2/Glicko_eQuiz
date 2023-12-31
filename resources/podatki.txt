@@ -107,25 +107,22 @@ Podatki iz quiz
 Trenutni rating algoritem (ELO)
 -prejsnji algoritem za racunanje ELO skupaj s parametri G
 -tako izracunani podatki za ELO (graf) (preveri ce je pravilno queryjan latest user rating) G
--prikaz števila reševanj (graf)
+-prikaz števila reševanj (graf) G
 
 Glicko rating na podatkih iz equiza
 -predstavitev izbire c ... glede na to kako bos potem pokazal delovanje tega lahko reces
-na primeru, koliko se je zmanjsal v recimo 2 mesecih.-> vzami iz načta
--izracun potek izracuna glicko po timestampih(podobno kot elo)
--prikaz Glicko (graf) -> latest ... poves da si vzel samo zadnje ocenjevanje
--prikaz Rd (graf)
--prikaz ratinga za ucenca pri Elo in potem pri Glicko
+na primeru, koliko se je zmanjsal v recimo 2 mesecih.-> vzami iz načta G
+-izracun potek izracuna glicko po timestampih(podobno kot elo) G
+-prikaz Glicko (graf) -> latest ... poves da si vzel samo zadnje ocenjevanje G
+-prikaz Rd (graf) G
+-prikaz ratinga za ucenca pri Elo in potem pri Glicko G
 -prikaz rd za ucenca pri Glicko. Interpretacija in primerjava za recimo kolokvije.
-
--prikaz Glicko še za naloge. Pri RD lahko vidimo da je povprečno večji kot pri ucencih, ker je nalog več in pridejo težje in rotation.
--potem lahko pokažeš koliko so sploh reševali (za referenco) število rešenih examov.
 
 Nove funkcionalnosti v equizu
 -Nove funkcionalnosti v equizu:
 -povej kako se tako vidi iz izpita katere naloge so nepriljubljene etc.
 (-mogoče lahko obratno sorazmerno povezuješ z ravnimi črtami RD in dobiš kako se je pridnost večala (koeficient)) -> preslikava v razrede oz. ce prevec zakomplicirano samo vidis ca je nezanesljiv rating, da je ucenec malo reseval zadnje čase.
--preslikava ratinga v razrede
+-preslikava ratinga v razrede G
 	SUBImplementacija
 -vse do sedaj izracunano na obstojeci podatkovni. nov algoritem outputa enak format podatkov
 

@@ -12,11 +12,23 @@
 \usepackage{color}
 \usepackage{xspace}
 \usepackage[pdftex]{graphicx}
+\usepackage{subfig}
 
 \DeclareGraphicsExtensions{.pdf,.jpeg,.png}
 \graphicspath{ {./images/} }
 \usepackage[hyphens]{url}
 \usepackage[unicode]{hyperref}
+\usepackage{listings}
+
+\lstdefinestyle{SQLstyle}{
+  language=SQL,
+  numbers=left,
+  stepnumber=1,
+  numbersep=3pt,
+  tabsize=4,
+  showspaces=false,
+  showstringspaces=false
+}
 
 \newcommand{\B}[1]{\ensuremath{\boldsymbol{#1}}}
 \newcommand{\bi}[1]{\boldmath{\ensuremath{#1}}}
@@ -138,12 +150,41 @@ A useful way to summarize a player’s strength is through a confidence interval
 Iz podatkovne baze eQuiza so bili pridobljeni trenutni ratingi študentov in nalog ter kronološki zapis reševanj quizov, sestavljenih iz različnih nalog. Podatek o reševanju posamezne naloge v quizu je bil izračunan na podlagi sprememb ratingov nalog po končanem quizu. V tabelo podatkov je bil tako dodan stolpec correct z vrednostjo 0 ali 1 za vsako nalogo, kjer so naloge s podvprašanji razdeljene v posamezne naloge. Ta podatek je bil uporabljen tudi v kasnejšnjih izračunih ELO in Glicko ratingov.
 \hfill
 \\
+\\
 Za izračun Glicko ratinga je, za razliko od ELO ratinga, potreben še čas reševanja. Zato so bile posodobitve ratingov združene s tabelo reševanj, ki vsebuje potrebne čase. Pri tem so se pojavila neskladja, kjer nekatere posodobitve ratingov, ki se nanašajo na nek identifikator kviza, niso bile nikdar zabeležene, nekatera zabeležena reševanja pa se ne nanašajo na noben rating, kar pomeni, da so k izračunu ratinga nekoč lahko prispevali različni tipi ocenjevanj, trenutno pa se v rating štejejo samo Rating Quizi. Tako so bili pridobljeni podatki za 305 različnih uporabnikov in 1348 nalog, za nadaljnje izračune pa so bili uporabni podatki za 261 uporabnikov in 1299 nalog.
+\\
+%sublabel metoda izračuna
+\subsection{Metoda izračuna ratinga}
 
-Za izračune ratingov so bile od najstarejšega ratinga uporabnika po času reševanj zaporedoma pregledane naloge iz ustreznega kviza, ki so bile glede na prejšnji najstarejši ali (osnovni rating) uporabnika in naloge ponovno ratane po izbranem algoritmu. Tako je bil po zaporednih nalogah glede na reševanje (stolpec correct) izračunan nov rating uporabnika in novi ratingi nalog, ki so bili sproti zapisani v tabele na mesta z ustreznimi časi in identifikatorji izpitov, za uporabo v naslednjih korakih algoritma. Ko smo dosegli konec zabeleženih ratingov smo imeli izračunane ratinge za vse naloge in userje.
+Za izračune ratingov so bile od najstarejšega ratinga uporabnika po času reševanj zaporedoma pregledane naloge iz ustreznega kviza, ki so bile glede na prejšnji najstarejši ali (osnovni rating) uporabnika in naloge ponovno ratane po izbranem rating algoritmu (ELO in Glicko). Tako je bil po zaporednih nalogah glede na reševanje (stolpec correct) izračunan nov rating uporabnika in novi ratingi nalog, ki so bili sproti zapisani v tabele na mesta z ustreznimi časi in identifikatorji izpitov, za uporabo v naslednjih korakih algoritma. Ko smo dosegli konec zabeleženih ratingov smo imeli izračunane ratinge za vse naloge in userje.
+\hfill
+\\
+\\
+Primer zapisov izračunov ratingov za izpit z identifikatorjem 43:
 
-%TODO:povej da je bil potem vzet zadnji rating
-%
+\lstset{basicstyle=\tiny,style=SQLstyle}
+\begin{figure}[h!]
+    \includegraphics[width=8cm]{PrimerTabeleUser}
+    \label{fig:example}%
+\end{figure}
+
+\begin{lstlisting}[language=SQL]
+SELECT u.id, u.userId, u.rating, u.classExamId, a.startedAt, a.finishedAt 
+FROM computed_user_ratings u JOIN exam_attempts a ON u.classExamId = a.classExamId 
+WHERE u.classExamId=43;
+\end{lstlisting}
+
+\begin{figure}[h!]
+    \includegraphics[width=8cm]{PrimerTabele}
+    %\caption{Zapisi izračunov ratingov za izpit z identifikatorjem 43}%TODO: figure counting
+    \label{fig:example}%
+\end{figure}
+\begin{lstlisting}[language=SQL]
+SELECT e.id, e.exerciseId, e.ratingELO, e.classExamId, e.correct, a.startedAt, a.finishedAt 
+FROM computed_exercise_ratings e JOIN exam_attempts a ON e.classExamId = a.classExamId 
+WHERE e.classExamId=43;
+\end{lstlisting}
+
 
 \subsection{Trenutni rating sistem - ELO}
 Pri oddaji kviza so pridobljeni prejšnji rating posameznih nalog v kvizu in prejšnji rating uporabnika. Za naloge in uporabnika so potem zaporedoma po nalogah izračunani novi ratingi po naslednjih enačbah:
@@ -167,17 +208,107 @@ v trenutni implementaciji ratinga pa je privzet kot konstanten z vrednostjo 4,5
 \\
 \\
 Po takem postopku je bil po zgoraj opisanih algoritmih izračunan ELO rating na filtriranih podatkih z osnovnim ratingom 200.
+%\newpage
 %TODO normalne?
-\begin{figure}[h]
-\includegraphics[width=8cm]{ComputedELO}
+\begin{figure}[h!]
+    \includegraphics[width=8cm]{ComputedELO}
+    \caption{Histogram končnih ELO ratingov uporabnikov}%TODO: figure counting
+    \label{fig:example}%
 \end{figure}
-\begin{figure}[h]
-\includegraphics[width=8cm]{ComputedELOe}
+\begin{figure}[h!]
+    \includegraphics[width=8cm]{ComputedELOe}
+    \caption{Histogram končnih ELO ratingov nalog}%TODO: figure counting
+    \label{fig:example}%
 \end{figure}
-Zaradi velikega števila nalog iz katerih naključno izbira kviz, so posamezne naloge povprečno manjkrat ocenjene kot uprabniki, poleg tega pa so po številu rešenih kvizov uporabniki precej neenakomerni.
-%TODO: figure reševanja nalog
+\hfill
+\\
+Zaradi velikega števila nalog iz katerih se naključno generira kviz, so posamezne naloge povprečno manjkrat ocenjene kot uprabniki, poleg tega pa so po številu rešenih kvizov med uporabniki velike razlike. 
+\begin{figure}%
+    \subfloat[\centering ]{{\includegraphics[width=4cm]{Resevanje} }}%
+    \subfloat[\centering ]{{\includegraphics[width=4cm]{ResevanjeNalog} }}%
+    \caption{Histogrami števila ratingov uporabnikov in nalog}%TODO: figure counting
+    \label{fig:example}%
+\end{figure}
+
+Zaradi tega nekateri ratingi bazirajo na manj ali več ocenjevanjih in tako bolje ali slabše odražajo pravo sposobnost reševanja uporabnikov ali težavnost nalog. Zato je bil v nadaljevanju za enake podatke izračunan še Glicko rating.
+
 \subsection{Glicko rating na pridobljenih podatkih}
-%label?
+%TODO: label?
+
+Po enakem postopku kot ELO rating je bil zaporedno izračunan Glicko rating. Kot opisano v dokumentaciji Glicko ratinga, pa so bile naloge,
+ki spadajo v isto iteracijo ocenjevanja obravnavane vsaka posebaj, kot več iger proti enako ocenjenem igralcu (uporabniku) in ne zaporedno z vmesnimi posodobitvami ratingov, kot v trenutnem rating sistemu.
+\hfill
+\\
+\\
+Za upoštevanje časov reševanj nalog, je potreben še izračun konstante $c$ kot parameter Glicko ratinga. Kot opisano v dokumentaciji lahko $c$
+izračunamo glede na to, po kolikšnem času želimo, da $RD$ igralca pade na maksimalno vrednost, v tem primeru 350. Torej če v kontekstu ocenjevanj študentov privzamemo, da bo po preteklem času enega semestra, četudi ima študent na začetku minimalen $RD$ postal njegov rating nezanesljiv in pade njegov $RD$ na 350. Za tak čas je bilo vzetih 120dni.
+
+\begin{equation}
+    350=\sqrt{50^{2}+120\cdot c^{2}}
+\end{equation}
+\begin{equation}
+    c\approx 32
+\end{equation}
+
+%TODO: beseda še o justificationu padanja ratinga skozi čas
+
+\begin{figure}[h!]
+    \includegraphics[width=8cm]{GlickoUser}
+    \caption{Histogram končnih Glicko ratingov uporabnikov}%TODO: figure counting
+    \label{fig:example}%
+\end{figure}
+\begin{figure}[h!]
+    \includegraphics[width=8cm]{GlickoExercise}
+    \caption{Histogram končnih Glicko ratingov nalog}%TODO: figure counting
+    \label{fig:example}%
+\end{figure}
+\begin{figure}[h!]
+    \includegraphics[width=8cm]{RDUser}
+    \caption{Histogram končnih rating deviacij uporabnikov}%TODO: figure counting
+    \label{fig:example}%
+\end{figure}
+\begin{figure}[h!]
+    \includegraphics[width=8cm]{RDExercise}
+    \caption{Histogram končnih rating deviacij nalog}%TODO: figure counting
+    \label{fig:example}%
+\end{figure}
+
+\newpage
+Opazimo, da je pri ratingu nalog $RD$ povprečno večji kot pri ratingu uporabnikov, saj so bile naloge povprečno manjkrat ocenjene ali pa bolj na redko (med ocenjevanji je preteklo več časa)
+\hfill
+\\
+
+Ker smo za enoto vzeli dneve moramo za razlike v datumih ocenjevanj upoštevati razliko v dnevih, kjer naj bi se njegov $RD$ stalno spreminjal. Dovolj pa je, da $RD$ posodobimo samo pred novim ocenjevanjem ali pa ob vpogledu v rating študenta, da upoštevamo čas od njegovega zadnjega zabeleženega ocenjevanja. Za prikaz statistike glicko ratinga v tem primeru končni izračun deviacije ni bil izveden, saj so bila ocenjevanja izvedena v zelo različnih obdobjih od 2019 do 2023 in bi tako velik del študenov imel maksimalen $RD$. Za njihove ratinge to nima vpliva, saj se je med njihovimi ocenjevanji $RD$ prilagajal tudi po času. Tako lahko za posameznega študenta izračunamo tudi današnji $RD$ po formuli za $RD$ po preteklem času. %TODO link do formule 
+
+\newpage
+
+\begin{figure}[h!]
+    \includegraphics[width=8cm]{EloUserExample}
+    \caption{Primer posodobitev ratinga za uporabnika pri ELO sistemu}%TODO: figure counting
+    \label{fig:example}%
+\end{figure}
+\begin{figure}[h!]
+    \includegraphics[width=8cm]{GlickoUserExample}
+    \caption{Posodobitev ratinga za istega uporabnika pri Glicko sistemu}%TODO: figure counting
+    \label{fig:example}%
+\end{figure}
+
+Za primer je bil vzet uporabnik, ki je vse ratinge pridobil v roku treh dni. , zato so spremembe v ratingu čedalje manjše, saj se njegov $RD$ hitro manjša.
+\begin{figure}[h!]
+    \includegraphics[width=8cm]{RDUserExample}
+    \caption{Posodobitev RD za uporabnika}%TODO: figure counting
+    \label{fig:example}%
+\end{figure}
+\newpage
+Če vzamemo uporabnika z ratingi razporejenimi čez večji časovni interval, spremembe ratinga in $RD$ nista več nujno majhna. Skoke opazimo pri prvih ocenjevanjih po velikem časovnem intervalu brez posodobitev.
+
+\begin{figure}[h!]
+    \subfloat[\centering ]{{\includegraphics[width=4cm]{RDUserExampleBig} }}%
+    \subfloat[\centering ]{{\includegraphics[width=4cm]{GlickoUserExampleBig} }}%
+    \caption{Histogrami za Glicko pri uporabniku z več posodobitvami}%TODO: figure counting
+    \label{fig:example}%
+\end{figure}
+
 
 \iffalse
 Če študent reševal skozi semester izgleda rating po Elo tako: 
@@ -209,15 +340,9 @@ Zeljeni podatki:
     \item izpit (sasa)
     \item cas posodobitev ratingov + kaj je ucenec takrat reseval (za sestavljene naloge (izpite) + nakljucno resevanje)
 \end{itemize}
-\fi
-S tem pridobimo v primeru študentov informacijo o sprotnem delu, saj bo RD manjši za učence, ki so pogosteje ocenjeni (poleg opravljenih sprotnih preverjanj še naključna reševanja kvizov/nalog), kar kaže na več/manj sprotnega dela.
-(Glede na spreminjanje RD lahko spremljamo delo učenca kot nekakšen koeficient napredka/ak.vnos.)
-Za nasprotnika učencu – nalogo, pa deviacija predstavlja kdaj je bila naloga nazadnje ocenjena, torej koliko je njena ocena zanesljiva. V primeru učenca, ki izbira naloge iz zbirke na equizu, pa lahko naloge z veliko deviacijo iden.ficiramo kot nepriljubljene (malo učencev se lo. naloge).
-Reciklirane naloge bodo torej tudi večkrat nastopile na preverjanjih in bo natančnost njenih ra.ngov večja (dobro za parametrizirane naloge, ker se zaradi njihove narave lahko večkrat pojavijo v preverjanjih)
-Ra.ng nalog, ki se pojavijo na izpitu, pa bo še vedno zanesljiv, saj bo v is. iteraciji nalogo reševalo veliko učencev.
-Ra.ng učenca/naloge, ki je neak.ven čez določen časovni interval se ustrezno zmanjša, kar je poleg maksimalne deviacije edini parameter, ki ga je potrebno nastavi. kot administrator. Kako sistema.čno določamo ta parameter je opisano v dodatnem članku o glicko, vendar ga lahko verjetno vežemo na redna preverjanja kot npr. kolokvije. Ker se da predmet opravi. samo s kolokviji celotno snov sta.s.ke razdelijo na 5 delov. Torej bo študent, ki opravi samo eno preverjanje od pe.h ustrezno imel manjši ra.ng predvsem pa večjo deviacijo (če je opravljal samo prvega se bo njegov RD š.rikrat zviševal do konca semestra), saj imamo informacijo o njegovem znanju čedalje bolj nezanesljivo, ker vemo čedalje manj koliko študent dejansko ve o sta.s.ki odkar je reševal .s. kolokvij (pričakuje se, da študent tekom leta ve več in več o sta.s.ki).
-
-%TODO tudi expected outcome
+\hfill
+\\
+\\
 
 \hfill
 \\
@@ -248,15 +373,60 @@ $\exists k \in \Z: \ell - \varepsilon = k \varphi(n)$.
 \begin{proof}
 Follows by Theorem~\ref{thm:equiv}.
 \end{proof}
+\fi
 
 \section{Glicko za spremljanje študentov}
+Z vpeljavo $RD$ pridobimo v primeru študentov informacijo o sprotnem delu, saj bo RD manjši za učence, ki so pogosteje ocenjeni. Če bi k ratingu pripomogli tudi, na primer redni kolokviji, bi reševanje dodatnih  naključnih reševanj kvizov/nalog bilo razvidno iz manjšega $RD$, kar kaže na več sprotnega dela in obratno. Za primer, pri predmetu Verjetnost in statistika se da predmet opraviti v celoti s sprotnimi preverjanji, kjer je snov enakomerno razdeljena na 5 kolokvijev skozi celoten semester. Torej bo študent, ki opravi samo eno preverjanje od petih ustrezno imel veliko deviacijo, saj imamo informacijo o njegovem znanju čedalje bolj nezanesljivo, ker vemo čedalje manj, koliko študent dejansko ve o Statistiki odkar je reševal tisti kolokvij.
+
+Za nasprotnika učencu – nalogo, pa deviacija predstavlja kdaj je bila naloga nazadnje ocenjena, torej koliko je njena ocena zanesljiva. V primeru učenca, ki izbira naloge iz zbirke na equizu, bi lahko naloge z veliko deviacijo identificirali kot nepriljubljene (malo učencev se je lotilo naloge).
+
+%TODO primer izpita?
+%TODO tudi expected outcome
+
+\hfill
+\\
+\\
+V kontekstu igrifikacije eQuiza, lahko ratinge, predvsem pa $RD$ preslikamo v razrede iz katerih lahko bolj prijazno uporabniku spremljamo njegovo aktivnost na eQuizu. Iz statistike končnih $RD$ uporabnikov lahko uporabimo kvartile in razdelimo ratinge na 4 dele:
+
+\begin{figure}[h!]
+    \includegraphics[width=8cm]{RDstat}
+    \label{fig:example}%
+\end{figure}
+
+Tako lahko razporedimo uporabnike glede na njihove $RD$:
+\hfill
+\\
+\\
+$RD\leq48,392:\;visoka\;aktivnost$
+\hfill
+\\
+$48,392<RD\leq88,107:\;srednje\;visoka\;aktivnost$
+\hfill
+\\
+$88,107<RD\leq127.271:\;srednje\;nizka\;aktivnost$
+\hfill
+\\
+$127.271<RD:\;nizka\;aktivnost$
+\hfill
 
 
 \subsection{Implementacija}
 
-\section{Conclusion}
+vse do sedaj izracunano na obstojeci podatkovni. nov algoritem outputa enak format podatkov
+%TODO: link do programov
+
+\section{Zakjuček}
 \label{sec:cnc}
-conclusion
+
+Glicko rating nam doda novo informacijo glede vloženega dela uporabnika. Dobimo informacijo o količini reševanj v določenem časovnem intervalu, posledično pa tudi zanesljivost ratinga izračunanega z Glicko, kjer je zanesljivost upoštevana tudi med samim računanjem. Poleg sprotnega dela pa dobimo informacijo tudi o reševanju nalog, njihovi težavnosti in priljubljenosti. Ker pri tem poskušamo zanseljivost zvečati, lahko z vpeljavo parametriziranih nalog
+,ki jih tako večkrat uporabimo na preverjanjih, zvišamo zanesljivost njihovih ratingov. Če v rating vključimo še podatke iz izpitov in skupnih preverjanj, pa bo posledično rating še zanesljivejši, saj bo v isti iteraciji nalogo reševalo veliko učencev.
+
+%TODO: dejanska implementacija z izboljšavo – Glicko-2?
+\hfill
+\\
+\\
+
+
 
 \bibliographystyle{babplain}
 \bibliography{cite}
