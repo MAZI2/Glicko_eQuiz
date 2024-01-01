@@ -1,13 +1,13 @@
 # Fdb version 4
-["bibtex main"] 1704036292 "main.aux" "main.bbl" "main" 1704036292 0
+["bibtex main"] 1704137566 "main.aux" "main.bbl" "main" 1704137566 0
   "/usr/local/texlive/2023/texmf-dist/bibtex/bst/babelbib/babplain.bst" 1610057112 27810 1c1501917431ec915d8b9fdcbf0d01a4 ""
   "cite.bib" 0 -1 0 ""
-  "main.aux" 1704036288 6241 5522b2a540e796cd7e4fb682244c6da5 "pdflatex"
+  "main.aux" 1704137451 6120 6fb859cd5ba8946c3ef4f929435e4b94 "pdflatex"
   (generated)
   "main.bbl"
   "main.blg"
   (rewritten before read)
-["pdflatex"] 1704036285 "main.tex" "main.pdf" "main" 1704036292 0
+["pdflatex"] 1704137448 "main.tex" "main.pdf" "main" 1704137566 0
   "/usr/local/texlive/2023/texmf-dist/fonts/enc/dvips/base/8r.enc" 1165713224 4850 80dc9bab7f31fb78a000ccfed0e27cab ""
   "/usr/local/texlive/2023/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/local/texlive/2023/texmf-dist/fonts/tfm/adobe/times/ptmb7t.tfm" 1136768653 2172 fd0c924230362ff848a33632ed45dc23 ""
@@ -142,10 +142,10 @@
   "images//RDstat.png" 1704035506 21116 1c320bf53acf6537e6f3d3c5c5ce3fa9 ""
   "images//Resevanje.png" 1704023910 120228 36ba299985181048cd820182b590c308 ""
   "images//ResevanjeNalog.png" 1704024155 190668 f00dc1513a9332e7ea04c8a5dda18537 ""
-  "main.aux" 1704036288 6241 5522b2a540e796cd7e4fb682244c6da5 "pdflatex"
+  "main.aux" 1704137451 6120 6fb859cd5ba8946c3ef4f929435e4b94 "pdflatex"
   "main.bbl" 0 -1 0 "bibtex main"
-  "main.out" 1704036288 1627 ea30d86f499e797c45a7e09bc062467c "pdflatex"
-  "main.tex" 1704036291 20718 a7538a57f116c09268080c918d8e4e27 ""
+  "main.out" 1704137451 1499 cc811772e6fbe41153f44529dc95d001 "pdflatex"
+  "main.tex" 1704137445 21847 ccc355fce7bd0ca170bf74bc8794d985 ""
   (generated)
   "main.aux"
   "main.log"

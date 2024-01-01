@@ -5,11 +5,6 @@ var util = require('util');
 var log_file = fs.createWriteStream(__dirname + '/debug.log', {flags : 'w'});
 var log_stdout = process.stdout;
 
-console.log = function(d) { //
-  log_file.write(util.format(d) + '\n');
-  log_stdout.write(util.format(d) + '\n');
-};
-
 var con = mysql.createConnection({
   host: "localhost",
   user: "root",
@@ -26,19 +21,8 @@ function query(q) {
     });
 }
 
-function print(result) {
-    for(var i=0;i<result.length;i++) {
-        r=result[i];
-        console.log(r.id + " " + r.exerciseId  + " " + r.rating + " " + r.ratingELO + " " + r.classExamId )
-    }
-}
-
-//---------------------------------------------------------------
+//COMPUTE USER AND EXERCISE RATINGS BASED ON PROVIDED MATCH
 async function computeGlicko(arr, corr, tempUser, prevRd, user, examId, prevUserTime, examTime) {
-    var tempUserRating=tempUser;
-//    console.log("P "+tempUser);
-
-        
     var p={r:tempUser, rd:prevRd};
 
     var t=0;
@@ -48,9 +32,8 @@ async function computeGlicko(arr, corr, tempUser, prevRd, user, examId, prevUser
         t = parseInt((curr - date1)/(1000 * 3600 * 24));
     }
 
-//    var temp=p.rd;
+    //update rd from time 
     p.rd=rdPeriod(p, t);
-//    console.log(p.rd-temp)
     var match=[];
 
     //naloge v examu
@@ -60,29 +43,24 @@ async function computeGlicko(arr, corr, tempUser, prevRd, user, examId, prevUser
             classExamId: arr[i].classExamId,
             t:arr[i].finishedAt
             }, second:corr[i]});
-        //console.log(match[i]);
     }
     var res = await userRating(p, match);
     await exerciseRating(p, match);
 
     const q1='UPDATE computed_user_ratings_glicko SET rating=' + parseInt(res.r) + ', rd=' + res.rd + ' WHERE classExamId=' + examId;
-    console.log(user + " " + examId + " " +parseInt(res.r) + " " + res.rd)
-    //console.log(q1)
     await query(q1);
 
     return new Promise((resolve, reject) => {
         resolve(1);
     });
-
 }
 
-
+//ARRANGE MATCH WITH PREVIOUS EXERCISE RATINGS AND OUTCOMES
 async function findGlicko(examId, userRatingPrev, userRDPrev, user, examTime, prevUserTime) {
     //exercises
     const q='SELECT * FROM computed_exercise_ratings_glicko WHERE classExamId='+examId;
     const res = await query(q);
 
-    //print(res);
     var arr=[];
     var corr=[];
 
@@ -117,9 +95,9 @@ async function findGlicko(examId, userRatingPrev, userRDPrev, user, examTime, pr
     return new Promise((resolve, reject) => {
         resolve(1);
     });
-
 }
 
+//SETS USER RATING BASED ON MATCH PROVIDED
 async function userRating(p, match) {
     var temp=match;
     var pp=p;
@@ -135,15 +113,16 @@ async function userRating(p, match) {
     });
 }
 
+//SETS EXERCISE RATINGS BASED ON MATCH PROVIDED
 async function exerciseRating(p, match) {
-    for(var i=0;i<match.length;i++) {//auto [m, i] : match) {
+    for(var i=0;i<match.length;i++) {
         var m=match[i].first;
         var s=match[i].second;
         var mpair={first:p, second:!s};
 
-//        var temp=m.rd;
+        //update rd from time
         m.rd=rdPeriod(m, m.t);
-//        console.log(m.rd-temp);
+        //update rd from match
         m.r=newRSingle(m, mpair);
         m.r=Math.max(m.r, 0);
         m.rd=rdNewSingle(m, mpair);
@@ -151,7 +130,6 @@ async function exerciseRating(p, match) {
         m.rd=Math.min(m.rd, 350);
 
         const q2='UPDATE computed_exercise_ratings_glicko SET ratingELO=' + parseInt(m.r) + ', rd=' + m.rd + ' WHERE classExamId=' + m.classExamId + ' AND exerciseId=' + m.exerciseId;
-         //console.log(q2)
          await query(q2);
     };
 
@@ -161,7 +139,6 @@ async function exerciseRating(p, match) {
 }
 
 async function updateRatings() {
-    console.log("id,user,rating");
     const q='SELECT * FROM computed_user_ratings_glicko';
 
     const res = await query(q);
@@ -177,87 +154,8 @@ async function updateRatings() {
         else {
               await findGlicko(res[i].classExamId, rating[rating.length-1].rating, rating[rating.length-1].rd, res[i].userId, res[i].finishedAt, rating[rating.length-1].finishedAt);
         }
-        c++;
     }
     process.exit();
 }
 
 
-updateRatings();
-//findPreviousRatings(1142, 116);
-
-const cc=32;
-
-
-function rdPeriod(p, t) {
-    return Math.min(Math.sqrt(p.rd*p.rd + cc*cc*t), 350);
-}
-
-
-function newR(p, match) {
-    const q=0.0057565;
-
-    var a=0;
-    for(var i=0;i<match.length;i++) {
-        //console.log(match[i].second);
-        a+=(g(match[i].first.rd)*(match[i].second-E(p, match[i].first)));
-    }
-    //console.log("R" + (p.r+(q/(1/(p.rd*p.rd)+1/dsq(p, match)))*a));
-
-    return p.r+(q/(1/(p.rd*p.rd)+1/dsq(p, match)))*a;
-}
-
-
-function dsq(p, match) {
-    const q=0.0057565;
-
-    var a=0;
-    for(var i=0;i<match.length;i++) {
-        a+=(Math.pow(g(match[i].first.rd), 2)*E(p, match[i].first)*(1-E(p, match[i].first)));
-    }
-    return 1/(q*q*a);
-}
-
-
-function rdNew(p, match) {
-    return Math.sqrt(1/(1/(p.rd*p.rd)+1/dsq(p, match)));
-}
-
-function g(rd) {
-    const q=0.0057565;
-
-    //console.log("g" + 1/Math.sqrt(1+(3*q*q*rd*rd)/(Math.PI*Math.PI)));
-    return 1/Math.sqrt(1+(3*q*q*rd*rd)/(Math.PI*Math.PI));
-}
-
-function E(p, mp) {
-    //console.log("E" + 1/(1+Math.pow(10, (-g(mp.rd)*(p.r-mp.r))/400)));
-
-    return 1/(1+Math.pow(10, (-g(mp.rd)*(p.r-mp.r))/400));
-}
-//exercises
-//ex
-function rdNewSingle(p, mpair) {
-    return Math.sqrt(1/(1/(p.rd*p.rd)+1/dsqSingle(p, mpair)));
-}
-
-//ex m, p i
-function dsqSingle(p, mpair) {
-    const q=0.0057565;
-
-    var a=0;
-    a+=(Math.pow(g(mpair.first.rd), 2)*E(p, mpair.first)*(1-E(p, mpair.first)));
-    //printf("dsq %f\n", 1/(q*q*a));
-    return 1/(q*q*a);
-}
-//ex
-function newRSingle(p, mpair) {
-    const q=0.0057565;
-
-    var a=0;
-    a+=(g(mpair.first.rd)*(mpair.second-E(p, mpair.first)));
-
-    //console.log("R" + (p.r+(q/(1/(p.rd*p.rd)+1/dsqSingle(p, mpair)))*a));
-
-    return p.r+(q/(1/(p.rd*p.rd)+1/dsqSingle(p, mpair)))*a;
-}

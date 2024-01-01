@@ -124,10 +124,10 @@ Nove funkcionalnosti v equizu
 (-mogoče lahko obratno sorazmerno povezuješ z ravnimi črtami RD in dobiš kako se je pridnost večala (koeficient)) -> preslikava v razrede oz. ce prevec zakomplicirano samo vidis ca je nezanesljiv rating, da je ucenec malo reseval zadnje čase.
 -preslikava ratinga v razrede G
 	SUBImplementacija
--vse do sedaj izracunano na obstojeci podatkovni. nov algoritem outputa enak format podatkov
+-vse do sedaj izracunano na obstojeci podatkovni. nov algoritem outputa enak format podatkov G
 
 Zaključek
--zaključek iz načrta
+-zaključek iz načrta G
 ---
 
 +--------------------------------------+-----------------------------+

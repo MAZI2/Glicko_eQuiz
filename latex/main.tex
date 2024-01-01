@@ -29,6 +29,20 @@
   showspaces=false,
   showstringspaces=false
 }
+\lstdefinelanguage{JavaScript}{
+  keywords={typeof, new, true, false, catch, function, return, null, catch, switch, var, if, in, while, do, else, case, break},
+  keywordstyle=\color{blue}\bfseries,
+  ndkeywords={class, export, boolean, throw, implements, import, this},
+  ndkeywordstyle=\color{darkgray}\bfseries,
+  identifierstyle=\color{black},
+  sensitive=false,
+  comment=[l]{//},
+  morecomment=[s]{/*}{*/},
+  commentstyle=\color{purple}\ttfamily,
+  stringstyle=\color{red}\ttfamily,
+  morestring=[b]',
+  morestring=[b]"
+}
 
 \newcommand{\B}[1]{\ensuremath{\boldsymbol{#1}}}
 \newcommand{\bi}[1]{\boldmath{\ensuremath{#1}}}
@@ -59,7 +73,7 @@
 
 \pdfminorversion=4
 
-\title{Project template}
+\title{Glicko rating v aplikaciji eQuiz}
 \authors{Matjaž Pogačnik}
 \address{
 faculty of computer and information science \newline
@@ -67,7 +81,8 @@ večna pot 113\newline
 1000 ljubljana}
 \date{november 2020}
 \abstract{
-    Kratek opis ideje
+    V aplikaciji equiz se na podlagi reševanj nalog računa rating uporabnikov z uporabo Elo sistema, ki nam ne pove dosti 
+    o zanesljivosti izračunanega ratinga. Možno izboljšavo takega sistema predstavlja Glicko rating. %TODO: link
 }
 \keywords{equiz, rating}
 
@@ -147,7 +162,7 @@ A useful way to summarize a player’s strength is through a confidence interval
 \label{sec:equiz}
 
 \subsection{Pridobljeni podatki}
-Iz podatkovne baze eQuiza so bili pridobljeni trenutni ratingi študentov in nalog ter kronološki zapis reševanj quizov, sestavljenih iz različnih nalog. Podatek o reševanju posamezne naloge v quizu je bil izračunan na podlagi sprememb ratingov nalog po končanem quizu. V tabelo podatkov je bil tako dodan stolpec correct z vrednostjo 0 ali 1 za vsako nalogo, kjer so naloge s podvprašanji razdeljene v posamezne naloge. Ta podatek je bil uporabljen tudi v kasnejšnjih izračunih ELO in Glicko ratingov.
+Iz podatkovne baze eQuiza so bili pridobljeni trenutni ratingi študentov in nalog ter kronološki zapis reševanj quizov, sestavljenih iz različnih nalog. Podatek o reševanju posamezne naloge v quizu je bil izračunan na podlagi sprememb ratingov nalog po končanem quizu. V tabelo podatkov je bil tako dodan stolpec correct z vrednostjo 0 ali 1 za vsako nalogo, glede na celotno pravilnost naloge. Ta podatek je bil uporabljen tudi v kasnejšnjih izračunih ELO in Glicko ratingov.
 \hfill
 \\
 \\
@@ -410,23 +425,29 @@ $127.271<RD:\;nizka\;aktivnost$
 \hfill
 
 
-\subsection{Implementacija}
 
-vse do sedaj izracunano na obstojeci podatkovni. nov algoritem outputa enak format podatkov
+
+\lstset{basicstyle=\tiny,style=SQLstyle}
+\begin{lstlisting}
+\end{lstlisting}
+
+
 %TODO: link do programov
 
+\newpage
 \section{Zakjuček}
 \label{sec:cnc}
 
 Glicko rating nam doda novo informacijo glede vloženega dela uporabnika. Dobimo informacijo o količini reševanj v določenem časovnem intervalu, posledično pa tudi zanesljivost ratinga izračunanega z Glicko, kjer je zanesljivost upoštevana tudi med samim računanjem. Poleg sprotnega dela pa dobimo informacijo tudi o reševanju nalog, njihovi težavnosti in priljubljenosti. Ker pri tem poskušamo zanseljivost zvečati, lahko z vpeljavo parametriziranih nalog
 ,ki jih tako večkrat uporabimo na preverjanjih, zvišamo zanesljivost njihovih ratingov. Če v rating vključimo še podatke iz izpitov in skupnih preverjanj, pa bo posledično rating še zanesljivejši, saj bo v isti iteraciji nalogo reševalo veliko učencev.
 
-%TODO: dejanska implementacija z izboljšavo – Glicko-2?
+\hfill
+\\
+Kot je do sedaj algoritem operiral na trenutni podatkovni bazi eQuiza, lahko podoben algoritem uporabimo v nadaljevanju za beleženje ratingov na enak način, kot do sedaj. Implementacija Glicko ratinga za eQuiz je na voljo skupaj z vsemi programi uporabljenimi pri navedenih izračunih na GitHubu %TODO: link
 \hfill
 \\
 \\
-
-
+Za Glicko rating pa obstaja tudi bolj kompleksna izboljšana različica Glicko-2, ki bi lahko bila bolj primerna za dejansko implementacijo v aplikaciji %TODO: link
 
 \bibliographystyle{babplain}
 \bibliography{cite}
