@@ -48,6 +48,8 @@ async function computeGlicko(arr, corr, tempUser, prevRd, user, examId, prevUser
     await exerciseRating(p, match);
 
     const q1='UPDATE computed_user_ratings_glicko SET rating=' + parseInt(res.r) + ', rd=' + res.rd + ' WHERE classExamId=' + examId;
+    //console.log(q1)
+    console.log(user + " " + examId + " " +parseInt(res.r) + " " + res.rd)
     await query(q1);
 
     return new Promise((resolve, reject) => {
@@ -130,7 +132,7 @@ async function exerciseRating(p, match) {
         m.rd=Math.min(m.rd, 350);
 
         const q2='UPDATE computed_exercise_ratings_glicko SET ratingELO=' + parseInt(m.r) + ', rd=' + m.rd + ' WHERE classExamId=' + m.classExamId + ' AND exerciseId=' + m.exerciseId;
-         await query(q2);
+        await query(q2);
     };
 
     return new Promise((resolve, reject) => {
@@ -156,6 +158,83 @@ async function updateRatings() {
         }
     }
     process.exit();
+}
+updateRatings();
+
+//FORMULE ZA GLICKO
+const cc=32;
+
+function rdPeriod(p, t) {
+    return Math.min(Math.sqrt(p.rd*p.rd + cc*cc*t), 350);
+}
+
+
+function newR(p, match) {
+    const q=0.0057565;
+
+    var a=0;
+    for(var i=0;i<match.length;i++) {
+        //console.log(match[i].second);
+        a+=(g(match[i].first.rd)*(match[i].second-E(p, match[i].first)));
+    }
+    //console.log("R" + (p.r+(q/(1/(p.rd*p.rd)+1/dsq(p, match)))*a));
+
+    return p.r+(q/(1/(p.rd*p.rd)+1/dsq(p, match)))*a;
+}
+
+
+function dsq(p, match) {
+    const q=0.0057565;
+
+    var a=0;
+    for(var i=0;i<match.length;i++) {
+        a+=(Math.pow(g(match[i].first.rd), 2)*E(p, match[i].first)*(1-E(p, match[i].first)));
+    }
+    return 1/(q*q*a);
+}
+
+
+function rdNew(p, match) {
+    return Math.sqrt(1/(1/(p.rd*p.rd)+1/dsq(p, match)));
+}
+
+function g(rd) {
+    const q=0.0057565;
+
+    //console.log("g" + 1/Math.sqrt(1+(3*q*q*rd*rd)/(Math.PI*Math.PI)));
+    return 1/Math.sqrt(1+(3*q*q*rd*rd)/(Math.PI*Math.PI));
+}
+
+function E(p, mp) {
+    //console.log("E" + 1/(1+Math.pow(10, (-g(mp.rd)*(p.r-mp.r))/400)));
+
+    return 1/(1+Math.pow(10, (-g(mp.rd)*(p.r-mp.r))/400));
+}
+//exercises
+//ex
+function rdNewSingle(p, mpair) {
+    return Math.sqrt(1/(1/(p.rd*p.rd)+1/dsqSingle(p, mpair)));
+}
+
+//ex m, p i
+function dsqSingle(p, mpair) {
+    const q=0.0057565;
+
+    var a=0;
+    a+=(Math.pow(g(mpair.first.rd), 2)*E(p, mpair.first)*(1-E(p, mpair.first)));
+    //printf("dsq %f\n", 1/(q*q*a));
+    return 1/(q*q*a);
+}
+//ex
+function newRSingle(p, mpair) {
+    const q=0.0057565;
+
+    var a=0;
+    a+=(g(mpair.first.rd)*(mpair.second-E(p, mpair.first)));
+
+    //console.log("R" + (p.r+(q/(1/(p.rd*p.rd)+1/dsqSingle(p, mpair)))*a));
+
+    return p.r+(q/(1/(p.rd*p.rd)+1/dsqSingle(p, mpair)))*a;
 }
 
 

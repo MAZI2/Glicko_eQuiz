@@ -81,35 +81,34 @@ večna pot 113\newline
 1000 ljubljana}
 \date{november 2020}
 \abstract{
-    V aplikaciji equiz se na podlagi reševanj nalog računa rating uporabnikov z uporabo Elo sistema, ki nam ne pove dosti 
-    o zanesljivosti izračunanega ratinga. Možno izboljšavo takega sistema predstavlja Glicko rating. %TODO: link
+    V spletni aplikaciji \href{https://equiz.fri1.uni-lj.si}{eQuiz} se na podlagi reševanj nalog računa rating uporabnikov z uporabo Elo sistema, ki nam ne pove dosti 
+    o zanesljivosti izračunanega ratinga. Možno izboljšavo takega sistema predstavlja \href{http://www.glicko.net/glicko/glicko.pdf}{Glicko rating}.
 }
-\keywords{equiz, rating}
+\keywords{equiz, Glicko rating}
 
 \begin{document}
 
 \maketitle
 
-\section{Introduction}
+\section{Uvod}
 \label{sec:intro}
-Ena izmed funkcionalnosti aplikacije eQuiz %TODO link
-je rating študentov in nalog preko Elo rating sistema. Študent se sooči z nalogo in na ta način se iztočasno izračuna rating študenta in rating naloge, kot bi igrala študent in naloga šah. Študent lahko na nalogo odgovori prav ali napačno, kar je ekvivalentno temu, da štuent nalogo premaga ali proti njej izgubi. 
+Ena izmed funkcionalnosti aplikacije \href{https://equiz.fri1.uni-lj.si}{eQuiz} 
+je rating uporabnikov in nalog preko Elo rating sistema. Uporabnik se sooči z nalogo in na ta način se istočasno izračuna rating študenta in rating naloge, kot bi igrala uporabnik in naloga šah. Uporabnik lahko na nalogo odgovori prav ali napačno, kar je ekvivalentno temu, da uporabnik nalogo premaga ali proti njej izgubi. 
 Pojavijo pa se pomankljivosti takega rating sistema. 
 \hfill
 \\
-Če uporabljamo eQuiz za spremljanje ratinga študentov in nalog v sklopu določenega predmeta, bo proti številu študentov, ki bodo v tem letu aktivni, število nalog navadno mnogo večje. To pa pomeni, da bodo, dokler študentje ne rešujejo samih enakih nalog, ti prejeli posodobitev ratinga veliko večkrat kot kot posamezna naloga. Še več posodobitev pa študentje, ki so pri reševanju nalog bolj aktivni.
-Torej ratigini, pripisani določeni nalogi ali študentu lahko izvirajo iz več ali manj reševanj, kar naredi rating bolj ali manj verodostojen.
+Če uporabljamo eQuiz za spremljanje ratinga uporabnikov in nalog v sklopu določenega predmeta, bo proti številu uporabnikov, ki bodo v tem letu aktivni, število nalog navadno mnogo večje. To pa pomeni, da bodo, dokler uporabniki ne rešujejo samih enakih nalog, ti prejeli posodobitev ratinga pogosteje kot posamezna naloga. Bolj aktivni uporabniki pa bodo nasploh dobili več posodobitev.
+Torej lahko ratigini, pripisani določeni nalogi ali uporabniku izvirajo iz več ali manj reševanj v določenem časovnem intervalu, kar naredi rating bolj ali manj verodostojen.
 Zaupanje v določen rating lahko tako iz posamezne številke raje razširimo na interval zaupanja.
 \section{Glicko rating}
 \label{sec:glicko}
-Za tak pristop je primeren Glicko %TODO link
-rating, ki poleg ratinga za posameznega igralca (študent ali naloga) vpeljuje še deviacijo $RD$, ki nam omogoča predstavitev ratinga posameznega igralca kot $95\%$ interval zaupanja:
+Za tak pristop je primeren \href{http://www.glicko.net/glicko/glicko.pdf}{Glicko rating}, ki poleg ratinga za posameznega igralca (uporabnik ali naloga) vpeljuje še deviacijo $RD$, ki nam omogoča predstavitev ratinga posameznega igralca kot $95\%$ interval zaupanja:
 
 \begin{equation}
     \left ( r -1.96RD, r +1.96RD \right )
 \end{equation}
 %lahko se primer izrazuna intervala
-pri čemer se $RD$ manjša ob vsakem updatu ratinga, kjer se igralec sooči z drugim igralcem (ali več njih)
+pri čemer se $RD$ manjša ob vsaki posodobitvi ratinga, kjer se igralec sooči z drugim igralcem (ali več njih)
 \begin{equation}
     RD'=\sqrt{\left (  \frac{1}{RD^{2}} + \frac{1}{d^{2}}\right )^{-1}}
 \end{equation}
@@ -138,23 +137,22 @@ $RD_{1}, RD_{2}, ..., RD_{m}$ in ratingi $r_{1}, r_{2}, ..., r_{m}$. $s_{1}, s_{
 \hfill
 \\
 \\
-Igralčev $RD$ se ne posodablja samo, ko se ta sooča, temveč tudi ob preteku določene časovne periode, kar predstavlja zniževanje verodostojnosti trenutnega ratinga, če igralec določen čas ne igra. %TODO: poveži z equiz
+Igralčev $RD$ se ne posodablja samo, ko se ta sooča, temveč tudi ob preteku določene časovne periode, kar predstavlja zniževanje verodostojnosti trenutnega ratinga, če igralec določen čas ne igra.
 Tako se njegov $RD$ posodobi kot
 \begin{equation}
     RD = min\left(\sqrt{RD_{old}^{2} + c^{2}}, 350\right)
 \end{equation}
-konstanta $c$ je, poleg maksimalne deviacije, ki je v tem primeru $350$, edini parameter, ki ga nastavlja administrator sistema. Več o tem v kontekstu equiza v poglavju $X$ %TODO link do poglavja
+konstanta $c$ je, poleg maksimalne deviacije, ki je v tem primeru $350$, edini parameter, ki ga nastavlja administrator sistema. \hyperref[sec:izracun]{Več o tem v kontekstu equiza.} %TODO link do poglavja
 \hfill
 \\
-Matematične izpeljave formul so na voljo na \href{http://www.glicko.net/research/glicko.pdf}{tukaj} %TODO organizacija formul v podnaslove?
+Matematične izpeljave formul so na voljo \href{http://www.glicko.net/research/glicko.pdf}{tukaj}. %TODO organizacija formul v podnaslove?
 \newpage
 %TODO Podnaslov Intuitivno?
 Iz formul vidimo, da je $r'$ odvisen od $RD$ igralca in ni uravnotežen tako, kot je pri Elo sistemu, kjer se zmagovlacu zviša rating toliko, kot se poražencu zniža. Ker naj bi velikost $RD$ odražala koliko informacije imamo o igralcu, se v iteraciji ocenjevanja, kjer ima en igralec velik $RD$, drug pa majhen, prvemu zviša veliko več, kot se drugemu zniža, saj vemo, da je rating prvega nezanesljiv, rating drugega pa je. Enako se v tem primeru ne more upravičeno znižati rating drugega igralca toliko, kot bi se, če bi bil rating njegovega soigralca zanesljiv.
 
 \hfill
 \\
-%se to vkljuci
-A useful way to summarize a player’s strength is through a confidence interval (or more particularly, given the quasi-Bayesian derivation of the Glicko system, a “credible” interval) rather than just reporting a rating. The confidence interval has the interpretation of re- porting the interval of plausible values for the player’s actual strength, acknowledging that a rating is merely an estimate of a player’s unknown true strength. A common choice is to report a $95\%$ confidence interval which provides $95\%$ confidence that the player’s true ability is within the interval. The formula for a $95\%$ confidence interval for a player with rating r and ratings deviation RD is given by
+Igralčevo moč tako najbolje povzamemo z intervalom zaupanja namesto ene vrednosti. Tako si interpretiramo interval, ki ga izračunamo z Glicko ($95\%$ interval zaupanja), kot interval možnih vrednosti za igralčevo moč, kjer je rating igralca samo ocena njegove nepoznane resnične moči.
 
 \hfill
 
@@ -162,20 +160,20 @@ A useful way to summarize a player’s strength is through a confidence interval
 \label{sec:equiz}
 
 \subsection{Pridobljeni podatki}
-Iz podatkovne baze eQuiza so bili pridobljeni trenutni ratingi študentov in nalog ter kronološki zapis reševanj quizov, sestavljenih iz različnih nalog. Podatek o reševanju posamezne naloge v quizu je bil izračunan na podlagi sprememb ratingov nalog po končanem quizu. V tabelo podatkov je bil tako dodan stolpec correct z vrednostjo 0 ali 1 za vsako nalogo, glede na celotno pravilnost naloge. Ta podatek je bil uporabljen tudi v kasnejšnjih izračunih ELO in Glicko ratingov.
+Iz podatkovne baze eQuiza so bili pridobljeni trenutni ratingi študentov in nalog ter kronološki zapis reševanj quizov, sestavljenih iz različnih nalog. Podatek o reševanju posamezne naloge v quizu je bil izračunan na podlagi sprememb ratingov nalog po končanem quizu. V tabelo podatkov je bil tako dodan stolpec correct z vrednostjo 0 ali 1 za vsako nalogo, glede na celotno pravilnost naloge. Ta podatek je bil uporabljen tudi v kasnejšnjih izračunih Elo in Glicko ratingov.
 \hfill
 \\
 \\
-Za izračun Glicko ratinga je, za razliko od ELO ratinga, potreben še čas reševanja. Zato so bile posodobitve ratingov združene s tabelo reševanj, ki vsebuje potrebne čase. Pri tem so se pojavila neskladja, kjer nekatere posodobitve ratingov, ki se nanašajo na nek identifikator kviza, niso bile nikdar zabeležene, nekatera zabeležena reševanja pa se ne nanašajo na noben rating, kar pomeni, da so k izračunu ratinga nekoč lahko prispevali različni tipi ocenjevanj, trenutno pa se v rating štejejo samo Rating Quizi. Tako so bili pridobljeni podatki za 305 različnih uporabnikov in 1348 nalog, za nadaljnje izračune pa so bili uporabni podatki za 261 uporabnikov in 1299 nalog.
+Za izračun Glicko ratinga je, za razliko od Elo ratinga, potreben še čas reševanja. Zato so bile posodobitve ratingov združene s tabelo reševanj, ki vsebuje potrebne čase. Pri tem so se pojavila neskladja, kjer nekatere posodobitve ratingov, ki se nanašajo na nek identifikator kviza, niso bile nikdar zabeležene, nekatera zabeležena reševanja pa se ne nanašajo na noben rating, kar pomeni, da so k izračunu ratinga nekoč lahko prispevali različni tipi ocenjevanj, trenutno pa se v rating štejejo samo Rating Quizi. Tako so bili pridobljeni podatki za 305 različnih uporabnikov in 1348 nalog, za nadaljnje izračune pa so bili uporabni podatki za 261 uporabnikov in 1299 nalog.
 \\
 %sublabel metoda izračuna
 \subsection{Metoda izračuna ratinga}
 
-Za izračune ratingov so bile od najstarejšega ratinga uporabnika po času reševanj zaporedoma pregledane naloge iz ustreznega kviza, ki so bile glede na prejšnji najstarejši ali (osnovni rating) uporabnika in naloge ponovno ratane po izbranem rating algoritmu (ELO in Glicko). Tako je bil po zaporednih nalogah glede na reševanje (stolpec correct) izračunan nov rating uporabnika in novi ratingi nalog, ki so bili sproti zapisani v tabele na mesta z ustreznimi časi in identifikatorji izpitov, za uporabo v naslednjih korakih algoritma. Ko smo dosegli konec zabeleženih ratingov smo imeli izračunane ratinge za vse naloge in userje.
+Za izračune ratingov so bile od najstarejšega ratinga uporabnika po času reševanj zaporedoma pregledane naloge iz ustreznega kviza, ki so bile glede na prejšnji najstarejši ali (osnovni rating) uporabnika in naloge ponovno ratane po izbranem rating algoritmu (Elo ali Glicko). Tako je bil po zaporednih nalogah glede na reševanje (stolpec correct) izračunan nov rating uporabnika in novi ratingi nalog, ki so bili sproti zapisani v tabele na mesta z ustreznimi časi in identifikatorji izpitov, za uporabo v naslednjih korakih algoritma. Ob koncu zabeleženih ratingov so bili tako izračunani ratingi za vse naloge in uporabnike.
 \hfill
 \\
 \\
-Primer zapisov izračunov ratingov za izpit z identifikatorjem 43:
+Primer zapisov izračunov ratingov za izpit z identifikatorjem $43$:
 
 \lstset{basicstyle=\tiny,style=SQLstyle}
 \begin{figure}[h!]
@@ -201,7 +199,7 @@ WHERE e.classExamId=43;
 \end{lstlisting}
 
 
-\subsection{Trenutni rating sistem - ELO}
+\subsection{Trenutni rating sistem - Elo}
 Pri oddaji kviza so pridobljeni prejšnji rating posameznih nalog v kvizu in prejšnji rating uporabnika. Za naloge in uporabnika so potem zaporedoma po nalogah izračunani novi ratingi po naslednjih enačbah:
 \begin{equation}
     R'_{A}=R_{A}+K\cdot \left ( S_{A}-E_{A} \right )
@@ -217,46 +215,57 @@ $S_{A}$ predstavlja dejanski izid, v primeru eQuiza 0 ali 1, $E_{A}$ pa pričako
 \hfill
 \\
 \\
-$K$ je po navadi izračunan glede na število iger na katerih temelji trenuten rating (plus število iger v turnamentu pri šahu),
-v trenutni implementaciji ratinga pa je privzet kot konstanten z vrednostjo 4,5
+$K$ je po navadi izračunan glede na število iger na katerih temelji trenuten rating (in številu iger v turnamentu pri šahu),
+v trenutni implementaciji ratinga pa je privzet kot konstanten z vrednostjo $4,5$.
 \hfill
 \\
 \\
-Po takem postopku je bil po zgoraj opisanih algoritmih izračunan ELO rating na filtriranih podatkih z osnovnim ratingom 200.
+Po takem postopku je bil po zgoraj opisanih algoritmih izračunan Elo rating na filtriranih podatkih z osnovnim ratingom $200$.
 %\newpage
 %TODO normalne?
 \begin{figure}[h!]
     \includegraphics[width=8cm]{ComputedELO}
-    \caption{Histogram končnih ELO ratingov uporabnikov}%TODO: figure counting
+    \caption{Histogram končnih Elo ratingov uporabnikov}%TODO: figure counting
     \label{fig:example}%
 \end{figure}
 \begin{figure}[h!]
     \includegraphics[width=8cm]{ComputedELOe}
-    \caption{Histogram končnih ELO ratingov nalog}%TODO: figure counting
+    \caption{Histogram končnih Elo ratingov nalog}%TODO: figure counting
     \label{fig:example}%
 \end{figure}
 \hfill
 \\
 Zaradi velikega števila nalog iz katerih se naključno generira kviz, so posamezne naloge povprečno manjkrat ocenjene kot uprabniki, poleg tega pa so po številu rešenih kvizov med uporabniki velike razlike. 
+\iffalse
 \begin{figure}%
     \subfloat[\centering ]{{\includegraphics[width=4cm]{Resevanje} }}%
     \subfloat[\centering ]{{\includegraphics[width=4cm]{ResevanjeNalog} }}%
     \caption{Histogrami števila ratingov uporabnikov in nalog}%TODO: figure counting
     \label{fig:example}%
 \end{figure}
+\fi
+\begin{figure}[h!]
+    \includegraphics[width=8cm]{ResevanjeComb}
+    \caption{Histogram reševanja za uporabnike}%TODO: figure counting
+    \label{fig:example}%
+\end{figure}
 
-Zaradi tega nekateri ratingi bazirajo na manj ali več ocenjevanjih in tako bolje ali slabše odražajo pravo sposobnost reševanja uporabnikov ali težavnost nalog. Zato je bil v nadaljevanju za enake podatke izračunan še Glicko rating.
+
+\newpage
+Zaradi tega nekateri ratingi bazirajo na manj ali več ocenjevanjih v določenem časovnem intervalu in tako bolje ali slabše odražajo pravo sposobnost reševanja uporabnikov ali težavnost nalog. Zato je bil v nadaljevanju za enake podatke izračunan še Glicko rating.
 
 \subsection{Glicko rating na pridobljenih podatkih}
+\label{sec:izracun}
 %TODO: label?
 
-Po enakem postopku kot ELO rating je bil zaporedno izračunan Glicko rating. Kot opisano v dokumentaciji Glicko ratinga, pa so bile naloge,
-ki spadajo v isto iteracijo ocenjevanja obravnavane vsaka posebaj, kot več iger proti enako ocenjenem igralcu (uporabniku) in ne zaporedno z vmesnimi posodobitvami ratingov, kot v trenutnem rating sistemu.
+Po enakem postopku kot Elo rating je bil zaporedno izračunan Glicko rating. Kot opisano v dokumentaciji Glicko ratinga, pa so bile naloge,
+ki spadajo v isto iteracijo ocenjevanja obravnavane vsaka posebaj, kot več iger proti enako ocenjenem igralcu (uporabniku) in ne zaporedno z vmesnimi posodobitvami ratingov, kot v trenutnem rating sistemu. Pri trenutnem eQuiz osnovnem ratingu $200$ ima večina ratingov po Glicko vrednost $0$,
+zato je bil osnovni rating nastavljen na $1000$;
 \hfill
 \\
 \\
 Za upoštevanje časov reševanj nalog, je potreben še izračun konstante $c$ kot parameter Glicko ratinga. Kot opisano v dokumentaciji lahko $c$
-izračunamo glede na to, po kolikšnem času želimo, da $RD$ igralca pade na maksimalno vrednost, v tem primeru 350. Torej če v kontekstu ocenjevanj študentov privzamemo, da bo po preteklem času enega semestra, četudi ima študent na začetku minimalen $RD$ postal njegov rating nezanesljiv in pade njegov $RD$ na 350. Za tak čas je bilo vzetih 120dni.
+izračunamo glede na to, po kolikšnem času želimo, da $RD$ igralca pade na maksimalno vrednost, v tem primeru $350$. Torej če v kontekstu ocenjevanj študentov privzamemo, da bo po preteklem času enega semestra, četudi ima študent na začetku minimalen $RD$ postal njegov rating nezanesljiv in pade njegov $RD$ na $350$. Za tak čas je bilo vzetih $120$ dni, da pade $RD$ iz povprečne vrednosti $50$ na $350$.
 
 \begin{equation}
     350=\sqrt{50^{2}+120\cdot c^{2}}
@@ -293,13 +302,13 @@ Opazimo, da je pri ratingu nalog $RD$ povprečno večji kot pri ratingu uporabni
 \hfill
 \\
 
-Ker smo za enoto vzeli dneve moramo za razlike v datumih ocenjevanj upoštevati razliko v dnevih, kjer naj bi se njegov $RD$ stalno spreminjal. Dovolj pa je, da $RD$ posodobimo samo pred novim ocenjevanjem ali pa ob vpogledu v rating študenta, da upoštevamo čas od njegovega zadnjega zabeleženega ocenjevanja. Za prikaz statistike glicko ratinga v tem primeru končni izračun deviacije ni bil izveden, saj so bila ocenjevanja izvedena v zelo različnih obdobjih od 2019 do 2023 in bi tako velik del študenov imel maksimalen $RD$. Za njihove ratinge to nima vpliva, saj se je med njihovimi ocenjevanji $RD$ prilagajal tudi po času. Tako lahko za posameznega študenta izračunamo tudi današnji $RD$ po formuli za $RD$ po preteklem času. %TODO link do formule 
+Ker smo za enoto vzeli dneve moramo za razlike v datumih ocenjevanj upoštevati razliko v dnevih, kjer naj bi se njegov $RD$ stalno spreminjal. Dovolj pa je, da $RD$ posodobimo samo pred novim ocenjevanjem ali pa ob vpogledu v rating uporabnika, tako da upoštevamo čas od njegovega zadnjega zabeleženega ocenjevanja. Za prikaz statistike glicko ratinga v tem primeru končni izračun deviacije ni bil izveden, saj so bila ocenjevanja izvedena v zelo različnih obdobjih od 2019 do 2023 in bi tako velik del študenov imel maksimalen $RD$. Za njihove ratinge to nima vpliva, saj se je med njihovimi ocenjevanji $RD$ prilagajal tudi po času. Tako lahko za posameznega študenta izračunamo tudi današnji $RD$ po formuli za $RD$ po preteklem času. %TODO link do formule 
 
 \newpage
 
 \begin{figure}[h!]
     \includegraphics[width=8cm]{EloUserExample}
-    \caption{Primer posodobitev ratinga za uporabnika pri ELO sistemu}%TODO: figure counting
+    \caption{Primer posodobitev ratinga za uporabnika pri Elo sistemu}%TODO: figure counting
     \label{fig:example}%
 \end{figure}
 \begin{figure}[h!]
@@ -308,7 +317,7 @@ Ker smo za enoto vzeli dneve moramo za razlike v datumih ocenjevanj upoštevati 
     \label{fig:example}%
 \end{figure}
 
-Za primer je bil vzet uporabnik, ki je vse ratinge pridobil v roku treh dni. , zato so spremembe v ratingu čedalje manjše, saj se njegov $RD$ hitro manjša.
+Za primer je bil vzet uporabnik, ki je vse ratinge pridobil v roku štirih dni. , zato so spremembe v ratingu čedalje manjše, saj se njegov $RD$ hitro manjša.
 \begin{figure}[h!]
     \includegraphics[width=8cm]{RDUserExample}
     \caption{Posodobitev RD za uporabnika}%TODO: figure counting
@@ -317,12 +326,25 @@ Za primer je bil vzet uporabnik, ki je vse ratinge pridobil v roku treh dni. , z
 \newpage
 Če vzamemo uporabnika z ratingi razporejenimi čez večji časovni interval, spremembe ratinga in $RD$ nista več nujno majhna. Skoke opazimo pri prvih ocenjevanjih po velikem časovnem intervalu brez posodobitev.
 
+\iffalse
 \begin{figure}[h!]
     \subfloat[\centering ]{{\includegraphics[width=4cm]{RDUserExampleBig} }}%
     \subfloat[\centering ]{{\includegraphics[width=4cm]{GlickoUserExampleBig} }}%
     \caption{Histogrami za Glicko pri uporabniku z več posodobitvami}%TODO: figure counting
     \label{fig:example}%
 \end{figure}
+\fi
+\begin{figure}[h!]
+    \includegraphics[width=8cm]{GlickoUserExampleBig}
+    \caption{Posodobitve ratinga skozi večji časovni interval}%TODO: figure counting
+    \label{fig:example}%
+\end{figure}
+\begin{figure}[h!]
+    \includegraphics[width=8cm]{RDUserExampleBig}
+    \caption{Posodobitve deviacije skozi večji časovni interval}%TODO: figure counting
+    \label{fig:example}%
+\end{figure}
+
 
 
 \iffalse
@@ -390,17 +412,17 @@ Follows by Theorem~\ref{thm:equiv}.
 \end{proof}
 \fi
 
+\newpage
 \section{Glicko za spremljanje študentov}
-Z vpeljavo $RD$ pridobimo v primeru študentov informacijo o sprotnem delu, saj bo RD manjši za učence, ki so pogosteje ocenjeni. Če bi k ratingu pripomogli tudi, na primer redni kolokviji, bi reševanje dodatnih  naključnih reševanj kvizov/nalog bilo razvidno iz manjšega $RD$, kar kaže na več sprotnega dela in obratno. Za primer, pri predmetu Verjetnost in statistika se da predmet opraviti v celoti s sprotnimi preverjanji, kjer je snov enakomerno razdeljena na 5 kolokvijev skozi celoten semester. Torej bo študent, ki opravi samo eno preverjanje od petih ustrezno imel veliko deviacijo, saj imamo informacijo o njegovem znanju čedalje bolj nezanesljivo, ker vemo čedalje manj, koliko študent dejansko ve o Statistiki odkar je reševal tisti kolokvij.
+Z vpeljavo $RD$ pridobimo v primeru študentov informacijo o sprotnem delu, saj bo $RD$ manjši za študente, ki so pogosteje ocenjeni. Če bi k ratingu pripomogli tudi, na primer redni kolokviji, bi reševanje dodatnih  naključnih reševanj kvizov/nalog bilo razvidno iz manjšega $RD$, kar kaže na več sprotnega dela in obratno. Za primer, pri predmetu Verjetnost in statistika je možno predmet opraviti v celoti s sprotnimi preverjanji, kjer je snov enakomerno razdeljena na 5 kolokvijev skozi celoten semester. Torej bo študent, ki opravi samo eno preverjanje od petih ustrezno imel veliko deviacijo, saj imamo informacijo o njegovem znanju čedalje bolj nezanesljivo, ker vemo čedalje manj, koliko študent dejansko ve o Statistiki, odkar je reševal tisti kolokvij.
 
-Za nasprotnika učencu – nalogo, pa deviacija predstavlja kdaj je bila naloga nazadnje ocenjena, torej koliko je njena ocena zanesljiva. V primeru učenca, ki izbira naloge iz zbirke na equizu, bi lahko naloge z veliko deviacijo identificirali kot nepriljubljene (malo učencev se je lotilo naloge).
+Za nasprotnika uporabnika – nalogo, pa deviacija predstavlja kdaj je bila naloga nazadnje ocenjena, torej koliko je njena ocena zanesljiva. V primeru uporabnika, ki izbira naloge iz zbirke na eQuizu, bi lahko naloge z veliko deviacijo identificirali kot nepriljubljene (malo uporabnikov se je lotilo naloge).
 
 %TODO primer izpita?
 %TODO tudi expected outcome
 
-\hfill
-\\
-\\
+\newpage
+\subsection{Igrifikacija}
 V kontekstu igrifikacije eQuiza, lahko ratinge, predvsem pa $RD$ preslikamo v razrede iz katerih lahko bolj prijazno uporabniku spremljamo njegovo aktivnost na eQuizu. Iz statistike končnih $RD$ uporabnikov lahko uporabimo kvartile in razdelimo ratinge na 4 dele:
 
 \begin{figure}[h!]
@@ -408,6 +430,8 @@ V kontekstu igrifikacije eQuiza, lahko ratinge, predvsem pa $RD$ preslikamo v ra
     \label{fig:example}%
 \end{figure}
 
+\hfill
+\\
 Tako lahko razporedimo uporabnike glede na njihove $RD$:
 \hfill
 \\
@@ -431,23 +455,19 @@ $127.271<RD:\;nizka\;aktivnost$
 \begin{lstlisting}
 \end{lstlisting}
 
-
-%TODO: link do programov
-
-\newpage
 \section{Zakjuček}
 \label{sec:cnc}
 
-Glicko rating nam doda novo informacijo glede vloženega dela uporabnika. Dobimo informacijo o količini reševanj v določenem časovnem intervalu, posledično pa tudi zanesljivost ratinga izračunanega z Glicko, kjer je zanesljivost upoštevana tudi med samim računanjem. Poleg sprotnega dela pa dobimo informacijo tudi o reševanju nalog, njihovi težavnosti in priljubljenosti. Ker pri tem poskušamo zanseljivost zvečati, lahko z vpeljavo parametriziranih nalog
+Glicko rating nam doda novo informacijo glede vloženega dela uporabnika. Dobimo informacijo o količini reševanj v določenem časovnem intervalu, posledično pa tudi zanesljivost ratinga izračunanega z Glicko, kjer je zanesljivost upoštevana tudi med samim računanjem. Poleg sprotnega dela pa dobimo informacijo tudi o reševanju nalog, njihovi težavnosti in priljubljenosti. Ker pri tem poskušamo zanesljivost zvečati, lahko z vpeljavo parametriziranih nalog
 ,ki jih tako večkrat uporabimo na preverjanjih, zvišamo zanesljivost njihovih ratingov. Če v rating vključimo še podatke iz izpitov in skupnih preverjanj, pa bo posledično rating še zanesljivejši, saj bo v isti iteraciji nalogo reševalo veliko učencev.
 
 \hfill
 \\
-Kot je do sedaj algoritem operiral na trenutni podatkovni bazi eQuiza, lahko podoben algoritem uporabimo v nadaljevanju za beleženje ratingov na enak način, kot do sedaj. Implementacija Glicko ratinga za eQuiz je na voljo skupaj z vsemi programi uporabljenimi pri navedenih izračunih na GitHubu %TODO: link
+Kot je do sedaj algoritem operiral na trenutni podatkovni bazi eQuiza, lahko podoben algoritem uporabimo v nadaljevanju za beleženje ratingov na enak način, kot do sedaj. Implementacija Glicko ratinga za eQuiz je na voljo skupaj z vsemi programi uporabljenimi pri navedenih izračunih na \href{https://github.com/MAZI2/Glicko_eQuiz}{GitHub}-u 
 \hfill
 \\
 \\
-Za Glicko rating pa obstaja tudi bolj kompleksna izboljšana različica Glicko-2, ki bi lahko bila bolj primerna za dejansko implementacijo v aplikaciji %TODO: link
+Za Glicko rating pa obstaja tudi bolj kompleksna izboljšana različica \href{http://www.glicko.net/glicko/glicko2.pdf}{Glicko-2}, ki bi lahko bila bolj primerna za dejansko implementacijo v aplikaciji.
 
 \bibliographystyle{babplain}
 \bibliography{cite}
