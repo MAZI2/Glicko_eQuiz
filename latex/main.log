@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.12.14)  2 JAN 2024 14:00
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.12.14)  3 FEB 2024 12:13
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -431,40 +431,7 @@ File: l3backend-pdftex.def 2023-01-16 L3 backend support: PDF output (pdfTeX)
 LaTeX Warning: Label `fig:example' multiply defined.
 
 
-LaTeX Warning: Label `fig:example' multiply defined.
-
-
-LaTeX Warning: Label `fig:example' multiply defined.
-
-
-LaTeX Warning: Label `fig:example' multiply defined.
-
-
-LaTeX Warning: Label `fig:example' multiply defined.
-
-
-LaTeX Warning: Label `fig:example' multiply defined.
-
-
-LaTeX Warning: Label `fig:example' multiply defined.
-
-
-LaTeX Warning: Label `fig:example' multiply defined.
-
-
-LaTeX Warning: Label `fig:example' multiply defined.
-
-
-LaTeX Warning: Label `fig:example' multiply defined.
-
-
-LaTeX Warning: Label `fig:example' multiply defined.
-
-
-LaTeX Warning: Label `fig:example' multiply defined.
-
-
-LaTeX Warning: Label `fig:example' multiply defined.
+LaTeX Warning: Label `sec:glicko' multiply defined.
 
 
 LaTeX Warning: Label `fig:example' multiply defined.
@@ -472,24 +439,24 @@ LaTeX Warning: Label `fig:example' multiply defined.
 )
 \openout1 = `main.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 89.
-LaTeX Font Info:    ... okay on input line 89.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 89.
-LaTeX Font Info:    ... okay on input line 89.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 89.
-LaTeX Font Info:    ... okay on input line 89.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 89.
-LaTeX Font Info:    ... okay on input line 89.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 89.
-LaTeX Font Info:    ... okay on input line 89.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 89.
-LaTeX Font Info:    ... okay on input line 89.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 89.
-LaTeX Font Info:    ... okay on input line 89.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 89.
-LaTeX Font Info:    ... okay on input line 89.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 89.
-LaTeX Font Info:    ... okay on input line 89.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 90.
+LaTeX Font Info:    ... okay on input line 90.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 90.
+LaTeX Font Info:    ... okay on input line 90.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 90.
+LaTeX Font Info:    ... okay on input line 90.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 90.
+LaTeX Font Info:    ... okay on input line 90.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 90.
+LaTeX Font Info:    ... okay on input line 90.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 90.
+LaTeX Font Info:    ... okay on input line 90.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 90.
+LaTeX Font Info:    ... okay on input line 90.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 90.
+LaTeX Font Info:    ... okay on input line 90.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 90.
+LaTeX Font Info:    ... okay on input line 90.
 
 babelbib: Use citation-dependent languages in bibliography
 babelbib: Set bibliography fall-back language to english
@@ -523,7 +490,7 @@ Package caption Info: subfig package v1.3 is loaded.
 Package caption Info: hyperref package is loaded.
 Package caption Info: listings package is loaded.
 Package caption Info: End \AtBeginDocument code.
-Package hyperref Info: Link coloring OFF on input line 89.
+Package hyperref Info: Link coloring OFF on input line 90.
  (./main.out) (./main.out
 pdfTeX warning (Object streams): \pdfobjcompresslevel > 0 requires PDF-1.5 or greater. Object streams disabled now.
 )
@@ -532,160 +499,120 @@ pdfTeX warning (Object streams): \pdfobjcompresslevel > 0 requires PDF-1.5 or gr
 
 \c@lstlisting=\count315
 
-Underfull \hbox (badness 10000) in paragraph at lines 92--92
+Underfull \hbox (badness 10000) in paragraph at lines 93--93
 
  []
 
-LaTeX Font Info:    Trying to load font information for U+msa on input line 92.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 93.
 (/usr/local/texlive/2023/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 92.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 93.
  (/usr/local/texlive/2023/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-Overfull \hbox (59.81537pt too wide) detected at line 118
-[][][]\OML/cmm/m/it/10 d[] \OT1/cmr/m/n/10 = [][]
+Underfull \hbox (badness 1577) in paragraph at lines 100--104
+\OT1/ptm/m/n/10 in bo posledi[]cno ra-zli[]cno zanesljiv. Po-leg tega je
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 127--132
-
+Underfull \hbox (badness 3219) in paragraph at lines 100--104
+\OT1/ptm/m/n/10 ocen-je-vanja. Glicko za ta na-men uporabi pristop
  []
 
 
-Overfull \hbox (20.85948pt too wide) detected at line 134
-[][][]\OML/cmm/m/it/10 r[] \OT1/cmr/m/n/10 = \OML/cmm/m/it/10 r \OT1/cmr/m/n/10 + [] [] \OML/cmm/m/it/10 g [] []
- []
+Underfull \hbox (badness 10000) in paragraph at lines 100--104
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 134--142
-\OT1/ptm/m/n/10 Zgornje for-mule so pos-plo[]sene za posodobitev
- []
-
-
-Underfull \hbox (badness 2245) in paragraph at lines 134--142
-\OT1/ptm/m/n/10 nasprot-nikov z de-viaci-jami $\OML/cmm/m/it/10 RD[]; RD[]; :::; RD[]$ \OT1/ptm/m/n/10 in
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 134--142
-
- []
-
-
-Underfull \hbox (badness 1394) in paragraph at lines 134--142
-\OT1/ptm/m/n/10 temve[]c tudi ob preteku dolo[]cene []casovne pe-ri-ode,
  []
 
 [1{/usr/local/texlive/2023/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{/usr/local/texlive/2023/texmf-dist/fonts/enc/dvips/base/8r.enc}
 
 
 ]
-Underfull \hbox (badness 2556) in paragraph at lines 163--170
+Underfull \hbox (badness 10000) in paragraph at lines 142--152
+
+ []
+
+
+Underfull \hbox (badness 1394) in paragraph at lines 142--152
+\OT1/ptm/m/n/10 temve[]c tudi ob preteku dolo[]cene []casovne pe-ri-ode,
+ []
+
+
+Underfull \hbox (badness 1354) in paragraph at lines 155--163
+\OT1/ptm/m/n/10 ad-min-is-tra-tor sis-tema glede na izbrano ocen-je-valno
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 155--163
+
+ []
+
+
+Underfull \hbox (badness 2556) in paragraph at lines 179--186
 \OT1/ptm/m/n/10 quizov, ses-tavl-jenih iz ra-zli[]cnih na-log. Po-datek o
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 163--170
+Underfull \hbox (badness 10000) in paragraph at lines 179--186
 
  []
 
 
-Underfull \hbox (badness 2401) in paragraph at lines 163--170
-\OT1/ptm/m/n/10 Za izra[]cun Glicko ratinga je, za ra-z-liko od Elo
+Underfull \hbox (badness 1990) in paragraph at lines 179--186
+\OT1/ptm/m/n/10 Tako so bili pri-dobljeni po-datki za 305 ra-zli[]cnih
  []
 
 
-Underfull \hbox (badness 3646) in paragraph at lines 163--170
-\OT1/ptm/m/n/10 ratinga, potreben []se []cas re[]sevanja. Zato so bile
- []
-
-
-Underfull \hbox (badness 2753) in paragraph at lines 172--177
-\OT1/ptm/m/n/10 naloge iz us-treznega kviza, ki so bile glede na
- []
-
-
-Underfull \hbox (badness 1418) in paragraph at lines 172--177
-\OT1/ptm/m/n/10 glede na re[]sevanje (stolpec cor-rect) izra[]cunan nov
- []
-
-
-Underfull \hbox (badness 2744) in paragraph at lines 172--177
-\OT1/ptm/m/n/10 in iden-ti-fika-torji izpi-tov, za uporabo v nasled-njih
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 172--177
+Underfull \hbox (badness 10000) in paragraph at lines 179--186
 
  []
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 172--177
-\OT1/ptm/m/n/10 Primer za-pisov izra[]cunov ratin-gov za izpit z
- []
-
-(/usr/local/texlive/2023/texmf-dist/tex/latex/listings/lstlang1.sty
+[2] (/usr/local/texlive/2023/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2023/02/27 1.9 listings language file
 )
-<./images//PrimerTabeleUser.png, id=73, 606.265pt x 52.195pt>
+<./images//PrimerTabeleUser.png, id=92, 606.265pt x 52.195pt>
 File: ./images//PrimerTabeleUser.png Graphic file (type png)
 <use ./images//PrimerTabeleUser.png>
-Package pdftex.def Info: ./images//PrimerTabeleUser.png  used on input line 180.
+Package pdftex.def Info: ./images//PrimerTabeleUser.png  used on input line 195.
 (pdftex.def)             Requested size: 227.62204pt x 19.59695pt.
-
-Overfull \hbox (18.38046pt too wide) in paragraph at lines 186--187
-[][][][][][][][][][][][][][][][][][][][][][][][][][][] 
- []
-
-<./images//PrimerTabele.png, id=75, 530.98375pt x 256.96pt>
+<./images//PrimerTabele.png, id=94, 530.98375pt x 256.96pt>
 File: ./images//PrimerTabele.png Graphic file (type png)
 <use ./images//PrimerTabele.png>
-Package pdftex.def Info: ./images//PrimerTabele.png  used on input line 191.
+Package pdftex.def Info: ./images//PrimerTabele.png  used on input line 208.
 (pdftex.def)             Requested size: 227.62204pt x 110.15344pt.
 
-Overfull \hbox (45.38074pt too wide) in paragraph at lines 196--197
-[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
- []
-
-
-Overfull \hbox (30.38058pt too wide) in paragraph at lines 197--198
-[][][][][][][][][][][][][][][][][][][][][][][][][][][] 
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 203--204
+Underfull \hbox (badness 10000) in paragraph at lines 222--223
 \OT1/ptm/m/n/10 Pri odd-aji kviza so pri-dobljeni prej[]snji rat-ing
  []
 
-<./images//ComputedELO.png, id=76, 599.23875pt x 600.2425pt>
-File: ./images//ComputedELO.png Graphic file (type png)
-<use ./images//ComputedELO.png>
-Package pdftex.def Info: ./images//ComputedELO.png  used on input line 227.
-(pdftex.def)             Requested size: 227.62204pt x 228.00293pt.
-<./images//ComputedELOe.png, id=77, 584.1825pt x 613.29124pt>
-File: ./images//ComputedELOe.png Graphic file (type png)
-<use ./images//ComputedELOe.png>
-Package pdftex.def Info: ./images//ComputedELOe.png  used on input line 232.
-(pdftex.def)             Requested size: 227.62204pt x 238.96738pt.
-<./images//ResevanjeComb.png, id=78, 611.28375pt x 599.23875pt>
-File: ./images//ResevanjeComb.png Graphic file (type png)
-<use ./images//ResevanjeComb.png>
-Package pdftex.def Info: ./images//ResevanjeComb.png  used on input line 248.
-(pdftex.def)             Requested size: 227.62204pt x 223.13213pt.
+<./images//EloUserPrev.png, id=96, 613.29124pt x 575.14874pt>
+File: ./images//EloUserPrev.png Graphic file (type png)
+<use ./images//EloUserPrev.png>
+Package pdftex.def Info: ./images//EloUserPrev.png  used on input line 245.
+(pdftex.def)             Requested size: 227.62204pt x 213.4599pt.
+<./images//EloExercisePrev.png, id=97, 584.1825pt x 559.08875pt>
+File: ./images//EloExercisePrev.png Graphic file (type png)
+<use ./images//EloExercisePrev.png>
+Package pdftex.def Info: ./images//EloExercisePrev.png  used on input line 250.
+(pdftex.def)             Requested size: 227.62204pt x 217.84752pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 213--252
+Underfull \hbox (badness 10000) in paragraph at lines 232--256
 
  []
 
 
-Underfull \hbox (badness 3209) in paragraph at lines 213--252
-\OT1/ptm/m/n/10 ka-terih temelji trenuten rat-ing (in []stevilu iger v
+Underfull \hbox (badness 6110) in paragraph at lines 232--256
+\OT1/cmr/m/n/10 K$ \OT1/ptm/m/n/10 je po navadi izra[]cunan glede na statisti[]cno
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 213--252
+Underfull \hbox (badness 10000) in paragraph at lines 232--256
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 232--256
 
  []
 
@@ -695,141 +622,226 @@ LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-[2 <./images//PrimerTabeleUser.png> <./images//PrimerTabele.png>]
+[3 <./images//PrimerTabeleUser.png> <./images//PrimerTabele.png> <./images//EloUserPrev.png> <./images//EloExercisePrev.png>]
+<./images//UserExampleElo.png, id=120, 614.295pt x 546.04pt>
+File: ./images//UserExampleElo.png Graphic file (type png)
+<use ./images//UserExampleElo.png>
+Package pdftex.def Info: ./images//UserExampleElo.png  used on input line 266.
+(pdftex.def)             Requested size: 113.81102pt x 101.16579pt.
+<./images//UserExampleGlicko.png, id=121, 599.23875pt x 534.99875pt>
+File: ./images//UserExampleGlicko.png Graphic file (type png)
+<use ./images//UserExampleGlicko.png>
+Package pdftex.def Info: ./images//UserExampleGlicko.png  used on input line 267.
+(pdftex.def)             Requested size: 113.81102pt x 101.61pt.
 
-LaTeX Warning: `!h' float specifier changed to `!ht'.
+Overfull \hbox (7.00012pt too wide) in paragraph at lines 266--268
+[][][][] 
+ []
+
+<./images//ExamExample.png, id=123, 271.0125pt x 188.705pt>
+File: ./images//ExamExample.png Graphic file (type png)
+<use ./images//ExamExample.png>
+Package pdftex.def Info: ./images//ExamExample.png  used on input line 280.
+(pdftex.def)             Requested size: 170.71652pt x 118.87325pt.
+<./images//ExerciseExampleElo.png, id=124, 605.26125pt x 532.99126pt>
+File: ./images//ExerciseExampleElo.png Graphic file (type png)
+<use ./images//ExerciseExampleElo.png>
+Package pdftex.def Info: ./images//ExerciseExampleElo.png  used on input line 288.
+(pdftex.def)             Requested size: 113.81102pt x 100.22026pt.
+<./images//ExerciseExampleGlicko.png, id=125, 608.2725pt x 526.96875pt>
+File: ./images//ExerciseExampleGlicko.png Graphic file (type png)
+<use ./images//ExerciseExampleGlicko.png>
+Package pdftex.def Info: ./images//ExerciseExampleGlicko.png  used on input line 289.
+(pdftex.def)             Requested size: 113.81102pt x 98.59732pt.
+
+Overfull \hbox (7.00012pt too wide) in paragraph at lines 288--290
+[][][][] 
+ []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 261--269
+Underfull \hbox (badness 2065) in paragraph at lines 294--300
+\OT1/ptm/m/n/10 ocen-jene pod base ratin-gom, saj uporab-niki kljub
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 294--300
 
  []
 
 
-Underfull \hbox (badness 2529) in paragraph at lines 261--269
+Underfull \hbox (badness 1817) in paragraph at lines 301--308
+\OT1/ptm/m/n/10 proti []studentu, bomo s prete[]zno nizko ocen-jen-imi
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 301--308
+
+ []
+
+[4 <./images//UserExampleElo.png> <./images//UserExampleGlicko.png> <./images//ExamExample.png> <./images//ExerciseExampleElo.png> <./images//ExerciseExampleGlicko.png>]
+<./images//EloUser.png, id=148, 617.30624pt x 590.205pt>
+File: ./images//EloUser.png Graphic file (type png)
+<use ./images//EloUser.png>
+Package pdftex.def Info: ./images//EloUser.png  used on input line 314.
+(pdftex.def)             Requested size: 227.62204pt x 217.62494pt.
+<./images//EloExercise.png, id=149, 623.32875pt x 585.18625pt>
+File: ./images//EloExercise.png Graphic file (type png)
+<use ./images//EloExercise.png>
+Package pdftex.def Info: ./images//EloExercise.png  used on input line 319.
+(pdftex.def)             Requested size: 227.62204pt x 213.69388pt.
+
+Underfull \hbox (badness 2393) in paragraph at lines 324--325
+[]\OT1/ptm/m/n/10 Poglejmo []se spre-membe ratinga za konkret-nega
+ []
+
+<./images//UserExampleSElo.png, id=150, 605.26125pt x 544.0325pt>
+File: ./images//UserExampleSElo.png Graphic file (type png)
+<use ./images//UserExampleSElo.png>
+Package pdftex.def Info: ./images//UserExampleSElo.png  used on input line 327.
+(pdftex.def)             Requested size: 227.62204pt x 204.59277pt.
+
+Underfull \hbox (badness 2922) in paragraph at lines 332--339
+\OT1/ptm/m/n/10 kar naredi Elo rat-ing uporab-nika zelo vari-abilen.
+ []
+
+
+Underfull \hbox (badness 2744) in paragraph at lines 332--339
+\OT1/ptm/m/n/10 nezanesljiv, saj so ocen-je-vane bolj na redko kot
+ []
+
+
+Underfull \hbox (badness 2521) in paragraph at lines 332--339
+\OT1/ptm/m/n/10 uporab-nik in tako omogo[]ca nalogam, da se bolj
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 332--339
+
+ []
+
+
+Underfull \hbox (badness 2318) in paragraph at lines 332--339
+\OT1/ptm/m/n/10 ratinga, []ce vemo, da so uporab-niki kviz re[]sevali
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 340--351
+
+ []
+
+[5 <./images//EloUser.png> <./images//EloExercise.png> <./images//UserExampleSElo.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 356--363
+
+ []
+
+
+Underfull \hbox (badness 2529) in paragraph at lines 356--363
 \OT1/ptm/m/n/10 Za upo[]stevanje []casov re[]sevanj na-log, je potreben
  []
 
-<./images//GlickoUser.png, id=98, 587.19376pt x 590.205pt>
+<./images//GlickoUser.png, id=169, 618.31pt x 571.13374pt>
 File: ./images//GlickoUser.png Graphic file (type png)
 <use ./images//GlickoUser.png>
-Package pdftex.def Info: ./images//GlickoUser.png  used on input line 280.
-(pdftex.def)             Requested size: 227.62204pt x 228.78313pt.
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-<./images//GlickoExercise.png, id=99, 611.28375pt x 598.235pt>
+Package pdftex.def Info: ./images//GlickoUser.png  used on input line 382.
+(pdftex.def)             Requested size: 227.62204pt x 210.25298pt.
+<./images//GlickoExercise.png, id=170, 622.325pt x 550.055pt>
 File: ./images//GlickoExercise.png Graphic file (type png)
 <use ./images//GlickoExercise.png>
-Package pdftex.def Info: ./images//GlickoExercise.png  used on input line 285.
-(pdftex.def)             Requested size: 227.62204pt x 222.75836pt.
+Package pdftex.def Info: ./images//GlickoExercise.png  used on input line 387.
+(pdftex.def)             Requested size: 227.62204pt x 201.18385pt.
+<./images//GlickoUserRD.png, id=171, 607.26875pt x 546.04pt>
+File: ./images//GlickoUserRD.png Graphic file (type png)
+<use ./images//GlickoUserRD.png>
+Package pdftex.def Info: ./images//GlickoUserRD.png  used on input line 392.
+(pdftex.def)             Requested size: 227.62204pt x 204.6645pt.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-<./images//RDUser.png, id=100, 610.28pt x 590.205pt>
-File: ./images//RDUser.png Graphic file (type png)
-<use ./images//RDUser.png>
-Package pdftex.def Info: ./images//RDUser.png  used on input line 290.
-(pdftex.def)             Requested size: 227.62204pt x 220.13756pt.
+<./images//GlickoExerciseRD.png, id=172, 577.15625pt x 573.14125pt>
+File: ./images//GlickoExerciseRD.png Graphic file (type png)
+<use ./images//GlickoExerciseRD.png>
+Package pdftex.def Info: ./images//GlickoExerciseRD.png  used on input line 397.
+(pdftex.def)             Requested size: 227.62204pt x 226.04286pt.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-<./images//RDExercise.png, id=101, 602.25pt x 591.20876pt>
-File: ./images//RDExercise.png Graphic file (type png)
-<use ./images//RDExercise.png>
-Package pdftex.def Info: ./images//RDExercise.png  used on input line 295.
-(pdftex.def)             Requested size: 227.62204pt x 223.45282pt.
+[6 <./images//GlickoUser.png> <./images//GlickoExercise.png>]
+Underfull \hbox (badness 1533) in paragraph at lines 405--408
+\OT1/ptm/m/n/10 na-log so razpr[]sena bolj enakomerno kot re[]sevanja
+ []
 
-LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-[3 <./images//ComputedELO.png> <./images//ComputedELOe.png> <./images//ResevanjeComb.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 301--304
+Underfull \hbox (badness 10000) in paragraph at lines 405--408
 
  []
 
-[4 <./images//GlickoUser.png> <./images//GlickoExercise.png> <./images//RDUser.png> <./images//RDExercise.png>]
-<./images//EloUserExample.png, id=126, 612.2875pt x 593.21625pt>
-File: ./images//EloUserExample.png Graphic file (type png)
-<use ./images//EloUserExample.png>
-Package pdftex.def Info: ./images//EloUserExample.png  used on input line 310.
-(pdftex.def)             Requested size: 227.62204pt x 220.52753pt.
-<./images//GlickoUserExample.png, id=127, 605.26125pt x 591.20876pt>
-File: ./images//GlickoUserExample.png Graphic file (type png)
-<use ./images//GlickoUserExample.png>
-Package pdftex.def Info: ./images//GlickoUserExample.png  used on input line 315.
-(pdftex.def)             Requested size: 227.62204pt x 222.33421pt.
-<./images//RDUserExample.png, id=128, 599.23875pt x 588.1975pt>
-File: ./images//RDUserExample.png Graphic file (type png)
-<use ./images//RDUserExample.png>
-Package pdftex.def Info: ./images//RDUserExample.png  used on input line 322.
-(pdftex.def)             Requested size: 227.62204pt x 223.42761pt.
-
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-<./images//GlickoUserExampleBig.png, id=129, 600.2425pt x 583.17876pt>
-File: ./images//GlickoUserExampleBig.png Graphic file (type png)
-<use ./images//GlickoUserExampleBig.png>
-Package pdftex.def Info: ./images//GlickoUserExampleBig.png  used on input line 338.
-(pdftex.def)             Requested size: 227.62204pt x 221.1475pt.
-<./images//RDUserExampleBig.png, id=130, 618.31pt x 588.1975pt>
-File: ./images//RDUserExampleBig.png Graphic file (type png)
-<use ./images//RDUserExampleBig.png>
-Package pdftex.def Info: ./images//RDUserExampleBig.png  used on input line 343.
-(pdftex.def)             Requested size: 227.62204pt x 216.5347pt.
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-[5 <./images//EloUserExample.png> <./images//GlickoUserExample.png> <./images//RDUserExample.png> <./images//GlickoUserExampleBig.png>]
-<./images//RDstat.png, id=143, 313.17pt x 32.12pt>
+<./images//UserExampleSGlicko.png, id=191, 608.2725pt x 539.01375pt>
+File: ./images//UserExampleSGlicko.png Graphic file (type png)
+<use ./images//UserExampleSGlicko.png>
+Package pdftex.def Info: ./images//UserExampleSGlicko.png  used on input line 419.
+(pdftex.def)             Requested size: 227.62204pt x 201.70197pt.
+<./images//UserExampleSRD.png, id=192, 622.325pt x 539.01375pt>
+File: ./images//UserExampleSRD.png Graphic file (type png)
+<use ./images//UserExampleSRD.png>
+Package pdftex.def Info: ./images//UserExampleSRD.png  used on input line 424.
+(pdftex.def)             Requested size: 227.62204pt x 197.1455pt.
+[7 <./images//GlickoUserRD.png> <./images//GlickoExerciseRD.png> <./images//UserExampleSGlicko.png> <./images//UserExampleSRD.png>]
+<./images//RDstat.png, id=204, 313.17pt x 32.12pt>
 File: ./images//RDstat.png Graphic file (type png)
 <use ./images//RDstat.png>
-Package pdftex.def Info: ./images//RDstat.png  used on input line 429.
+Package pdftex.def Info: ./images//RDstat.png  used on input line 442.
 (pdftex.def)             Requested size: 227.62204pt x 23.34642pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 433--450
+Underfull \hbox (badness 10000) in paragraph at lines 446--461
 
  []
 
 
-Underfull \hbox (badness 4291) in paragraph at lines 461--463
+Underfull \hbox (badness 4291) in paragraph at lines 472--473
 \OT1/ptm/m/n/10 Glicko rat-ing nam doda novo in-for-ma-cijo glede
  []
 
 
-Underfull \hbox (badness 2253) in paragraph at lines 461--463
+Underfull \hbox (badness 2253) in paragraph at lines 472--473
 \OT1/ptm/m/n/10 vlo[]zenega dela uporab-nika. Do-bimo in-for-ma-cijo o
  []
 
 
-Underfull \hbox (badness 1983) in paragraph at lines 461--463
+Underfull \hbox (badness 1983) in paragraph at lines 472--473
 \OT1/ptm/m/n/10 koli[]cini re[]sevanj v dolo[]cenem []casovnem in-ter-valu,
  []
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 464--471
-
- []
-
-No file main.bbl.
-[6 <./images//RDUserExampleBig.png> <./images//RDstat.png>] (./main.aux)
+(./main.bbl
+babelbib: Using the BibTeX style's default font for `name'.
+babelbib: Using the BibTeX style's default font for `lastname'.
+babelbib: Using the BibTeX style's default font for `title'.
+babelbib: Using the BibTeX style's default font for `jtitle'.
+babelbib: Using the BibTeX style's default font for `etal'.
+babelbib: Using the BibTeX style's default font for `journal'.
+babelbib: Using the BibTeX style's default font for `volume'.
+babelbib: Using the BibTeX style's default font for `ISBN'.
+babelbib: Using the BibTeX style's default font for `ISSN'.
+babelbib: Using the BibTeX style's default font for `url'.
+babelbib: Using the BibTeX style's default font for `numeral'.
+) [8 <./images//RDstat.png>] (./main.aux)
 
 LaTeX Warning: There were multiply-defined labels.
 
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: B7E781B5B1F0DF3A8390656E9C8D86E5;1577.
+(rerunfilecheck)             Checksum: 9386AF9D36BC56A2E428588DEB47781C;1673.
  ) 
 Here is how much of TeX's memory you used:
- 15230 strings out of 476025
- 246271 string characters out of 5790016
- 1881388 words of memory out of 5000000
- 35426 multiletter control sequences out of 15000+600000
- 562306 words of font info for 123 fonts, out of 8000000 for 9000
+ 15302 strings out of 476025
+ 248164 string characters out of 5790016
+ 1874388 words of memory out of 5000000
+ 35492 multiletter control sequences out of 15000+600000
+ 561764 words of font info for 123 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 75i,7n,79p,807b,1315s stack positions out of 10000i,1000n,20000p,200000b,200000s
-</usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on main.pdf (6 pages, 1361193 bytes).
+ 75i,10n,79p,867b,1208s stack positions out of 10000i,1000n,20000p,200000b,200000s
+</usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on main.pdf (8 pages, 1777850 bytes).
 PDF statistics:
- 215 PDF objects out of 1000 (max. 8388607)
- 54 named destinations out of 1000 (max. 500000)
- 156 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 284 PDF objects out of 1000 (max. 8388607)
+ 59 named destinations out of 1000 (max. 500000)
+ 184 words of extra memory for PDF output out of 10000 (max. 10000000)
 

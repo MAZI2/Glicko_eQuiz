@@ -1,0 +1,32 @@
+\begin{thebibliography}{1}
+  \providebibliographyfont{name}{}%
+  \providebibliographyfont{lastname}{}%
+  \providebibliographyfont{title}{\emph}%
+  \providebibliographyfont{jtitle}{\btxtitlefont}%
+  \providebibliographyfont{etal}{\emph}%
+  \providebibliographyfont{journal}{}%
+  \providebibliographyfont{volume}{}%
+  \providebibliographyfont{ISBN}{\MakeUppercase}%
+  \providebibliographyfont{ISSN}{\MakeUppercase}%
+  \providebibliographyfont{url}{\url}%
+  \providebibliographyfont{numeral}{}%
+  \expandafter\btxselectlanguage\expandafter {\btxfallbacklanguage}
+
+\expandafter\btxselectlanguage\expandafter {\btxfallbacklanguage}
+\bibitem {glickoDoc}
+\btxtitlefont {\btxifchangecase {The glicko system}{The Glicko system}}.
+\newblock {\latintext \btxurlfont{http://www.glicko.net/glicko/glicko.pdf}}.
+
+\bibitem {glickoPaper}
+\btxtitlefont {\btxifchangecase {Parameter estimation in large dynamic paired comparison experiments}{Parameter estimation in large dynamic paired comparison experiments}}.
+\newblock {\latintext \btxurlfont{http://www.glicko.net/research/glicko.pdf}}.
+
+\bibitem {wiki}
+\btxnamefont {\btxlastnamefont {Wikimedia~projects}, Contributors~to}\btxauthorcolon\ \btxtitlefont {\btxifchangecase {Elo rating system}{Elo rating system}}, \btxprintmonthyear{.}{Jan}{2024}{long}.
+\newblock {\latintext \btxurlfont{https://en.wikipedia.org/wiki/Elo_rating_system}}.
+
+\bibitem {glickoWiki}
+\btxnamefont {\btxlastnamefont {Wikimedia~projects}, Contributors~to}\btxauthorcolon\ \btxtitlefont {\btxifchangecase {Glicko rating system}{Glicko rating system}}, \btxprintmonthyear{.}{Jan}{2024}{long}.
+\newblock {\latintext \btxurlfont{https://en.wikipedia.org/wiki/Glicko_rating_system}}.
+
+\end{thebibliography}
